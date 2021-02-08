@@ -1,0 +1,49 @@
+{
+  "name": "client",
+  "version": "0.0.1",
+  "description": "The #1 Rated Marketplace for buying and selling firearms.",
+  "productName": "Utah Gun Trade",
+  "author": "jaxonburningham <jaxon@ionrev.com>",
+  "private": true,
+  "scripts": {
+    "test": "echo \"No test specified\" && exit 0",
+    "dev": "quasar dev",
+    "build": "quasar build"
+  },
+  "dependencies": {
+    "@feathersjs/authentication-client": "^4.5.11",
+    "@feathersjs/feathers": "^4.5.11",
+    "@feathersjs/socketio-client": "^4.5.11",
+    "@quasar/extras": "^1.0.0",
+    "@vue/composition-api": "^1.0.0-rc.1",
+    "axios": "^0.18.1",
+    "core-js": "^3.6.5",
+    "feathers-hooks-common": "^5.0.4",
+    "feathers-vuex": "^3.15.0",
+    "lodash.get": "^4.4.2",
+    "lodash.set": "^4.3.2",
+    "quasar": "^1.0.0",
+    "socket.io-client": "^2.3.0",
+    "swiper": "^5.4.5",
+    "vue-awesome-swiper": "^4.1.1"
+  },
+  "devDependencies": {
+    "@quasar/app": "^2.0.0"
+  },
+  "browserslist": [
+    "last 10 Chrome versions",
+    "last 10 Firefox versions",
+    "last 4 Edge versions",
+    "last 7 Safari versions",
+    "last 8 Android versions",
+    "last 8 ChromeAndroid versions",
+    "last 8 FirefoxAndroid versions",
+    "last 10 iOS versions",
+    "last 5 Opera versions"
+  ],
+  "engines": {
+    "node": ">= 10.18.1",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
+  }
+}

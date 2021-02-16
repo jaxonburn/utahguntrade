@@ -15,7 +15,8 @@ export default function({ store }) {
       children: [
         { path: '', component: () => import('pages/Index.vue') },
         { path: 'register', component: () => import('pages/Register.vue'),meta: { requiresAuth: false },},
-        { path: 'account', component: () => import('pages/Account.vue'),meta: { requiresAuth: true },}
+        { path: 'account', component: () => import('pages/Account.vue'),meta: { requiresAuth: true },},
+        { path: 'create-posting', name: 'create-posting', component: () => import('pages/CreatePosting'), meta: { requiresAuth: true } },
       ]
     },
 

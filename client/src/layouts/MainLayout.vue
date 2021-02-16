@@ -37,7 +37,7 @@
                     Notifications
                   </div>
                   <q-btn outlined label="Messages" icon="chat" size="sm" color="secondary" @click="chat = !chat">
-                    <q-badge color="red" floating>5+</q-badge>
+                    <q-badge color="red" floating>0</q-badge>
                   </q-btn>
                   <div class="row flex-between">
                     <q-btn outlined label="Listings" icon="receipt" size="sm" color="secondary" class="q-mr-sm">
@@ -158,16 +158,13 @@
 
 
   .slide-fade-enter-active {
-    z-index: 10;
-    transition: all .8s ease;
+    transition: all 1s ease;
   }
   .slide-fade-leave-active {
-    z-index: 10;
-    transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    transition: all .2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
   }
   .slide-fade-enter, .slide-fade-leave-to
     /* .slide-fade-leave-active below version 2.1.8 */ {
-    z-index: 10;
-    transform: translateX(50px);
+    transform: translateX(150px) translateY(150px);
   }
 </style>

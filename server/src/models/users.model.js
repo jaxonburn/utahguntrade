@@ -16,7 +16,6 @@ module.exports = function (app) {
     listings: [{type: Schema.Types.ObjectId, ref: 'listings'}],
     watch: [{type: Schema.Types.ObjectId, ref: 'listings'}],
     chats: [{type: Schema.Types.ObjectId, ref: 'chats'}],
-
     googleId: { type: String },
     facebookId: { type: String },
 

@@ -5,12 +5,11 @@ class Chats extends BaseModel {
     super(data, options)
   }
   // Required for $FeathersVuex plugin to work after production transpile.
-  static modelName = 'Users'
+  static modelName = 'Chats'
   // Define default properties here
   static instanceDefaults() {
     return {
-      email: '',
-      password: ''
+      users: [],
     }
   }
 }

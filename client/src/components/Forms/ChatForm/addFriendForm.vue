@@ -58,6 +58,9 @@
       ...mapActions('users', {
         loadUsers: 'find',
       }),
+      ...mapActions('chats', {
+        loadChats: 'find',
+      }),
       filterFn(val, update) {
         console.log('add', val);
         this.loadUsers({query: {"email": {$regex: val}}}).then((res) => {
@@ -74,7 +77,6 @@
         console.log('abortFilter');
       },
       addChat() {
-        console.log(this.searchUser);
         this.$isLoading = true;
         let newChat = new models.api.Chats({users: [this.user._id, this.searchUser]})
         newChat.create().then((res) => {
@@ -86,6 +88,19 @@
             position: 'top-right',
             timeout: 3000,
           })
+          this.loadChats({query: {_id: {$in: this.user.chats}}});
+          this.$emit('close');
+        }).catch((err) => {
+          if(err.name === 'GeneralError'){
+            this.$q.notify({
+              color: 'primary',
+              textColor: 'white',
+              icon: 'cancel',
+              message: `You already have a chat with this person.`,
+              position: 'top-right',
+              timeout: 8000,
+            })
+          }
         })
       }
     }

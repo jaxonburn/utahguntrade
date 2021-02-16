@@ -39,10 +39,11 @@
                   </q-avatar>
                 </q-item-section>
                 <q-item-section>
-                  <q-item-label>{{ chat._fastjoin.users[0].username === user._id ? chat._fastjoin.users[1].username : chat._fastjoin.users[0].username }}</q-item-label>
+                  <q-item-label>{{ chat._fastjoin.users[0]._id === user._id ? chat._fastjoin.users[1].username : chat._fastjoin.users[0].username }}</q-item-label>
                   <q-item-label caption lines="1">{{ $lget(chat, `messages[[${$lget(chat, 'messages.length', 0) - 1}]].message`, '') }}</q-item-label>
                 </q-item-section>
               </q-item>
+              <q-separator/>
             </div>
           </q-list>
         </div>
@@ -69,8 +70,8 @@
             <q-chat-message
               v-for="message in $lget(inChat, 'messages', [])"
               :key="message._id"
-              name="me"
-              :avatar="$lget(notUser, 'avatar', '')"
+              :name="$lget(message, 'sentBy', '') === user._id ? user.username : $lget(notUser, 'username', '')"
+              :avatar="$lget(message, 'sentBy', '') === user._id ? user.avatar : $lget(notUser, 'avatar', '')"
               :text="[message.message]"
               :stamp="date.formatDate($lget(message, 'createdAt', new Date()), 'MMM D, h:mm:a')"
               :sent="$lget(message, 'sentBy', '') === user._id"

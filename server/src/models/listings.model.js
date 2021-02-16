@@ -10,15 +10,20 @@ module.exports = function (app) {
     listedBy: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
     price: {type: Number, required: true},
     city: {type: String, required: false},
-    images: {type: Array, required: false},
+    images: [{
+      key: String,
+      url: String
+    }],
+    address: {type: String, required: false},
     title: {type: String, required: true},
     description: {type: String},
     watchedBy: [{type: Schema.Types.ObjectId, ref: 'users'}],
-    category: {type: String, enum: ['']},
+    category: {type: String},
     condition: {type: String, enum: ['New', 'Like New','Used']},
-    tags: {type: String},
+    tags: [{type: String}],
     sold: {type: Boolean},
-    viewed: [{type: Schema.Types.ObjectId, ref: 'users'}]
+    viewed: [{type: Schema.Types.ObjectId, ref: 'users'}],
+    archived: {type: Boolean}
   }, {
     timestamps: true
   });

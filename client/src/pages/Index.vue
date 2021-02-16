@@ -4,9 +4,14 @@
       <div style="height: 500px;display: flex; justify-content: center; align-items: center;">
         <div
           style="background-image: url('https://images.unsplash.com/photo-1481140717212-b0124736c90a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');background-size: contain;background-repeat: no-repeat;height: 90%; width: 90%;background-position: center;background-attachment: fixed;display: flex; justify-content: center; align-items: center;">
-          <q-card class="flex flex-center mainCard" >
-            Rated Utah's #1 Best Gun Marketplace
-          </q-card>
+          <div>
+            <q-card class="flex flex-center mainCard" >
+              <div>Rated Utah's #1 Best Gun Marketplace</div>
+            </q-card>
+            <div style="text-align: center;">
+              <q-btn @click="$router.push('listings')" class="q-mt-lg" style="text-align: center;" color="primary" label="Browse listings" />
+            </div>
+          </div>
         </div>
       </div>
       <div class="flex flex-center" style="border-bottom: 3px solid var(--q-color-primary); border-top: 3px solid var(--q-color-primary)">

@@ -340,7 +340,7 @@
       },
       showEdit: {
         type: Boolean,
-        default: true
+        default: false
       },
       showDelete: {
         type: Boolean,
@@ -423,7 +423,7 @@
               this.images.push({ name: file.name, path: dataURI, highlight: 1, default: 1, size: file.size, lastModifiedDate: file.lastModifiedDate, type: file.type,file: file})
               this.currentIndexImage = 0
             } else {
-              this.images.push({ name: file.name, path: dataURI, highlight: 0, default: 0, size: file.size, lastModifiedDate: file.lastModifiedDate, type: file.type })
+              this.images.push({ name: file.name, path: dataURI, highlight: 0, default: 0, size: file.size, lastModifiedDate: file.lastModifiedDate, type: file.type, file: file })
             }
             this.$emit('upload-success', dataURI, this.images.length - 1, this.images)
           }

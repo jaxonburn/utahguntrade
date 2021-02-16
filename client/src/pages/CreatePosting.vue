@@ -9,7 +9,6 @@
     <multi-image-upload
       @upload-success="uploadImageSuccess"
       @before-remove="beforeRemove"
-      @edit-image="editImage"
       :data-images="images"
       drop-text="Upload images"
       drag-text="Upload listing images"
@@ -20,22 +19,30 @@
     </multi-image-upload>
     <div class="form">
       <div class="row justify-between q-my-lg">
-        <q-input class="col-4" style="width: 30%" label="Title" />
-        <q-input class="col-3" type="number" label="Price" />
-        <q-select class="col-4" :options="['New', 'Like New', 'Used']" label="Condition"/>
+        <q-input v-model="listingForm.title" class="col-4" style="width: 30%" label="Title" />
+        <q-input v-model="listingForm.price" class="col-3" type="number" label="Price" />
+        <q-select v-model="listingForm.condition" class="col-4" :options="['New', 'Like New', 'Used']" label="Condition"/>
       </div>
       <div class="row justify-between q-my-lg">
-        <q-input class="col-4" label="Address (optional)" type="address" />
-        <q-input class="col-4" label="City (required)" />
-        <q-select class="col-3" :options="['Handgun', 'Ammunition', 'Assault rifle', 'Hunting rifle']" label="Category" />
+        <q-input v-model="listingForm.address" class="col-4" label="Address (optional)" type="address" />
+        <q-input v-model="listingForm.city" class="col-4" label="City (required)" />
+        <q-select v-model="listingForm.category" class="col-3" :options="['Handgun', 'Ammunition', 'Assault rifle', 'Hunting rifle']" label="Category" />
       </div>
-      <q-select class="q-my-lg" label="Tags" />
-      <q-input class="q-my-lg" type="textarea" label="Description"/>
+      <q-select
+        label="Tags"
+        filled
+        v-model="listingForm.tags"
+        use-input
+        use-chips
+        multiple
+        hide-dropdown-icon
+        input-debounce="0"
+        new-value-mode="add-unique"
+      />
+      <q-input v-model="listingForm.description" class="q-my-lg" type="textarea" label="Description"/>
       <q-space></q-space>
       <div style="text-align: right;">
         <q-btn color="secondary" class="q-my-lg" label="Post listing" @click="savePosting"/>
-        <img src="" height="200" width="200"/>
-
       </div>
     </div>
   </q-page>
@@ -44,14 +51,13 @@
 <script>
   import MultiImageUpload from 'components/common/MultiImageUpload';
   import AWS from 'aws-sdk';
+  import { mapActions, mapState } from 'vuex';
 
   AWS.config.update({
     accessKeyId: 'AKIAJA7CT4DCZHE5MNUQ',
     secretAccessKey: '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',
     region: 'us-west-1',
   });
-
-
 
   export default {
     name: "CreatePosting",
@@ -62,72 +68,96 @@
       return {
         images: [],
         formData: {},
+        listingForm: {
+          title: '',
+          price: null,
+          condition: '',
+          address: '',
+          city: '',
+          category: '',
+          tags: [],
+          description: '',
+          images: []
+        }
       }
     },
+    computed: {
+      ...mapState('auth', {
+        user: 'user'
+      })
+    },
     methods: {
-      savePosting(){
+      ...mapActions('listings', {
+        createListing: 'create'
+      }),
+      async savePosting(){
+        if(this.images.length === 0) {
+          this.publish();
+          return;
+        }
         let s3 = new AWS.S3();
         let today = new Date();
         let options = {
           partSize: 10 * 1024 * 1024,
           queueSize: 1
         };
-        this.images.forEach((image) => {
-          let stream = image.path;
-          var uniqueName = {
+        await this.images.forEach((image) => {
+          let uniqueName = {
             path: `profile/${today.getFullYear().toString()}${today.getMonth().toString().padStart(2, "0")}/`,
             file: `guntrade_${image.name.replace(/[^a-zA-Z0-9.]/g, "")}`
           };
-          var params = {
+          let params = {
             Bucket: 'guntrade',
-            Key: uniqueName.path + uniqueName.file,
+            Key: uniqueName.path + uniqueName.file + Date.now(),
             Body: image.file,
             ContentEncoding: 'base64',
             ContentType: image.type,
             ACL: 'public-read'
           };
-          console.log('params', params);
-          // eslint-disable-next-line no-console
           s3.upload(params, options, function (err, data) {
             if (err) {
-              // eslint-disable-next-line no-console
-              console.log('Something went wrong:', err);
+              this.$q.notify({message: 'Something went wrong when uploading images', color: 'negative'})
             } else {
-              // eslint-disable-next-line no-console
-              console.log('Something went right:', data);
-              if (data['details'] === undefined) {
-                data['details'] = {};
-              }
-              data['details']['name'] = image.name;
-              data['details']['size'] = image.size;
-              data['details']['type'] = image.type;
-              data['details']['lastModifiedDate'] = image.lastModifiedDate;
+              this.insertImg(data);
             }
           }.bind(this));
 
         })
       },
+      insertImg(data) {
+        this.listingForm.images.push({
+          key: data.Key,
+          url: data.Location
+        });
+        if(this.listingForm.images.length === this.images.length) {
+          this.publish();
+        }
+      },
+      publish(){
+        this.listingForm.listedBy = this.user;
+        this.createListing({...this.listingForm}).then(res => {
+          this.$q.notify({message: 'Listing published!', color: 'positive'});
+          let keys = Object.keys(this.listingForm);
+          keys.forEach(data => {
+            if(Array.isArray(this.listingForm[data])) {
+              this.listingForm[data] = [];
+            } else {
+              this.listingForm[data] = '';
+            }
+          })
+          this.images = [];
+        }).catch(err => this.$q.notify({message: 'Something went wrong, make sure all fields are correct', color: 'negative'}))
+      },
       uploadImageSuccess(formData, index, fileList) {
-        console.log('data', formData, index, fileList)
           this.images = fileList;
-        // Upload image api
-        // axios.post('http://your-url-upload', formData).then(response => {
-        //   console.log(response)
-        // })
       },
       beforeRemove (index, done, fileList) {
-        console.log('index', index, fileList)
         var r = confirm("remove image")
-        if (r == true) {
-          done()
+        if (r) {
+          done();
           this.images = fileList;
-        } else {
         }
-
       },
-      editImage (formData, index, fileList) {
-        console.log('edit data', formData, index, fileList)
-      }
     }
   }
 </script>

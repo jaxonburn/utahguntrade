@@ -39,7 +39,7 @@
                   </q-avatar>
                 </q-item-section>
                 <q-item-section>
-                  <q-item-label>{{ chat._fastjoin.users[0].username }}</q-item-label>
+                  <q-item-label>{{ chat._fastjoin.users[0].username === user._id ? chat._fastjoin.users[1].username : chat._fastjoin.users[0].username }}</q-item-label>
                   <q-item-label caption lines="1">{{ $lget(chat, `messages[[${$lget(chat, 'messages.length', 0) - 1}]].message`, '') }}</q-item-label>
                 </q-item-section>
               </q-item>

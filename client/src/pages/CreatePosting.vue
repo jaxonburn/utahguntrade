@@ -17,7 +17,6 @@
       primary-text="Weapon images"
       popup-text="We accept most common image formats, including: gif, jpg, png, bmp, jpeg"
     >
-      Hello
     </multi-image-upload>
     <div class="form">
       <div class="row justify-between q-my-lg">
@@ -43,11 +42,8 @@
 </template>
 
 <script>
-
   import MultiImageUpload from 'components/common/MultiImageUpload';
   import AWS from 'aws-sdk';
-
-
 
   AWS.config.update({
     accessKeyId: 'AKIAJA7CT4DCZHE5MNUQ',
@@ -70,7 +66,6 @@
     },
     methods: {
       savePosting(){
-        console.log(this.images);
         let s3 = new AWS.S3();
         let today = new Date();
         let options = {

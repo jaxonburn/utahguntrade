@@ -34,7 +34,9 @@
       <q-input class="q-my-lg" type="textarea" label="Description"/>
       <q-space></q-space>
       <div style="text-align: right;">
-        <q-btn color="secondary" class="q-my-lg" label="Post listing" />
+        <q-btn color="secondary" class="q-my-lg" label="Post listing" @click="savePosting"/>
+        <img src="" height="200" width="200"/>
+
       </div>
     </div>
   </q-page>
@@ -43,6 +45,17 @@
 <script>
 
   import MultiImageUpload from 'components/common/MultiImageUpload';
+  import AWS from 'aws-sdk';
+
+
+
+  AWS.config.update({
+    accessKeyId: 'AKIAJA7CT4DCZHE5MNUQ',
+    secretAccessKey: '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',
+    region: 'us-west-1',
+  });
+
+
 
   export default {
     name: "CreatePosting",
@@ -51,12 +64,57 @@
     },
     data(){
       return {
-        images: []
+        images: [],
+        formData: {},
       }
     },
     methods: {
+      savePosting(){
+        console.log(this.images);
+        let s3 = new AWS.S3();
+        let today = new Date();
+        let options = {
+          partSize: 10 * 1024 * 1024,
+          queueSize: 1
+        };
+        this.images.forEach((image) => {
+          let stream = image.path;
+          var uniqueName = {
+            path: `profile/${today.getFullYear().toString()}${today.getMonth().toString().padStart(2, "0")}/`,
+            file: `guntrade_${image.name.replace(/[^a-zA-Z0-9.]/g, "")}`
+          };
+          var params = {
+            Bucket: 'guntrade',
+            Key: uniqueName.path + uniqueName.file,
+            Body: image.file,
+            ContentEncoding: 'base64',
+            ContentType: image.type,
+            ACL: 'public-read'
+          };
+          console.log('params', params);
+          // eslint-disable-next-line no-console
+          s3.upload(params, options, function (err, data) {
+            if (err) {
+              // eslint-disable-next-line no-console
+              console.log('Something went wrong:', err);
+            } else {
+              // eslint-disable-next-line no-console
+              console.log('Something went right:', data);
+              if (data['details'] === undefined) {
+                data['details'] = {};
+              }
+              data['details']['name'] = image.name;
+              data['details']['size'] = image.size;
+              data['details']['type'] = image.type;
+              data['details']['lastModifiedDate'] = image.lastModifiedDate;
+            }
+          }.bind(this));
+
+        })
+      },
       uploadImageSuccess(formData, index, fileList) {
         console.log('data', formData, index, fileList)
+          this.images = fileList;
         // Upload image api
         // axios.post('http://your-url-upload', formData).then(response => {
         //   console.log(response)
@@ -67,8 +125,10 @@
         var r = confirm("remove image")
         if (r == true) {
           done()
+          this.images = fileList;
         } else {
         }
+
       },
       editImage (formData, index, fileList) {
         console.log('edit data', formData, index, fileList)

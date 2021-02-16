@@ -286,7 +286,7 @@
     props: {
       dragText: {
         type: String,
-        default: 'Kéo hình ảnh(nhiều)'
+        default: 'Drag Images'
       },
       browseText: {
         type: String,
@@ -298,15 +298,15 @@
       },
       markIsPrimaryText: {
         type: String,
-        default: 'Đặt làm mặc định'
+        default: 'Primary Image'
       },
       popupText: {
         type: String,
-        default: 'Hình ảnh này sẽ được hiển thị làm mặc định'
+        default: 'Image'
       },
       dropText: {
         type: String,
-        default: 'Thả tệp của bạn ở đây ...'
+        default: 'Drop Image Here'
       },
       accept: {
         type: String,
@@ -414,18 +414,18 @@
       createImage (file) {
         if (this.disabled) return
         let reader = new FileReader()
-        let formData = new FormData()
-        formData.append('file', file)
+        // let formData = new FormData()
+        // formData.append('file', file)
         reader.onload = (e) => {
           let dataURI = e.target.result
           if (dataURI) {
             if (!this.images.length) {
-              this.images.push({ name: file.name, path: dataURI, highlight: 1, default: 1 })
+              this.images.push({ name: file.name, path: dataURI, highlight: 1, default: 1, size: file.size, lastModifiedDate: file.lastModifiedDate, type: file.type,file: file})
               this.currentIndexImage = 0
             } else {
-              this.images.push({ name: file.name, path: dataURI, highlight: 0, default: 0 })
+              this.images.push({ name: file.name, path: dataURI, highlight: 0, default: 0, size: file.size, lastModifiedDate: file.lastModifiedDate, type: file.type })
             }
-            this.$emit('upload-success', formData, this.images.length - 1, this.images)
+            this.$emit('upload-success', dataURI, this.images.length - 1, this.images)
           }
         }
         reader.readAsDataURL(file)

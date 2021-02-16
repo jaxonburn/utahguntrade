@@ -16,6 +16,7 @@
     "@feathersjs/socketio-client": "^4.5.11",
     "@quasar/extras": "^1.0.0",
     "@vue/composition-api": "^1.0.0-rc.1",
+    "aws-sdk": "^2.844.0",
     "axios": "^0.18.1",
     "core-js": "^3.6.5",
     "feathers-hooks-common": "^5.0.4",

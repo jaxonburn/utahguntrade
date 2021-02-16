@@ -41,6 +41,11 @@
       "facebook": {
         "key": "<facebook oauth key>",
         "secret": "<facebook oauth secret>"
+      },
+      "github": {
+        "redirect": "auth/success",
+        "key": "b35881c9dab741e5583f",
+        "secret": "fe943a9d5c057f2c9d6a6fec2d8a552d94e85bf4"
       }
     }
   },

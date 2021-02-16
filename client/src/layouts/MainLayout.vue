@@ -79,11 +79,17 @@
               </div>
             </q-btn-dropdown>
           </div>
-          <div>
+          <div class="row">
             <div class="q-pr-xl">
               <router-link to="/register" style="text-decoration: none;" v-if="!this.user">
                 <q-btn outlined color="primary" icon="account_circle" label="log in"></q-btn>
               </router-link>
+            </div>
+            <div class="q-pr-xl" v-if="this.user && this.$route.name !== 'create-posting'">
+              <q-btn @click="$router.push({name: 'create-posting'})" label="Create posting" color="primary"/>
+            </div>
+            <div class="q-pr-xl" v-if="this.user && this.$route.name === 'create-posting'">
+              <q-btn @click="$router.push('/')" label="Home page" color="primary" />
             </div>
           </div>
         </div>

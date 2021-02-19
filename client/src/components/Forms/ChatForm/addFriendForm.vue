@@ -62,7 +62,6 @@
         loadChats: 'find',
       }),
       filterFn(val, update) {
-        console.log('add', val);
         this.loadUsers({query: {"email": {$regex: val}}}).then((res) => {
           setTimeout(() => {
             update(() => {

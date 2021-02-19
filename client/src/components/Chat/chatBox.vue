@@ -141,7 +141,11 @@
       }),
       chats() {
         console.log('saying chats',this.findChats({query: {_id: {$in: this.user.chats}}}).data);
-        return this.findChats({query: {_id: {$in: this.user.chats}}}).data;
+        if(this.searchUser === ''){
+          return this.findChats({query: {_id: {$in: this.user.chats}}}).data;
+        }else {
+          return this.findChats({query: {_id: {$in: this.user.chats}}}).data;
+        }
       },
       notUser() {
         if (this.inChat) {

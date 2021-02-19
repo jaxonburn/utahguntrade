@@ -26,7 +26,7 @@
       <div class="row justify-between q-my-lg">
         <q-input v-model="listingForm.address" class="col-4" label="Address (optional)" type="address" />
         <q-input v-model="listingForm.city" class="col-4" label="City (required)" />
-        <q-select v-model="listingForm.category" class="col-3" :options="['Handgun', 'Ammunition', 'Assault rifle', 'Hunting rifle']" label="Category" />
+        <q-select v-model="listingForm.category" class="col-3" :options="categories" label="Category" />
       </div>
       <q-select
         label="Tags"
@@ -66,6 +66,7 @@
     },
     data(){
       return {
+        categories: ['Rifle', 'Assault Rifle', 'Handgun', 'Submachine Gun', 'Hunting', 'Magazines', 'Scopes','Other', '9mm', '223/5.56', '45 ACP', '12-Gauge', '.22', '.308' ],
         images: [],
         formData: {},
         listingForm: {

@@ -12,9 +12,9 @@
         dropdown-icon=" "
       >
         <q-list>
-          <q-item clickable v-close-popup>
+          <q-item clickable v-close-popup v-for="type in category.types">
             <q-item-section>
-              <q-item-label>Pistols</q-item-label>
+              <q-item-label>{{type}}</q-item-label>
             </q-item-section>
           </q-item>
         </q-list>
@@ -24,22 +24,33 @@
 </template>
 
 <script>
+
+  // ['Rifle', 'Assault Rifle', 'Handgun', 'Submachine Gun', 'Hunting', 'Magazines', 'Scopes','Other', '9mm', '223/5.56', '45 ACP', '12-Gauge', '.22', '.308' ]
   export default {
     name: 'CategoryDropDown',
-    data(){
+    data() {
       return {
         categories: [
           {
             label: 'Guns',
             open: false,
+            types: [
+              'Rifles', 'Handguns', 'Submachine Guns', 'Assault Rifles', 'Shotguns',
+            ]
           },
           {
             label: 'Ammo',
             open: false,
+            types: [
+              '9mm', '223/5.56', '45 ACP', '12-Gauge', '.22', '.308', 'Magazines',
+            ],
           },
           {
             label: 'Other',
             open: false,
+            types: [
+              'Hunting', 'Knives', 'Scopes'
+            ]
           }
         ],
       }

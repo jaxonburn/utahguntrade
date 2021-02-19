@@ -75,6 +75,7 @@
 
 <script>
   import {models} from 'feathers-vuex';
+  import {mapActions} from 'vuex';
 
   export default {
     name: 'registerForm',
@@ -100,9 +101,13 @@
       }
     },
     methods: {
+      ...mapActions('auth', {
+        authenticate: 'authenticate'
+      }),
       createUser(){
         this.$q.loading.show();
         let user = new models.api.Users(this.userData);
+        let userData = {email: user.email, password: user.password};
         user.create().then(() => {
           this.$q.loading.hide();
           this.$q.notify({
@@ -113,9 +118,20 @@
             position: 'top-right',
             timeout: 3000,
           })
+          this.authenticate({...userData, strategy: 'local'});
           this.$router.push('/');
         }).catch((err) => {
           this.$q.loading.hide();
+          if(err.name === 'Conflict'){
+            this.$q.notify({
+              color: 'primary',
+              textColor: 'white',
+              icon: 'cancel',
+              message: 'That username/email is already taken.',
+              position: 'top-right',
+              timeout: 10000,
+            })
+          }
           console.error(err);
         })
       }

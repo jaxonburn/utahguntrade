@@ -186,17 +186,19 @@
       }),
       openChat(chat) {
         this.inChat = chat;
+        let unReadChat = this.inChat.clone();
+        let save = false;
+        unReadChat.users.forEach((chatUser) => {
+          if ((chatUser.user === this.user._id) && (chatUser.unreadMessages.length !== 0)) {
+            chatUser.unreadMessages = [];
+            save = true;
+          }
+        });
+        if(save) this.$store.dispatch('chats/update', [unReadChat._id, unReadChat])
         setTimeout(() => {
           let box = document.getElementById(('chatBox'));
           box.scrollTop = box.scrollHeight;
         }, 100)
-        let unReadChat = this.inChat.clone();
-        unReadChat.users.forEach((chatUser) => {
-          if (chatUser.user === this.user._id && chatUser.unreadMessages.length > 0) {
-            chatUser.unreadMessages = [];
-            unReadChat.save();
-          }
-        });
       },
       sendMessage() {
         let chat = this.inChat.clone();

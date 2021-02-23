@@ -85,7 +85,7 @@
 
           </q-scroll-area>
           <div>
-            <q-input outlined class="q-ma-sm bg-grey-3" label="Message" v-model="yourChat" style="overflow: scroll;">
+            <q-input outlined class="q-ma-sm bg-grey-3" label="Message" v-model="yourChat" style="overflow: scroll;" @keyup.enter="sendMessage">
               <template v-slot:append>
                 <q-btn round dense flat icon="send" push class="text-primary" @click="sendMessage"/>
               </template>
@@ -137,8 +137,9 @@
       }
     },
     mounted() {
-      this.loadChats({query: {_id: {$in: this.user.chats}}}).then(() => {
+      this.loadChats({query: {_id: {$in: this.user.chats}}}).then((res) => {
         this.loadingChats = false;
+        console.log('this is the chat', res);
       }).catch(() => {
         this.loadingChats = false;
         this.$q.notify({
@@ -161,6 +162,7 @@
       },
       notUser() {
         if (this.inChat) {
+          console.log('inchat', this.inChat._fastjoin.users);
           return this.inChat._fastjoin.users.filter((userFilt) => {
             return userFilt._id !== this.user._id;
           })[0]

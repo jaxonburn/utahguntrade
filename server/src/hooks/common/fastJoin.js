@@ -15,13 +15,16 @@ const nestedfJoinHook = function (path, service, idKey) {
             }
           });
           let queriedItems = items_res.data;
-          let fastJoin_items = items.map(item => {
-            return lset(Object.assign({}, item),
-              idKey,
-              queriedItems.find(query => String(query._id) === String(item[idKey]) || item[idKey])
-            );
-          });
-          lset(data, `_fastjoin.${path}`, fastJoin_items);
+          console.log('queryed items', queriedItems);
+          // let fastJoin_items = items.map(item => {
+          //   return lset(Object.assign({}, item),
+          //     idKey,
+          //     queriedItems.find(query => {
+          //       return String(query._id) === String(item[idKey]) || item[idKey];
+          //     })
+          //   );
+          // });
+          lset(data, `_fastjoin.${path}`, queriedItems);
         }
       }
     }

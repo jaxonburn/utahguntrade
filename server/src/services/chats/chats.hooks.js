@@ -1,13 +1,14 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const { fJoinHook } = require('../../hooks/common/fastJoin');
+const { nestedfJoinHook } = require('../../hooks/common/fastJoin');
 const { GeneralError } = require('@feathersjs/errors');
+
 
 
 const addChatToUser = (ctx) => {
   let chatId = ctx.result._id;
   let users = ctx.result.users;
   users.forEach((user) => {
-    ctx.app.service('users').patch(user, {$push: { chats: chatId}});
+    ctx.app.service('users').patch(user.user, {$push: { chats: chatId}});
   });
   return ctx;
 };
@@ -38,7 +39,7 @@ module.exports = {
   after: {
     all: [],
     find: [
-      fJoinHook('users', 'users')
+      nestedfJoinHook('users', 'users', 'user' )
     ],
     get: [],
     create: [

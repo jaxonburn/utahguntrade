@@ -20,6 +20,7 @@ export default function({ store }) {
         { path: 'listings', name: 'listings', component: () => import('pages/Listings') },
         { path: 'my-watched', name: 'my-watched', component: () => import('pages/MyWatched'), meta: { requiresAuth: true } },
         { path: 'my-listings', name: 'my-listings', component: () => import('pages/MyListings'), meta: { requiresAuth: true } },
+        { path: 'listing-details/:id', component: () => import('pages/ListingDetails') }
       ]
     },
 

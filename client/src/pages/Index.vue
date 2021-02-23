@@ -38,7 +38,9 @@
       <!--          </swiper>-->
       <!--        </div>-->
       <!--      </div>-->
-      <near-you-map></near-you-map>
+      <div class="map-wrapper">
+        <near-you-map></near-you-map>
+      </div>
     </div>
   </q-page>
 </template>

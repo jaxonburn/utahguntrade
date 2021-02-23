@@ -114,7 +114,7 @@
 
         </div>
       </div>
-      <category-drop-down></category-drop-down>
+      <category-drop-down v-if="!$q.platform.is.mobile"></category-drop-down>
     </q-header>
 
 

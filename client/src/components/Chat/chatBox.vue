@@ -63,7 +63,7 @@
       <transition name="slide-fade">
         <div v-if="inChat" style="display: flex; flex-direction: column; justify-content: center;">
           <div class="bg-grey-3 q-pa-sm row">
-            <q-btn icon="arrow_back" size="md" rounded push @click.stop="inChat = null" class="bg-white"/>
+            <q-btn icon="arrow_back" size="md" push @click.stop="inChat = null" flat/>
             <q-space/>
             <div>
               <span class="text-weight-bold text-xs text-mb-xs">{{

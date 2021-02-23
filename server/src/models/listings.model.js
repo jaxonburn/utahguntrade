@@ -21,7 +21,7 @@ module.exports = function (app) {
     condition: {type: String, enum: ['New', 'Like New','Used', 'Worn']},
     tags: [{type: String}],
     sold: {type: Boolean},
-    viewed: [{type: Schema.Types.ObjectId, ref: 'users'}],
+    viewed: [{type: Schema.Types.ObjectId, ref: 'users', unique: true}],
     archived: {type: Boolean, default: false}
   }, {
     timestamps: true

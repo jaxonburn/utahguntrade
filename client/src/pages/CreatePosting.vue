@@ -20,13 +20,14 @@
       </multi-image-upload>
       <div class="form">
         <div class="row justify-between q-my-lg">
-          <q-input v-model="listingForm.title" class="col-4" style="width: 30%" label="Title" />
-          <q-input v-model="listingForm.price" class="col-3" type="number" label="Price" />
-          <q-select v-model="listingForm.condition" class="col-4" :options="['New', 'Like New', 'Used', 'Worn']" label="Condition"/>
+          <q-input v-model="listingForm.title" class="col-4" style="width: 30%" label="Title"/>
+          <q-input v-model="listingForm.price" class="col-3" type="number" label="Price"/>
+          <q-select v-model="listingForm.condition" class="col-4" :options="['New', 'Like New', 'Used', 'Worn']"
+                    label="Condition"/>
         </div>
         <div class="row justify-between q-my-lg">
-          <LocationForm @input="setAddress" />
-          <q-select v-model="listingForm.category" class="col-3" :options="categories" label="Category" />
+          <LocationForm @input="setAddress"/>
+          <q-select v-model="listingForm.category" class="col-3" :options="categories" label="Category"/>
         </div>
         <q-select
           label="Tags"
@@ -62,8 +63,8 @@
         >
         </multi-image-upload>
         <div class="images-wrapper">
-          <div class="image" :key="idx" v-for="(image, idx) of listing.images">
-            <img :src="image.url" width="50"/>
+          <div class="image q-mt-lg" :key="idx" v-for="(image, idx) of listing.images">
+            <img :src="image.url" width="70"/>
             <q-icon color="primary" class="icon cursor-pointer" @click="deleteImage(idx)" name="delete" size="sm">
               <q-tooltip>Delete image</q-tooltip>
             </q-icon>
@@ -72,14 +73,15 @@
       </div>
       <div class="form">
         <div class="row justify-between q-my-lg">
-          <q-input v-model="listingForm.title" class="col-4" style="width: 30%" label="Title" />
-          <q-input v-model="listingForm.price" class="col-3" type="number" label="Price" />
-          <q-select v-model="listingForm.condition" class="col-4" :options="['New', 'Like New', 'Used', 'Worn']" label="Condition"/>
+          <q-input v-model="listingForm.title" class="col-4" style="width: 30%" label="Title"/>
+          <q-input v-model="listingForm.price" class="col-3" type="number" label="Price"/>
+          <q-select v-model="listingForm.condition" class="col-4" :options="['New', 'Like New', 'Used', 'Worn']"
+                    label="Condition"/>
         </div>
         <div class="row justify-between q-my-lg">
           <LocationForm @input="setAddress" :address="listing.address"/>
-<!--          <LocationForm v-else @input="setAddress"/>-->
-          <q-select v-model="listingForm.category" class="col-3" :options="categories" label="Category" />
+          <!--          <LocationForm v-else @input="setAddress"/>-->
+          <q-select v-model="listingForm.category" class="col-3" :options="categories" label="Category"/>
         </div>
         <q-select
           label="Tags"
@@ -98,8 +100,8 @@
           <q-btn color="secondary" class="q-my-lg" label="Post listing" @click="savePosting"/>
         </div>
         <div v-else style="text-align: right">
-          <q-btn v-close-popup color="primary" class="q-my-lg" label="Cancel" />
-          <q-btn @click="editPosting" color="secondary" class="q-my-lg q-ml-lg" label="Save Changes" />
+          <q-btn v-close-popup color="primary" class="q-my-lg" label="Cancel"/>
+          <q-btn @click="editPosting" v-close-popup color="secondary" class="q-my-lg q-ml-lg" label="Save Changes"/>
         </div>
       </div>
     </div>
@@ -109,7 +111,7 @@
 <script>
   import MultiImageUpload from 'components/common/MultiImageUpload';
   import AWS from 'aws-sdk';
-  import { mapActions, mapState } from 'vuex';
+  import {mapActions, mapState} from 'vuex';
   import LocationForm from "components/Forms/LocationForm/LocationForm";
 
   AWS.config.update({
@@ -124,9 +126,9 @@
       LocationForm,
       MultiImageUpload
     },
-    data(){
+    data() {
       return {
-        categories: ['Rifle', 'Assault Rifle', 'Handgun', 'Submachine Gun', 'Hunting', 'Magazines', 'Scopes','Other', '9mm', '223/5.56', '45 ACP', '12-Gauge', '.22', '.308' ],
+        categories: ['Rifle', 'Assault Rifle', 'Handgun', 'Submachine Gun', 'Hunting', 'Magazines', 'Scopes', 'Other', '9mm', '223/5.56', '45 ACP', '12-Gauge', '.22', '.308'],
         images: [],
         formData: {},
         listingForm: {
@@ -141,8 +143,8 @@
         }
       }
     },
-    mounted(){
-      if(this.listing) {
+    mounted() {
+      if (this.listing) {
         this.listingForm = this.listing;
         this.setAddress(this.listing.address);
       }
@@ -166,29 +168,46 @@
       ...mapActions('listings', {
         createListing: 'create'
       }),
-      ...mapActions('listings',{
+      ...mapActions('listings', {
         patchListing: 'patch'
       }),
-      editPosting(){
+      editPosting() {
         this.savePosting();
       },
-      publishEdited(){
-        if(!this.listing) return;
+      publishEdited() {
+        if (!this.listing) return;
+        this.$q.loading.show();
         this.patchListing([this.listing._id, {
           ...this.listingForm,
         }])
-          .then(res => console.log(res))
-        .catch(err => console.log(err));
+          .then(() => {
+            this.$q.notify({
+              message: 'Successfully updated'
+            });
+            this.$q.loading.hide();
+          })
+          .catch(err => {
+              this.$q.notify({
+                color: 'negative',
+                message: err.message
+              });
+              this.$q.loading.show();
+            }
+          );
       },
-      deleteImage(idx){
+      deleteImage(idx) {
         this.listingForm.images.splice(idx, 1);
       },
-      setAddress(location){
+      setAddress(location) {
         this.listingForm.address = location;
       },
-      async savePosting(){
-        if(this.images.length === 0 && !this.isEditing) {
+      async savePosting() {
+        if (this.images.length === 0 && !this.isEditing) {
           this.publish();
+          return;
+        }
+        if (this.images.length === 0 && this.isEditing) {
+          this.publishEdited();
           return;
         }
         let s3 = new AWS.S3();
@@ -225,32 +244,35 @@
           key: data.Key,
           url: data.Location
         });
-        if((this.listingForm.images.length === this.images.length) && !this.isEditing) {
+        if ((this.listingForm.images.length === this.images.length) && !this.isEditing) {
           this.publish();
         } else {
           this.publishEdited();
         }
       },
-      publish(){
+      publish() {
         this.listingForm.listedBy = this.user;
         this.createListing({...this.listingForm}).then(res => {
           this.$q.notify({message: 'Listing published!', color: 'positive'});
           let keys = Object.keys(this.listingForm);
           keys.forEach(data => {
-            if(Array.isArray(this.listingForm[data])) {
+            if (Array.isArray(this.listingForm[data])) {
               this.listingForm[data] = [];
             } else {
               this.listingForm[data] = '';
             }
           })
           this.images = [];
-        }).catch(err => this.$q.notify({message: 'Something went wrong, make sure all fields are correct', color: 'negative'}))
+        }).catch(err => this.$q.notify({
+          message: 'Something went wrong, make sure all fields are correct',
+          color: 'negative'
+        }))
       },
       uploadImageSuccess(formData, index, fileList) {
-          this.images = fileList;
-          console.log(fileList);
+        this.images = fileList;
+        console.log(fileList);
       },
-      beforeRemove (index, done, fileList) {
+      beforeRemove(index, done, fileList) {
         var r = confirm("remove image")
         if (r) {
           done();
@@ -267,6 +289,7 @@
     display: flex;
 
   }
+
   .image-uploader {
     width: 45vw;
     height: 60vh;
@@ -281,10 +304,12 @@
       cursor: pointer;
       transition: 0.3s all ease-in-out;
     }
+
     .icon:hover {
       color: red;
       font-size: 6.3em;
     }
+
     .footer {
       position: absolute;
       bottom: 40px;
@@ -293,6 +318,7 @@
       width: 100%;
     }
   }
+
   .form {
     padding: 0 20px;
     width: 55%;
@@ -300,7 +326,7 @@
 
   .images-wrapper {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 
     .image {
       display: flex;

@@ -1,6 +1,7 @@
 <template>
-  <div :style="$q.screen.lt.md ? 'height: 400px;display: flex; flex-direction: column;' : 'height: 400px;display: flex; flex-direction: row;'">
-    <div class="col-12">
+<!--  :style="$q.screen.lt.md ? 'height: 400px;display: flex; flex-direction: column;' : 'height: 400px;display: flex; flex-direction: row;'"-->
+  <div class="map-wrapper">
+    <div>
       <q-card class="q-ma-xl" style="height: 300px;">
         <q-card-section class="text-lg text-mb-lg text-weight-medium flex justify-center">
           See Gun Listings Near You
@@ -10,12 +11,12 @@
           <div class="row" style="display: flex; justify-content: center;align-items: center;">
             <q-select rounded outlined label="Radius" v-model="radius" class="q-my-lg"
                       :options="[5, 10, 15, 20, 25, 30, 40,  50, 75, 100]" style="width: 100px;"></q-select>
-            <div class="text-weight-bold text-md text-mb-md">miles</div>
+            <div class="text-weight-bold text-md text-mb-md q-ml-lg">miles</div>
           </div>
         </q-card-section>
       </q-card>
     </div>
-    <div id="tomtom" class="q-mx-sm flex flex-center"></div>
+    <div id="tomtom" class="q-mx-sm flex flex-center tom-tom"></div>
   </div>
 </template>
 
@@ -43,5 +44,12 @@
 </script>
 
 <style scoped>
-
+  .map-wrapper {
+    display: flex;
+    width: 100vw;
+    justify-content: space-around;
+  }
+  .tom-tom {
+    flex: .7;
+  }
 </style>

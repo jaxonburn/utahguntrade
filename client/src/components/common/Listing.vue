@@ -1,7 +1,7 @@
 <template>
   <q-card class="listing">
-    <div class="hover-btn">
-      <q-btn color="secondary" label="View Details" />
+    <div class="hover-btn" v-if="!$q.platform.is.mobile">
+      <q-btn color="secondary" @click="$router.push(`listing-details/${listing._id}`)" label="View Details" />
     </div>
     <div class="top">
       <img
@@ -32,6 +32,13 @@
         <q-tooltip>Archive Listing</q-tooltip>
       </q-icon>
 
+      <div class="eye eye-views" v-if="isMyListing">
+        <span class="q-mr-sm" style="font-size: .8em;">{{listing.viewed.length}}</span>
+        <q-icon name="visibility" size="sm">
+          <q-tooltip>{{ listing.viewed.length }} {{ listing.viewed.length === 1 ? 'view' : 'views' }}</q-tooltip>
+        </q-icon>
+      </div>
+
       <q-icon @click="unarchiveListing" v-if="isMyListing && listing.archived" class="eye eye-archive" name="unarchive" size="xs">
         <q-tooltip>Un-archive Listing</q-tooltip>
       </q-icon>
@@ -40,6 +47,10 @@
       <div class="condition">Condition: <span :style="{color: getConditionColor(listing.condition), fontWeight: '600'}">{{
           listing.condition
         }}</span></div>
+    </div>
+
+    <div v-if="$q.platform.is.mobile" style="text-align: center; padding: 20px 0;">
+      <q-btn color="secondary" @click="$router.push(`listing-details/${listing._id}`)" label="View Details" />
     </div>
 
     <q-dialog v-model="editListingDialog" full-width>
@@ -204,6 +215,10 @@
 
       .eye-archive {
         right: 48px;
+      }
+      .eye-views {
+        right: 85px;
+        top: 19px;
       }
     }
   }

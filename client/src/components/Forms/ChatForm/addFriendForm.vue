@@ -91,6 +91,7 @@
           this.loadChats({query: {_id: {$in: this.user.chats}}});
           this.$emit('close');
         }).catch((err) => {
+          console.log(err);
           if(err.name === 'GeneralError'){
             this.$q.notify({
               color: 'primary',

@@ -1,12 +1,12 @@
 <template>
   <q-page>
     <div style="display: flex; flex-direction: column;">
-      <div style="height: 500px;display: flex; justify-content: center; align-items: center;">
+      <div style="height: 550px;display: flex; justify-content: center; align-items: center;">
         <div
           class="mainBackground">
           <div>
             <q-card class="flex flex-center mainCard">
-              <div>Rated Utah's #1 Best Gun Marketplace</div>
+              <div class="text-xxl text-mb-xxl" style="text-align: center;">Browse Gun Listings all over Utah</div>
             </q-card>
             <div style="text-align: center;">
               <q-btn @click="$router.push('listings')" class="q-mt-lg" style="text-align: center;" color="primary"
@@ -152,8 +152,8 @@
 
   .mainBackground {
     background-image: url('../assets/mainPagePhoto.jpeg');
-    background-size: contain
-  ;background-repeat: no-repeat;
+    background-size: contain;
+    background-repeat: no-repeat;
     height: 90%; width: 90%;
     background-position: center;
     background-attachment: fixed;

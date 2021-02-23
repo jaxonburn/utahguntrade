@@ -18,7 +18,7 @@
     mounted(){
       this.loadListing(this.$route.params.id).then((res) => {
         if(!res.viewed.includes(this.user._id)){
-          this.patchListing([this.res._id, {
+          this.patchListing([this.listing._id, {
             $push: {
               viewed: this.user._id
             }

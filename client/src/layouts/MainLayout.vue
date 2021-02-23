@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header class="bg-white" elevated style="display: flex;flex-direction: column;"
               :style="$route.path === '/register' ? 'height: 90px;' : 'height: 150px'">
-      <div class="row" style="height: 90px;width: 100%;display: grid; grid-template-columns: 1fr 2fr 1fr;">
+      <div class="row" style="height: 90px;width: 100%;display: grid; grid-template-columns: 0.5fr 2fr 0.5fr;">
         <div>
           <img @click="$router.push('/')"
                height="90px"
@@ -25,7 +25,7 @@
         </div>
         <div class="text-primary" style="display: flex; justify-content: flex-end; align-items: center;"
              v-if="$route.path !== '/register'">
-          <div class="q-pa-md" v-if="user">
+          <div class="q-pa-xs" v-if="user">
             <q-btn-dropdown
               class="glossy"
               color="primary"

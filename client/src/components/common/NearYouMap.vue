@@ -15,7 +15,7 @@
         </q-card-section>
       </q-card>
     </div>
-    <div id="tomtom" class="q-mx-sm col-12 flex flex-center"></div>
+    <div id="tomtom" class="q-mx-sm flex flex-center"></div>
   </div>
 </template>
 

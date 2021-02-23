@@ -8,7 +8,10 @@ module.exports = function (app) {
   const { Schema } = mongooseClient;
   const schema = new Schema({
     users: [
-      {type: Schema.Types.ObjectId, ref: 'users'}
+      {
+        user: {type: Schema.Types.ObjectId, ref: 'users'},
+        unreadMessages: {type: Schema.Types.ObjectId, ref: 'chats'}
+      }
     ],
     messages: [new Schema({
       sentBy: {type: Schema.Types.ObjectId, ref: 'users', required: true},

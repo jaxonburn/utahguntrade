@@ -21,10 +21,20 @@ const initialChat = async context => {
 const modifyWatched = async context => {
   let params = lget(context.arguments[1], 'params.name', '');
   let id = lget(context.arguments[1], 'params.id', '');
-  if(params === 'watched') {
-    console.log(id);
-    return;
-    context.app.service('listings').patch(context.result._id, contactBookPeople);
+  if(params === 'watchedAdd') {
+    let patchObj = {
+      $push: {
+        watchedBy: context.result._id
+      }
+    }
+    context.app.service('listings').patch(id, patchObj);
+  } else if(params === 'watchedRemove') {
+    let patchObj = {
+      $pull: {
+        watchedBy: context.result._id
+      }
+    }
+    context.app.service('listings').patch(id, patchObj);
   }
 }
 

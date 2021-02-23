@@ -34,6 +34,16 @@
 
   export default {
     name: 'LocationForm',
+    props: {
+      address: {
+        type: Object,
+        required: false
+      }
+    },
+    mounted(){
+      if(!this.address) return;
+      this.location = this.address;
+    },
     data() {
       return {
         location: '',

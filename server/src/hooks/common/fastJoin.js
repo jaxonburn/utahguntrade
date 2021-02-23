@@ -15,7 +15,6 @@ const nestedfJoinHook = function (path, service, idKey) {
             }
           });
           let queriedItems = items_res.data;
-          console.log('queryed items', queriedItems);
           // let fastJoin_items = items.map(item => {
           //   return lset(Object.assign({}, item),
           //     idKey,

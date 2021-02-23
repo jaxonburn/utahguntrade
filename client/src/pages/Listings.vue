@@ -50,7 +50,10 @@
       limit: 10,
       service: 'listings',
       name: 'listings',
-      qid: 'listings'
+      qid: 'listings',
+      query(){
+        return {archived: false}
+      }
     })],
     methods: {
       handlePagination(event){

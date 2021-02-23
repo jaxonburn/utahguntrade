@@ -1,6 +1,6 @@
 <template>
   <q-card class="edit-listing">
-    <CreatePosting :is-editing="true" />
+    <CreatePosting :listing="listing" :isEditing="true" />
   </q-card>
 </template>
 
@@ -8,7 +8,13 @@
   import CreatePosting from "pages/CreatePosting";
   export default {
     name: "EditListing",
-    components: {CreatePosting}
+    components: {CreatePosting},
+    props: {
+      listing: {
+        type: Object,
+        required: true
+      }
+    }
   }
 </script>
 

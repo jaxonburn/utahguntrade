@@ -12,7 +12,7 @@
       <div class="title">{{ listing.title }}</div>
 
       <div style="position: absolute; top: 3px; left: 15px;">
-        <span class="text-primary">{{ listing.address.address.freeformAddress }} </span>
+        <span class="text-primary">{{ $lget(listing.address, 'address.freeformAddress', 'No address') }} </span>
         <q-icon name="location_on" style="font-size: 1.4em; margin-bottom: 2px;" color="primary"/>
       </div>
 
@@ -28,6 +28,14 @@
         <q-tooltip>Edit</q-tooltip>
       </q-icon>
 
+      <q-icon @click="archiveListing" v-if="isMyListing && listing.archived === false" class="eye eye-archive" name="archive" size="xs">
+        <q-tooltip>Archive Listing</q-tooltip>
+      </q-icon>
+
+      <q-icon @click="unarchiveListing" v-if="isMyListing && listing.archived" class="eye eye-archive" name="unarchive" size="xs">
+        <q-tooltip>Un-archive Listing</q-tooltip>
+      </q-icon>
+
       <div class="price">Listed price: ${{ listing.price }}</div>
       <div class="condition">Condition: <span :style="{color: getConditionColor(listing.condition), fontWeight: '600'}">{{
           listing.condition
@@ -35,7 +43,7 @@
     </div>
 
     <q-dialog v-model="editListingDialog" full-width>
-      <EditListing />
+      <EditListing :listing="listing"/>
     </q-dialog>
 
   </q-card>
@@ -70,11 +78,30 @@
       ...mapActions('users', {
         patchUser: 'patch'
       }),
+      ...mapActions('listings', {
+        patchListing: 'patch'
+      }),
       getConditionColor(condition) {
         if (condition === 'New') return 'green'
         else if (condition === 'Like New') return 'orange';
         else if (condition === 'Used') return '#e6bf25';
         else return 'red';
+      },
+      archiveListing(){
+        this.patchListing([this.listing._id, {
+          archived: true
+        }]).then(res => this.$q.notify({
+          color: 'positive',
+          message: `${res.title} successfully archived, change view to see archived listings`
+        }));
+      },
+      unarchiveListing(){
+        this.patchListing([this.listing._id, {
+          archived: false
+        }]).then(res => this.$q.notify({
+          color: 'positive',
+          message: `${res.title} successfully un-archived, change view to see posted listings`
+        }));
       },
       addToWatchList(){
         if(this.user.watched.includes(this.listing._id)) return;
@@ -84,7 +111,8 @@
               watched: this.listing._id
             },
             params: {
-              name: 'watched'
+              name: 'watchedAdd',
+              id: this.listing._id
             }
           }])
         }
@@ -97,7 +125,8 @@
               watched: this.listing._id
             },
             params: {
-              name: 'watched'
+              name: 'watchedRemove',
+              id: this.listing._id
             }
           }])
         }
@@ -170,9 +199,11 @@
         right: 15px;
         top: 25px;
         cursor: pointer;
+        font-size: 1.7em !important;
       }
 
-      .price {
+      .eye-archive {
+        right: 48px;
       }
     }
   }

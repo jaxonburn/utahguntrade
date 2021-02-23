@@ -25,7 +25,7 @@
           <q-select v-model="listingForm.condition" class="col-4" :options="['New', 'Like New', 'Used', 'Worn']" label="Condition"/>
         </div>
         <div class="row justify-between q-my-lg">
-          <LocationForm @input="setAddress"/>
+          <LocationForm @input="setAddress" />
           <q-select v-model="listingForm.category" class="col-3" :options="categories" label="Category" />
         </div>
         <q-select
@@ -49,17 +49,25 @@
 
 
     <div class="create-listing-wrapper" v-else>
-      <multi-image-upload
-        @upload-success="uploadImageSuccess"
-        @before-remove="beforeRemove"
-        :data-images="images"
-        drop-text="Upload images"
-        drag-text="Upload listing images"
-        browse-text=""
-        primary-text="Weapon images"
-        popup-text="We accept most common image formats, including: gif, jpg, png, bmp, jpeg"
-      >
-      </multi-image-upload>
+      <div style="width: 45%">
+        <multi-image-upload
+          @upload-success="uploadImageSuccess"
+          @before-remove="beforeRemove"
+          :data-images="images"
+          drop-text="Upload images"
+          drag-text="Upload listing images"
+          browse-text=""
+          primary-text="Weapon images"
+          popup-text="We accept most common image formats, including: gif, jpg, png, bmp, jpeg"
+        >
+        </multi-image-upload>
+        <div class="images-wrapper">
+          <div class="image" :key="idx" v-for="(image, idx) of listing.images">
+            <img :src="image.url" width="50"/>
+            <q-icon @click="deleteImage(idx)" name="delete" size="sm" />
+          </div>
+        </div>
+      </div>
       <div class="form">
         <div class="row justify-between q-my-lg">
           <q-input v-model="listingForm.title" class="col-4" style="width: 30%" label="Title" />
@@ -67,7 +75,8 @@
           <q-select v-model="listingForm.condition" class="col-4" :options="['New', 'Like New', 'Used', 'Worn']" label="Condition"/>
         </div>
         <div class="row justify-between q-my-lg">
-          <LocationForm @input="setAddress" v-model="listingForm.address"/>
+          <LocationForm @input="setAddress" :address="listing.address"/>
+<!--          <LocationForm v-else @input="setAddress"/>-->
           <q-select v-model="listingForm.category" class="col-3" :options="categories" label="Category" />
         </div>
         <q-select
@@ -87,8 +96,8 @@
           <q-btn color="secondary" class="q-my-lg" label="Post listing" @click="savePosting"/>
         </div>
         <div v-else style="text-align: right">
-          <q-btn color="primary" class="q-my-lg" label="Cancel" />
-          <q-btn color="secondary" class="q-my-lg q-ml-lg" label="Save Changes" />
+          <q-btn v-close-popup color="primary" class="q-my-lg" label="Cancel" />
+          <q-btn @click="editPosting" color="secondary" class="q-my-lg q-ml-lg" label="Save Changes" />
         </div>
       </div>
     </div>
@@ -123,7 +132,6 @@
           price: null,
           condition: '',
           address: {},
-          city: '',
           category: '',
           tags: [],
           description: '',
@@ -131,10 +139,20 @@
         }
       }
     },
+    mounted(){
+      if(this.listing) {
+        this.listingForm = this.listing;
+        this.setAddress(this.listing.address);
+      }
+    },
     props: {
       isEditing: {
         type: Boolean,
         default: false
+      },
+      listing: {
+        type: Object,
+        required: false
       }
     },
     computed: {
@@ -146,11 +164,29 @@
       ...mapActions('listings', {
         createListing: 'create'
       }),
+      ...mapActions('listings',{
+        patchListing: 'patch'
+      }),
+      editPosting(){
+        this.savePosting();
+      },
+      publishEdited(){
+        if(!this.listing) return;
+        console.log(this.listingForm.images);
+        this.patchListing([this.listing._id, {
+          ...this.listingForm,
+        }])
+          .then(res => console.log(res))
+        .catch(err => console.log(err));
+      },
+      deleteImage(idx){
+        this.listingForm.images.splice(idx, 1);
+      },
       setAddress(location){
         this.listingForm.address = location;
       },
       async savePosting(){
-        if(this.images.length === 0) {
+        if(this.images.length === 0 && !this.isEditing) {
           this.publish();
           return;
         }
@@ -188,8 +224,10 @@
           key: data.Key,
           url: data.Location
         });
-        if(this.listingForm.images.length === this.images.length) {
+        if((this.listingForm.images.length === this.images.length) && !this.isEditing) {
           this.publish();
+        } else {
+          this.publishEdited();
         }
       },
       publish(){

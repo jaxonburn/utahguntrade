@@ -22,7 +22,7 @@ module.exports = function (app) {
     tags: [{type: String}],
     sold: {type: Boolean},
     viewed: [{type: Schema.Types.ObjectId, ref: 'users'}],
-    archived: {type: Boolean}
+    archived: {type: Boolean, default: false}
   }, {
     timestamps: true
   });

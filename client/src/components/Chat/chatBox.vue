@@ -6,9 +6,10 @@
   right: 15px;
   z-index: 5;
   border: 2px solid var(--q-color-secondary);
+
 ">
       <q-inner-loading :showing="loadingChats">
-        <q-spinner-comment size="75px" color="primary" />
+        <q-spinner-comment size="75px" color="primary"/>
       </q-inner-loading>
       <transition name="slide-fade">
         <div v-if="!inChat">
@@ -31,8 +32,8 @@
             <q-icon name="cancel" size="sm" class="q-ma-sm cursor-pointer" color="secondary"
                     @click="$emit('close')"></q-icon>
           </div>
-          <q-list bordered style="overflow-y: scroll;">
-            <div v-for="(chat,index) in chats" :key="index">
+          <div style="overflow-y: scroll;">
+            <div v-for="(chat,index) in chats" :key="index" class="test">
               <q-item class="q-my-sm" clickable v-ripple @click.stop="openChat(chat)">
                 <q-item-section avatar
                                 v-for="users in chat._fastjoin.users.filter((userFilt) => {return userFilt._id !== user._id;})"
@@ -42,13 +43,18 @@
                   </q-avatar>
                 </q-item-section>
                 <q-item-section>
-                  <q-item-label>{{ chat._fastjoin.users[0]._id === user._id ? chat._fastjoin.users[1].username : chat._fastjoin.users[0].username }}</q-item-label>
-                  <q-item-label caption lines="1">{{ $lget(chat, `messages[[${$lget(chat, 'messages.length', 0) - 1}]].message`, '') }}</q-item-label>
+                  <q-item-label>{{
+                      chat._fastjoin.users[0]._id === user._id ? chat._fastjoin.users[1].username : chat._fastjoin.users[0].username
+                    }}
+                  </q-item-label>
+                  <q-item-label caption lines="1">
+                    {{ $lget(chat, `messages[[${$lget(chat, 'messages.length', 0) - 1}]].message`, '') }}
+                  </q-item-label>
                 </q-item-section>
               </q-item>
               <q-separator/>
             </div>
-          </q-list>
+          </div>
         </div>
       </transition>
       <transition name="slide-fade">
@@ -65,10 +71,11 @@
               </q-avatar>
             </div>
           </div>
-          <q-scroll-area
+          <div
             :thumb-style="thumbStyle"
             :bar-style="barStyle"
-            style="height: 350px; max-width: 380px;"
+            style="height: 350px; max-width: 380px; overflow: scroll;"
+            id="chatBox"
           >
             <q-chat-message
               v-for="message in $lget(inChat, 'messages', [])"
@@ -83,9 +90,10 @@
               class="q-ma-sm"
             />
 
-          </q-scroll-area>
+          </div>
           <div>
-            <q-input outlined class="q-ma-sm bg-grey-3" label="Message" v-model="yourChat" style="overflow: scroll;" @keyup.enter="sendMessage">
+            <q-input outlined class="q-ma-sm bg-grey-3" label="Message" v-model="yourChat" style="overflow: scroll;"
+                     @keyup.enter="sendMessage">
               <template v-slot:append>
                 <q-btn round dense flat icon="send" push class="text-primary" @click="sendMessage"/>
               </template>
@@ -139,7 +147,6 @@
     mounted() {
       this.loadChats({query: {_id: {$in: this.user.chats}}}).then((res) => {
         this.loadingChats = false;
-        console.log('this is the chat', res);
       }).catch(() => {
         this.loadingChats = false;
         this.$q.notify({
@@ -153,10 +160,10 @@
         findChats: 'find'
       }),
       chats() {
-        console.log('saying chats',this.findChats({query: {_id: {$in: this.user.chats}}}).data);
-        if(this.searchUser === ''){
+        console.log('saying chats', this.findChats({query: {_id: {$in: this.user.chats}}}).data);
+        if (this.searchUser === '') {
           return this.findChats({query: {_id: {$in: this.user.chats}}}).data;
-        }else {
+        } else {
           return this.findChats({query: {_id: {$in: this.user.chats}}}).data;
         }
       },
@@ -177,9 +184,13 @@
       }),
       openChat(chat) {
         this.inChat = chat;
-        console.log(chat);
+        setTimeout(() => {
+          let box = document.getElementById(('chatBox'));
+          box.scrollTop = box.scrollHeight;
+        }, 100)
       },
       sendMessage() {
+
         let chat = this.inChat.clone();
         let message = {
           sentBy: this.user._id,
@@ -187,7 +198,10 @@
         };
         chat.messages.push(message);
         this.yourChat = '';
-        chat.save().catch(() => {
+        chat.save().then(() => {
+          let box = document.getElementById(('chatBox'));
+          box.scrollTop = box.scrollHeight;
+        }).catch(() => {
           this.$q.notify({
             type: 'error',
             message: 'Something went wrong, please refresh and try again'

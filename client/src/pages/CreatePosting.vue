@@ -64,7 +64,9 @@
         <div class="images-wrapper">
           <div class="image" :key="idx" v-for="(image, idx) of listing.images">
             <img :src="image.url" width="50"/>
-            <q-icon @click="deleteImage(idx)" name="delete" size="sm" />
+            <q-icon color="primary" class="icon cursor-pointer" @click="deleteImage(idx)" name="delete" size="sm">
+              <q-tooltip>Delete image</q-tooltip>
+            </q-icon>
           </div>
         </div>
       </div>
@@ -172,7 +174,6 @@
       },
       publishEdited(){
         if(!this.listing) return;
-        console.log(this.listingForm.images);
         this.patchListing([this.listing._id, {
           ...this.listingForm,
         }])
@@ -295,6 +296,20 @@
   .form {
     padding: 0 20px;
     width: 55%;
+  }
 
+  .images-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+
+    .image {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .icon {
+        margin-left: 5px;
+      }
+    }
   }
 </style>

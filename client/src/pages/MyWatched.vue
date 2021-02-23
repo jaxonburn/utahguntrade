@@ -43,7 +43,7 @@
       query(){
         return {
           query: {
-            _id: {$in: this.user.watch},
+            _id: {$in: this.user.watched},
             $limit: 200
           }
         }

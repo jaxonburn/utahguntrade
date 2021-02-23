@@ -8,7 +8,7 @@
       </div>
     </q-card-section>
     <q-card-section>
-      <q-form style="display: flex;flex-direction: column; justify-content: space-evenly;align-content: space-evenly;" @submit="createUser">
+      <q-form style="display: flex;flex-direction: column; justify-content: space-evenly;align-content: space-evenly;" @submit.stop="createUser">
 
         <div class="q-my-md">
           <q-input rounded outlined v-model="userData.username" label="Username">
@@ -108,6 +108,7 @@
         this.$q.loading.show();
         let user = new models.api.Users(this.userData);
         let userData = {email: user.email, password: user.password};
+        console.log('this is the user', user);
         user.create().then(() => {
           this.$q.loading.hide();
           this.$q.notify({
@@ -122,6 +123,7 @@
           this.$router.push('/');
         }).catch((err) => {
           this.$q.loading.hide();
+          console.log(err);
           if(err.name === 'Conflict'){
             this.$q.notify({
               color: 'primary',

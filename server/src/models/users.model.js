@@ -8,13 +8,13 @@ module.exports = function (app) {
   const { Schema } = mongooseClient;
   const schema = new mongooseClient.Schema({
     username: { type: String, required: true, unique: true},
-    email: { type: String, unique: true, lowercase: true },
+    email: { type: String, unique: true, lowercase: true, required: true },
     phone: {type: String, required: false},
     password: { type: String },
     avatar: {type: String, default: 'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png'},
     premium: {type: Boolean, default: false},
     listings: [{type: Schema.Types.ObjectId, ref: 'listings'}],
-    watch: [{type: Schema.Types.ObjectId, ref: 'listings', unique: true}],
+    watched: [{type: Schema.Types.ObjectId, ref: 'listings'}],
     chats: [{type: Schema.Types.ObjectId, ref: 'chats'}],
     googleId: { type: String },
     facebookId: { type: String },

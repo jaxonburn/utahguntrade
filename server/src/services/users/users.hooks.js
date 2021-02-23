@@ -7,9 +7,9 @@ const {
 const initialChat = async context => {
   const userId = context.result._id;
   await context.app.service('chats').create({
-    users: [userId, '602085c010e8256c59c339a2'],
+    users: [{user: userId, unreadMessages: []}, '603472e5e0c4550e71c2437e'],
     messages: [{
-      sentBy: '602085c010e8256c59c339a2',
+      sentBy: '603472e5e0c4550e71c2437e',
       message: `Hi ${context.result.username}, welcome to Utah Gun Trade! Here you can send messages to others and negotiate on trades,offers, or other firearm related business. If you have any issues or questions don't hesitate to contact guntradesupport@gmail.com.`
     }]
   }).then((res) => {
@@ -25,7 +25,9 @@ module.exports = {
     all: [],
     find: [authenticate('jwt')],
     get: [authenticate('jwt')],
-    create: [hashPassword('password')],
+    create: [
+      hashPassword('password'),
+    ],
     update: [hashPassword('password'), authenticate('jwt')],
     patch: [hashPassword('password'), authenticate('jwt')],
     remove: [authenticate('jwt')]

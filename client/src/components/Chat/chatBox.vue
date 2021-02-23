@@ -47,7 +47,7 @@
                 </q-item-section>
                 <q-item-section>
                   <q-item-label>{{
-                      chat._fastjoin.users[0]._id === user._id ? chat._fastjoin.users[1].username : chat._fastjoin.users[0].username
+                      chat._fastjoin.users[0]._id === user._id ? $lget(chat, '_fastjoin.users[1].username', 'Username Not Found') : chat._fastjoin.users[0].username
                     }}
                   </q-item-label>
                   <q-item-label caption lines="1">
@@ -164,6 +164,7 @@
       }),
       chats() {
         if(this.searchUser === ''){
+          console.log(this.findChats({query: {_id: {$in: this.user.chats}}}).data);
           return this.findChats({query: {_id: {$in: this.user.chats}}}).data;
         }else {
           return this.findChats({query: {_id: {$in: this.user.chats}}}).data;

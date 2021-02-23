@@ -1,5 +1,5 @@
 const {authenticate} = require('@feathersjs/authentication').hooks;
-const lget = require("lodash.get");
+const lget = require('lodash.get');
 
 const {
   hashPassword, protect
@@ -8,7 +8,7 @@ const {
 const initialChat = async context => {
   const userId = context.result._id;
   await context.app.service('chats').create({
-    users: [{user: userId, unreadMessages: []}],
+    users: [{user: userId, unreadMessages: []}, {user: '603472e5e0c4550e71c2437e', unreadMessages: []}],
     messages: [{
       sentBy: '603472e5e0c4550e71c2437e',
       message: `Hi ${context.result.username}, welcome to Utah Gun Trade! Here you can send messages to others and negotiate on trades,offers, or other firearm related business. If you have any issues or questions don't hesitate to contact guntradesupport@gmail.com.`

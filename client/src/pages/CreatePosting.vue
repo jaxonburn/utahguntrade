@@ -263,10 +263,12 @@
             }
           })
           this.images = [];
-        }).catch(err => this.$q.notify({
-          message: 'Something went wrong, make sure all fields are correct',
-          color: 'negative'
-        }))
+        }).catch(err => {
+          this.$q.notify({
+            message: 'Something went wrong, make sure all fields are correct',
+            color: 'negative'
+          })
+        })
       },
       uploadImageSuccess(formData, index, fileList) {
         this.images = fileList;

@@ -123,8 +123,8 @@
     <q-page-container>
       <router-view/>
       <transition name="lide-fade" appear>
-        <q-avatar class="chatIcon cursor-pointer" @click="chat = !chat">
-          <img alt="Chat Box" v-if="!chat" src="../assets/isometricchat.png" class="chatImage q-pa-sm">
+        <q-avatar v-if="!chat && $lget(user, '_id', false)" class="chatIcon cursor-pointer" @click="chat = !chat">
+          <img alt="Chat Box" src="../assets/isometricchat.png" class="chatImage q-pa-sm">
         </q-avatar>
       </transition>
         <chat-box v-if="chat" @close="chat = !chat" :user="user"></chat-box>

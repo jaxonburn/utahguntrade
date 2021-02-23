@@ -46,7 +46,9 @@ module.exports = function (/* ctx */) {
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       vueRouterMode: 'history', // available values: 'hash', 'history'
-
+      env: {
+        TOMTOM_API_KEY: JSON.stringify(process.env.TOMTOM_API_KEY)
+      },
       // transpile: false,
         transpileDependencies: ['feathers-vuex'],
       // Add dependencies for transpiling with Babel (Array of string/regex)

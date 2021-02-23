@@ -32,6 +32,7 @@
     "swiper": "^5.4.5",
     "vue-awesome-swiper": "^4.1.1",
     "vue-image-lightbox-carousel": "^1.0.7",
+    "vue-lottie-player": "^0.1.9",
     "vue-popperjs": "^2.3.0",
     "vue-upload-multiple-image": "^1.1.6"
   },

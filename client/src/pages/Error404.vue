@@ -1,18 +1,20 @@
 <template>
-  <div class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center">
+  <div class="fullscreen bg-black text-white text-center q-pa-md"
+       style="display: flex; flex-direction: column;justify-content: center; align-items: center;">
     <div>
-      <div style="font-size: 30vh">
-        404
-      </div>
-
-      <div class="text-h2" style="opacity:.4">
-        Oops. Nothing here...
-      </div>
-
+      <vLottiePlayer
+        name="workoutMonkeyAnim"
+        loop
+        :animationData="require('../assets/404Error.json')"
+        width="700px"
+        height="500px"
+      />
+    </div>
+    <div>
+      <h4>Not sure this page exists yet, head back?</h4>
       <q-btn
-        class="q-mt-xl"
         color="white"
-        text-color="blue"
+        text-color="primary"
         unelevated
         to="/"
         label="Go Home"
@@ -23,7 +25,13 @@
 </template>
 
 <script>
-export default {
-  name: 'Error404'
-}
+
+  import VueLottiePlayer from "vue-lottie-player";
+
+  export default {
+    name: 'Error404',
+    components: {
+      vLottiePlayer: VueLottiePlayer
+    }
+  }
 </script>

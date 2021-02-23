@@ -13,7 +13,6 @@ module.exports = function (app) {
         unreadMessages: [{type: Schema.Types.ObjectId, ref: 'messages'}]
       }
     ],
-    unreadMessages: [{type: Schema.Types.ObjectId}],
     messages: [new Schema({
       sentBy: {type: Schema.Types.ObjectId, ref: 'users', required: true},
       message: {type: String, required: true},

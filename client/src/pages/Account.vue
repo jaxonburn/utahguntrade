@@ -52,7 +52,6 @@
       <div class="column">
         <q-btn class="q-ma-md" outlined icon="receipt" label="Watched Listings" color="secondary"></q-btn>
         <q-btn class="q-ma-md" outlined icon="chat" label="Messages" color="secondary">
-          <q-badge color="red" floating>0</q-badge>
         </q-btn>
         <q-space/>
         <q-btn v-if="!editing" rounded outline label="Edit Profile" icon="create" color="primary" class="q-ma-sm"

@@ -8,7 +8,7 @@
   border: 2px solid var(--q-color-secondary);
 ">
       <q-inner-loading :showing="loadingChats">
-        <q-spinner-comment size="75px" color="primary" />
+        <q-spinner-comment size="75px" color="primary"/>
       </q-inner-loading>
       <transition name="slide-fade">
         <div v-if="!inChat">
@@ -34,16 +34,25 @@
           <q-list bordered style="overflow-y: scroll;">
             <div v-for="(chat,index) in chats" :key="index">
               <q-item class="q-my-sm" clickable v-ripple @click.stop="openChat(chat)">
+                <q-badge v-if="chat.users.filter((chatUser) => chatUser.user === user._id)[0].unreadMessages.length > 0"
+                         color="primary" floating>
+                  {{ chat.users.filter((chatUser) => chatUser.user === user._id)[0].unreadMessages.length }}
+                </q-badge>
                 <q-item-section avatar
                                 v-for="users in chat._fastjoin.users.filter((userFilt) => {return userFilt._id !== user._id;})"
                                 :key="users._id" class="q-mr-none q-pa-none">
-                  <q-avatar color="primary" text-color="white">
+                  <q-avatar color="white" text-color="white">
                     <img :src="users.avatar" alt="Avatar"/>
                   </q-avatar>
                 </q-item-section>
                 <q-item-section>
-                  <q-item-label>{{ chat._fastjoin.users[0]._id === user._id ? chat._fastjoin.users[1].username : chat._fastjoin.users[0].username }}</q-item-label>
-                  <q-item-label caption lines="1">{{ $lget(chat, `messages[[${$lget(chat, 'messages.length', 0) - 1}]].message`, '') }}</q-item-label>
+                  <q-item-label>{{
+                      chat._fastjoin.users[0]._id === user._id ? chat._fastjoin.users[1].username : chat._fastjoin.users[0].username
+                    }}
+                  </q-item-label>
+                  <q-item-label caption lines="1">
+                    {{ $lget(chat, `messages[[${$lget(chat, 'messages.length', 0) - 1}]].message`, '') }}
+                  </q-item-label>
                 </q-item-section>
               </q-item>
               <q-separator/>
@@ -85,7 +94,8 @@
 
           </q-scroll-area>
           <div>
-            <q-input outlined class="q-ma-sm bg-grey-3" label="Message" v-model="yourChat" style="overflow: scroll;" @keyup.enter="sendMessage">
+            <q-input outlined class="q-ma-sm bg-grey-3" label="Message" v-model="yourChat" style="overflow: scroll;"
+                     @keyup.enter="sendMessage">
               <template v-slot:append>
                 <q-btn round dense flat icon="send" push class="text-primary" @click="sendMessage"/>
               </template>
@@ -153,10 +163,10 @@
         findChats: 'find'
       }),
       chats() {
-        console.log('saying chats',this.findChats({query: {_id: {$in: this.user.chats}}}).data);
-        if(this.searchUser === ''){
+        console.log('saying chats', this.findChats({query: {_id: {$in: this.user.chats}}}).data);
+        if (this.searchUser === '') {
           return this.findChats({query: {_id: {$in: this.user.chats}}}).data;
-        }else {
+        } else {
           return this.findChats({query: {_id: {$in: this.user.chats}}}).data;
         }
       },
@@ -177,7 +187,13 @@
       }),
       openChat(chat) {
         this.inChat = chat;
-        console.log(chat);
+        let unReadChat = this.inChat.clone();
+        unReadChat.users.forEach((chatUser) => {
+          if (chatUser.user === this.user._id && chatUser.unreadMessages.length > 0) {
+            chatUser.unreadMessages = [];
+            unReadChat.save();
+          }
+        });
       },
       sendMessage() {
         let chat = this.inChat.clone();
@@ -187,7 +203,8 @@
         };
         chat.messages.push(message);
         this.yourChat = '';
-        chat.save().catch(() => {
+        chat.save().catch((err) => {
+          console.log(err)
           this.$q.notify({
             type: 'error',
             message: 'Something went wrong, please refresh and try again'

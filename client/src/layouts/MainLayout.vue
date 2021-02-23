@@ -37,7 +37,6 @@
                     Notifications
                   </div>
                   <q-btn outlined label="Messages" icon="chat" size="sm" color="secondary" @click="chat = !chat">
-                    <q-badge color="red" floating>0</q-badge>
                   </q-btn>
                   <div class="row flex-between">
                     <q-btn outlined label="My listings" @click="$router.push({name: 'my-listings'})" icon="receipt" size="sm" color="secondary" class="q-mr-sm">

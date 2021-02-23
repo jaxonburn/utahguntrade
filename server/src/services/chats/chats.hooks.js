@@ -2,7 +2,16 @@ const { authenticate } = require('@feathersjs/authentication').hooks;
 const { nestedfJoinHook } = require('../../hooks/common/fastJoin');
 const { GeneralError } = require('@feathersjs/errors');
 
-
+const addMessageToUnread = (ctx) => {
+  let sentBy = ctx.data.messages[ctx.data.messages.length - 1];
+  let filterUsers = ctx.data.users.filter((user) => {
+    return String(user.user) !== String(sentBy.sentBy);
+  });
+  filterUsers.forEach(user => {
+    user.unreadMessages.push(sentBy.sentBy);
+  });
+  return ctx;
+};
 
 const addChatToUser = (ctx) => {
   let chatId = ctx.result._id;
@@ -32,7 +41,9 @@ module.exports = {
       checkIfChatExists
     ],
     update: [],
-    patch: [],
+    patch: [
+      addMessageToUnread
+    ],
     remove: []
   },
 

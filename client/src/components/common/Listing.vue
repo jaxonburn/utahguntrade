@@ -12,11 +12,11 @@
       <div class="title">{{ listing.title }}</div>
 
       <div style="position: absolute; top: 3px; left: 15px;">
-        <span class="text-primary">{{ listing.address }} </span>
+        <span class="text-primary">{{ listing.address.address.freeformAddress }} </span>
         <q-icon name="location_on" style="font-size: 1.4em; margin-bottom: 2px;" color="primary"/>
       </div>
 
-      <q-icon @click="removeFromWatchList" v-if="user.watch.includes(listing._id) && !isMyListing" class="eye" name="remove_done" size="xs">
+      <q-icon @click="removeFromWatchList" v-if="user.watched.includes(listing._id) && !isMyListing" class="eye" name="remove_done" size="xs">
         <q-tooltip size="md">Remove from watch list</q-tooltip>
       </q-icon>
 
@@ -77,24 +77,27 @@
         else return 'red';
       },
       addToWatchList(){
-        if(this.user.watch.includes(this.listing._id)) return;
+        if(this.user.watched.includes(this.listing._id)) return;
         else {
           this.patchUser([this.user._id, {
             $push: {
-              watch: this.listing._id
+              watched: this.listing._id
             },
             params: {
-              name: 'baxus'
+              name: 'watched'
             }
           }])
         }
       },
       removeFromWatchList(){
-        if(!this.user.watch.includes(this.listing._id)) return;
+        if(!this.user.watched.includes(this.listing._id)) return;
         else {
           this.patchUser([this.user._id, {
             $pull: {
-              watch: this.listing._id
+              watched: this.listing._id
+            },
+            params: {
+              name: 'watched'
             }
           }])
         }

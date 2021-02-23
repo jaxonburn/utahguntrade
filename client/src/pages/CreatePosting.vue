@@ -25,8 +25,7 @@
           <q-select v-model="listingForm.condition" class="col-4" :options="['New', 'Like New', 'Used', 'Worn']" label="Condition"/>
         </div>
         <div class="row justify-between q-my-lg">
-          <q-input v-model="listingForm.address" class="col-4" label="Address (optional)" type="address" />
-          <q-input v-model="listingForm.city" class="col-4" label="City (required)" />
+          <LocationForm @input="setAddress"/>
           <q-select v-model="listingForm.category" class="col-3" :options="categories" label="Category" />
         </div>
         <q-select
@@ -68,8 +67,7 @@
           <q-select v-model="listingForm.condition" class="col-4" :options="['New', 'Like New', 'Used', 'Worn']" label="Condition"/>
         </div>
         <div class="row justify-between q-my-lg">
-          <q-input v-model="listingForm.address" class="col-4" label="Address (optional)" type="address" />
-          <q-input v-model="listingForm.city" class="col-4" label="City (required)" />
+          <LocationForm @input="setAddress" v-model="listingForm.address"/>
           <q-select v-model="listingForm.category" class="col-3" :options="categories" label="Category" />
         </div>
         <q-select
@@ -101,6 +99,7 @@
   import MultiImageUpload from 'components/common/MultiImageUpload';
   import AWS from 'aws-sdk';
   import { mapActions, mapState } from 'vuex';
+  import LocationForm from "components/Forms/LocationForm/LocationForm";
 
   AWS.config.update({
     accessKeyId: 'AKIAJA7CT4DCZHE5MNUQ',
@@ -111,6 +110,7 @@
   export default {
     name: "CreatePosting",
     components: {
+      LocationForm,
       MultiImageUpload
     },
     data(){
@@ -122,7 +122,7 @@
           title: '',
           price: null,
           condition: '',
-          address: '',
+          address: {},
           city: '',
           category: '',
           tags: [],
@@ -146,6 +146,9 @@
       ...mapActions('listings', {
         createListing: 'create'
       }),
+      setAddress(location){
+        this.listingForm.address = location;
+      },
       async savePosting(){
         if(this.images.length === 0) {
           this.publish();

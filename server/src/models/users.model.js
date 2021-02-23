@@ -11,7 +11,7 @@ module.exports = function (app) {
     email: { type: String, unique: true, lowercase: true, required: true },
     phone: {type: String, required: false},
     password: { type: String },
-    avatar: {type: String, default: 'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png'},
+    avatar: {type: String, default: 'https://guntrade.s3-us-west-1.amazonaws.com/STATICSAVE/defaultProfile.png'},
     premium: {type: Boolean, default: false},
     listings: [{type: Schema.Types.ObjectId, ref: 'listings'}],
     watched: [{type: Schema.Types.ObjectId, ref: 'listings'}],

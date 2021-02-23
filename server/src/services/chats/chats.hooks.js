@@ -1,5 +1,5 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const { fJoinHook } = require('../../hooks/common/fastJoin');
+const { nestedfJoinHook } = require('../../hooks/common/fastJoin');
 const { GeneralError } = require('@feathersjs/errors');
 
 
@@ -38,7 +38,7 @@ module.exports = {
   after: {
     all: [],
     find: [
-      fJoinHook('users', 'users')
+      nestedfJoinHook('users', 'users', 'user')
     ],
     get: [],
     create: [

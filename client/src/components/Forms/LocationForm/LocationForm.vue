@@ -41,6 +41,14 @@
         geoLoading: true,
       }
     },
+    watch: {
+      location: {
+        deep: true,
+        handler(newVal){
+          this.$emit('input', newVal);
+        }
+      }
+    },
     methods: {
       ...mapActions('tomtom', {
         loadAddresses: 'find',

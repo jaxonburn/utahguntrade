@@ -6,7 +6,6 @@
   right: 15px;
   z-index: 5;
   border: 2px solid var(--q-color-secondary);
-
 ">
       <q-inner-loading :showing="loadingChats">
         <q-spinner-comment size="75px" color="primary"/>
@@ -35,10 +34,14 @@
           <div style="overflow-y: scroll;">
             <div v-for="(chat,index) in chats" :key="index" class="test">
               <q-item class="q-my-sm" clickable v-ripple @click.stop="openChat(chat)">
+                <q-badge v-if="chat.users.filter((chatUser) => chatUser.user === user._id)[0].unreadMessages.length > 0"
+                         color="primary" floating>
+                  {{ chat.users.filter((chatUser) => chatUser.user === user._id)[0].unreadMessages.length }}
+                </q-badge>
                 <q-item-section avatar
                                 v-for="users in chat._fastjoin.users.filter((userFilt) => {return userFilt._id !== user._id;})"
                                 :key="users._id" class="q-mr-none q-pa-none">
-                  <q-avatar color="primary" text-color="white">
+                  <q-avatar color="white" text-color="white">
                     <img :src="users.avatar" alt="Avatar"/>
                   </q-avatar>
                 </q-item-section>
@@ -160,10 +163,9 @@
         findChats: 'find'
       }),
       chats() {
-        console.log('saying chats', this.findChats({query: {_id: {$in: this.user.chats}}}).data);
-        if (this.searchUser === '') {
+        if(this.searchUser === ''){
           return this.findChats({query: {_id: {$in: this.user.chats}}}).data;
-        } else {
+        }else {
           return this.findChats({query: {_id: {$in: this.user.chats}}}).data;
         }
       },
@@ -188,9 +190,15 @@
           let box = document.getElementById(('chatBox'));
           box.scrollTop = box.scrollHeight;
         }, 100)
+        let unReadChat = this.inChat.clone();
+        unReadChat.users.forEach((chatUser) => {
+          if (chatUser.user === this.user._id && chatUser.unreadMessages.length > 0) {
+            chatUser.unreadMessages = [];
+            unReadChat.save();
+          }
+        });
       },
       sendMessage() {
-
         let chat = this.inChat.clone();
         let message = {
           sentBy: this.user._id,

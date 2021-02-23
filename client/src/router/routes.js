@@ -17,7 +17,9 @@ export default function({ store }) {
         { path: 'register', component: () => import('pages/Register.vue'),meta: { requiresAuth: false },},
         { path: 'account', component: () => import('pages/Account.vue'),meta: { requiresAuth: true },},
         { path: 'create-posting', name: 'create-posting', component: () => import('pages/CreatePosting'), meta: { requiresAuth: true } },
-        { path: 'listings', name: 'listings', component: () => import('pages/Listings') }
+        { path: 'listings', name: 'listings', component: () => import('pages/Listings') },
+        { path: 'my-watched', name: 'my-watched', component: () => import('pages/MyWatched'), meta: { requiresAuth: true } },
+        { path: 'my-listings', name: 'my-listings', component: () => import('pages/MyListings'), meta: { requiresAuth: true } },
       ]
     },
 

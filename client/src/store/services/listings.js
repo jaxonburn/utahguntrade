@@ -9,7 +9,20 @@ class Listings extends BaseModel {
   // Define default properties here
   static instanceDefaults() {
     return {
-
+      listedBy: undefined,
+      price: 0,
+      city: '',
+      images: [],
+      address: '',
+      title: '',
+      description: '',
+      watchedBy: [],
+      category: '',
+      condition: '',
+      tags: [],
+      sold: false,
+      viewed: [],
+      archived: false
     }
   }
 }

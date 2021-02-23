@@ -220,6 +220,7 @@
           >
         </div>
       </div>
+
       <div
         class="image-list-item position-relative cursor-pointer display-flex justify-content-center align-items-center"
         v-if="(images.length < maxImage) && showAdd"
@@ -284,6 +285,10 @@
     name: 'VueUploadMultipleImage',
 
     props: {
+      isEditing: {
+        type: Boolean,
+        default: false
+      },
       dragText: {
         type: String,
         default: 'Drag Images'

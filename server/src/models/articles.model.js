@@ -1,22 +1,22 @@
-// chats-model.js - A mongoose model
+// articles-model.js - A mongoose model
 //
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
 module.exports = function (app) {
-  const modelName = 'chats';
+  const modelName = 'articles';
   const mongooseClient = app.get('mongooseClient');
   const { Schema } = mongooseClient;
   const schema = new Schema({
-    users: [
-      {type: Schema.Types.ObjectId, ref: 'users'}
+    mainImage: {key: String, url: String,},
+    mainTitle: {type: String, required: true},
+    sections: [
+      {
+        title: String,
+        body: String,
+        image: {key: String, url: String},
+      }
     ],
-    messages: [new Schema({
-      sentBy: {type: Schema.Types.ObjectId, ref: 'users', required: true},
-      message: {type: String, required: true},
-    }, {
-      timestamps: true
-    })],
-
+    
   }, {
     timestamps: true
   });

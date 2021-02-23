@@ -3,41 +3,42 @@
     <div style="display: flex; flex-direction: column;">
       <div style="height: 500px;display: flex; justify-content: center; align-items: center;">
         <div
-          style="background-image: url('https://images.unsplash.com/photo-1481140717212-b0124736c90a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');background-size: contain;background-repeat: no-repeat;height: 90%; width: 90%;background-position: center;background-attachment: fixed;display: flex; justify-content: center; align-items: center;">
+          class="mainBackground">
           <div>
-            <q-card class="flex flex-center mainCard" >
+            <q-card class="flex flex-center mainCard">
               <div>Rated Utah's #1 Best Gun Marketplace</div>
             </q-card>
             <div style="text-align: center;">
-              <q-btn @click="$router.push('listings')" class="q-mt-lg" style="text-align: center;" color="primary" label="Browse listings" />
+              <q-btn @click="$router.push('listings')" class="q-mt-lg" style="text-align: center;" color="primary"
+                     label="Browse listings"/>
             </div>
           </div>
         </div>
       </div>
-      <div class="flex flex-center" style="border-bottom: 3px solid var(--q-color-primary); border-top: 3px solid var(--q-color-primary)">
-        <span  class="text-weight-thin text-h4">Featured Listings</span>
+      <div class="flex flex-center q-mb-md"
+           style="border-bottom: 3px solid var(--q-color-primary); border-top: 3px solid var(--q-color-primary)">
+        <!--        <span class="text-weight-thin text-h4">Featured Listings</span>-->
       </div>
-      <div style="display: flex; justify-content: center; align-items: center;height: 450px;">
-        <div style="width: 95vw;height: 90%;display: flex; justify-content: center; align-items: center;
-"
-        >
+      <!--      <div style="display: flex; justify-content: center; align-items: center;height: 450px;">-->
+      <!--        <div style="width: 95vw;height: 90%;display: flex; justify-content: center; align-items: center;-->
+      <!--"-->
+      <!--        >-->
 
-          <swiper class="swiper" :options="swiperOption">
-            <swiper-slide v-for="(product,index) in featuredProducts" :key="index"
-                          :style="{backgroundImage: `url(${product.image})`}">
-              <div :style="{'background-image': product.image}">
-                <div class="q-pa-sm"
-                     style="display: flex; flex-direction: column;background: rgba(130, 130, 130, 0.6);">
-                  <span class="text-xxs text-mb-xxs">{{ product.artist }}</span>
-                </div>
-              </div>
-            </swiper-slide>
-            <div class="swiper-pagination" slot="pagination"></div>
-          </swiper>
-        </div>
-        <div style="height: 400px;">
-        </div>
-      </div>
+      <!--          <swiper class="swiper" :options="swiperOption">-->
+      <!--            <swiper-slide v-for="(product,index) in featuredProducts" :key="index"-->
+      <!--                          :style="{backgroundImage: `url(${product.image})`}">-->
+      <!--              <div :style="{'background-image': product.image}">-->
+      <!--                <div class="q-pa-sm"-->
+      <!--                     style="display: flex; flex-direction: column;background: rgba(130, 130, 130, 0.6);">-->
+      <!--                  <span class="text-xxs text-mb-xxs">{{ product.artist }}</span>-->
+      <!--                </div>-->
+      <!--              </div>-->
+      <!--            </swiper-slide>-->
+      <!--            <div class="swiper-pagination" slot="pagination"></div>-->
+      <!--          </swiper>-->
+      <!--        </div>-->
+      <!--      </div>-->
+      <near-you-map></near-you-map>
     </div>
   </q-page>
 </template>
@@ -46,10 +47,13 @@
 
   import {Swiper, SwiperSlide, directive} from 'vue-awesome-swiper';
   import 'swiper/css/swiper.css';
+  import NearYouMap from 'components/common/NearYouMap';
+
 
   export default {
     name: 'PageIndex',
     components: {
+      NearYouMap,
       Swiper,
       SwiperSlide,
     },
@@ -144,6 +148,17 @@
     }
   }
 
+  .mainBackground {
+    background-image: url('../assets/mainPagePhoto.jpeg');
+    background-size: contain
+  ;background-repeat: no-repeat;
+    height: 90%; width: 90%;
+    background-position: center;
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
   .mainCard {
 

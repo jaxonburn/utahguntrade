@@ -2,21 +2,20 @@
   <q-layout view="lHh Lpr lFf">
     <q-header class="bg-white" elevated style="display: flex;flex-direction: column;"
               :style="$route.path === '/register' ? 'height: 90px;' : 'height: 150px'">
-      <div class="row" style="height: 90px;width: 100%;display: grid; grid-template-columns: 1fr 2fr 1fr;">
+      <div class="row" style="height: 90px;width: 100%;display: grid; grid-template-columns: 1fr 1.5fr 1fr;">
         <div>
           <img @click="$router.push('/')"
-               height="auto"
+               height="90px"
                src="https://www.freelogoservices.com/api/main/images/1j+ojFVDOMkX9Wytexe43D6kif+EqhZNmBfIwXs1M3EMoAJtliEvhfVt9vU4"
                class="q-ml-lg cursor-pointer"
                alt="MainLogo"
           />
         </div>
-        <div class="q-ma-md flex justify-center" v-if="$route.path !== '/register'" style="width: 100%;">
+        <div class="q-ma-md flex justify-center" v-if="$route.path !== '/register'">
           <q-input
             v-model="searchAll"
             filled
             placeholder="Search Marketplace..."
-            style="width: 100%;"
           >
             <template v-slot:append>
               <q-icon name="search" color="primary"/>
@@ -30,7 +29,6 @@
               class="glossy"
               color="primary"
               icon="account_circle"
-              label="Account"
             >
               <div class="row q-pa-md">
                 <div class="column flex justify-between">

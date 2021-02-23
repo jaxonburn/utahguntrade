@@ -24,9 +24,7 @@
         <q-select v-model="listingForm.condition" class="col-4" :options="['New', 'Like New', 'Used']" label="Condition"/>
       </div>
       <div class="row justify-between q-my-lg">
-        <q-input v-model="listingForm.address" class="col-4" label="Address (optional)" type="address" />
-        <q-input v-model="listingForm.city" class="col-4" label="City (required)" />
-        <q-select v-model="listingForm.category" class="col-3" :options="categories" label="Category" />
+        <location-form></location-form>
       </div>
       <q-select
         label="Tags"
@@ -50,6 +48,7 @@
 
 <script>
   import MultiImageUpload from 'components/common/MultiImageUpload';
+  import LocationForm from 'components/Forms/LocationForm/LocationForm';
   import AWS from 'aws-sdk';
   import { mapActions, mapState } from 'vuex';
 
@@ -62,7 +61,8 @@
   export default {
     name: "CreatePosting",
     components: {
-      MultiImageUpload
+      MultiImageUpload,
+      LocationForm
     },
     data(){
       return {

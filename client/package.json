@@ -15,6 +15,7 @@
     "@feathersjs/feathers": "^4.5.11",
     "@feathersjs/socketio-client": "^4.5.11",
     "@quasar/extras": "^1.0.0",
+    "@tomtom-international/web-sdk-maps": "^6.6.0",
     "@vue/composition-api": "^1.0.0-rc.1",
     "aws-sdk": "^2.844.0",
     "axios": "^0.18.1",

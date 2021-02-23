@@ -12,7 +12,7 @@
         dropdown-icon=" "
       >
         <q-list>
-          <q-item clickable v-close-popup v-for="type in category.types">
+          <q-item clickable v-close-popup v-for="type in category.types" :key="type">
             <q-item-section>
               <q-item-label>{{type}}</q-item-label>
             </q-item-section>

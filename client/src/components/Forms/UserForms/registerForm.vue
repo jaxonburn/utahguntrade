@@ -1,5 +1,5 @@
 <template>
-  <q-card style="width: 40vw;">
+  <q-card :style="$q.screen.lt.md ? 'width: 80vw;' : 'width: 50vw;'">
 
     <q-card-section>
       <span class="text-h6 text-weight-bolder">Create an Account</span>

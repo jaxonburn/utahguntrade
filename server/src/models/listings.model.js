@@ -9,12 +9,11 @@ module.exports = function (app) {
   const schema = new Schema({
     listedBy: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
     price: {type: Number, required: true},
-    city: {type: String, required: false},
     images: [{
       key: String,
       url: String
     }],
-    address: {type: String, required: false},
+    address: {},
     title: {type: String, required: true},
     description: {type: String},
     watchedBy: [{type: Schema.Types.ObjectId, ref: 'users'}],

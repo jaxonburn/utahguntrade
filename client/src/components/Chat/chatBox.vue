@@ -7,6 +7,9 @@
   z-index: 5;
   border: 2px solid var(--q-color-secondary);
 ">
+      <q-inner-loading :showing="loadingChats">
+        <q-spinner-comment size="75px" color="primary" />
+      </q-inner-loading>
       <transition name="slide-fade">
         <div v-if="!inChat">
           <div class="row items-center" style="border-bottom: .5px solid var(--q-color-secondary)">
@@ -110,6 +113,7 @@
     },
     data() {
       return {
+        loadingChats: true,
         addChat: false,
         yourChat: '',
         date: date,
@@ -133,7 +137,15 @@
       }
     },
     mounted() {
-      this.loadChats({query: {_id: {$in: this.user.chats}}});
+      this.loadChats({query: {_id: {$in: this.user.chats}}}).then(() => {
+        this.loadingChats = false;
+      }).catch(() => {
+        this.loadingChats = false;
+        this.$q.notify({
+          type: 'error',
+          message: 'Something went wrong, please refresh and try again'
+        })
+      })
     },
     computed: {
       ...mapGetters('chats', {

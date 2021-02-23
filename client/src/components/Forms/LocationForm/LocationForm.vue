@@ -1,0 +1,85 @@
+<template>
+  <div class="flex flex-center">
+    <q-select
+      filled
+      transition-show="scale"
+      transition-hide="scale"
+      v-model="location"
+      clearable
+      use-input
+      hide-selected
+      fill-input
+      input-debounce="500"
+      label="Search City or Postal"
+      :options="options"
+      :option-label="opt => Object(opt) === opt ? opt.address.freeformAddress : ''"
+      emit-value
+      @filter="loadAddress"
+      @filter-abort="abortFilterFn"
+      style="width: 500px"
+    >
+      <template v-slot:no-option>
+        <q-item>
+          <q-item-section class="text-grey">
+            No results
+          </q-item-section>
+        </q-item>
+      </template>
+    </q-select>
+  </div>
+</template>
+
+<script>
+  import {mapActions, mapGetters, mapState} from 'vuex';
+
+  export default {
+    name: 'LocationForm',
+    data() {
+      return {
+        location: '',
+        options: [],
+        geoLoading: true,
+      }
+    },
+    methods: {
+      ...mapActions('tomtom', {
+        loadAddresses: 'find',
+      }),
+      abortFilterFn () {
+        // console.log('delayed filter aborted')
+      },
+      loadAddress(val, update, abort){
+        if(val !== ''){
+          this.loadAddresses({query: {text: val}}).then((res) => {
+            console.log(res);
+            this.options = res.data;
+            console.log('locations', this.options);
+            setTimeout(() => {
+              update(
+                () => {
+                    this.options = res.data
+                },
+
+                // next function is available in Quasar v1.7.4+;
+                // "ref" is the Vue reference to the QSelect
+                ref => {
+                  if (val !== '' && ref.options.length > 0) {
+                    ref.setOptionIndex(-1) // reset optionIndex in case there is something selected
+                    ref.moveOptionSelection(1, true) // focus the first selectable option and do not update the input-value
+                  }
+                }
+              )
+            }, 300)
+          }).catch((err) => {
+            console.log(err);
+            this.geoLoading = false;
+          })
+        }
+      }
+    }
+  };
+</script>
+
+<style scoped>
+
+</style>

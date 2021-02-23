@@ -14,9 +14,7 @@ const addChatToUser = (ctx) => {
 
 const checkIfChatExists = async (ctx) => {
   await ctx.app.service('chats').find({query: {users: {$in: [ctx.data.users]}}}).then((res) => {
-    console.log(res);
     if(res.data.length > 0){
-      console.log('throw error');
       throw new GeneralError('Chat Already Exists');
     }else {
       return ctx;

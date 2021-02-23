@@ -35,8 +35,8 @@
             <div v-for="(chat,index) in chats" :key="index" class="test">
               <q-item class="q-my-sm" clickable v-ripple @click.stop="openChat(chat)">
                 <q-badge v-if="chat.users.filter((chatUser) => chatUser.user === user._id)[0].unreadMessages.length > 0"
-                         color="primary" floating>
-                  {{ chat.users.filter((chatUser) => chatUser.user === user._id)[0].unreadMessages.length }}
+                         color="primary" class="q-mr-md" floating>
+                  <span class="text-weight-bolder">{{ chat.users.filter((chatUser) => chatUser.user === user._id)[0].unreadMessages.length }}</span>
                 </q-badge>
                 <q-item-section avatar
                                 v-for="users in chat._fastjoin.users.filter((userFilt) => {return userFilt._id !== user._id;})"

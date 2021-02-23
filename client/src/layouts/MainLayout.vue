@@ -39,10 +39,12 @@
                   <q-btn outlined label="Messages" icon="chat" size="sm" color="secondary" @click="chat = !chat">
                   </q-btn>
                   <div class="row flex-between">
-                    <q-btn outlined label="My listings" @click="$router.push({name: 'my-listings'})" icon="receipt" size="sm" color="secondary" class="q-mr-sm">
+                    <q-btn outlined label="My listings" @click="$router.push({name: 'my-listings'})" icon="receipt"
+                           size="sm" color="secondary" class="q-mr-sm">
                     </q-btn>
 
-                    <q-btn outlined label="Watched" @click="$router.push({name: 'my-watched'})" icon="fas fa-eye" size="sm" color="secondary" class="q-ml-sm">
+                    <q-btn outlined label="Watched" @click="$router.push({name: 'my-watched'})" icon="fas fa-eye"
+                           size="sm" color="secondary" class="q-ml-sm">
                     </q-btn>
                   </div>
                 </div>
@@ -120,7 +122,12 @@
 
     <q-page-container>
       <router-view/>
-        <chat-box v-if="chat === true" @close="chat = !chat" :user="user"></chat-box>
+      <transition name="lide-fade" appear>
+        <q-avatar class="chatIcon cursor-pointer" @click="chat = !chat">
+          <img alt="Chat Box" v-if="!chat" src="../assets/isometricchat.png" class="chatImage q-pa-sm">
+        </q-avatar>
+      </transition>
+        <chat-box v-if="chat" @close="chat = !chat" :user="user"></chat-box>
     </q-page-container>
   </q-layout>
 </template>
@@ -165,8 +172,8 @@
           })
         })
       },
-      changeRoute(route){
-        if(this.$route.fullPath === route) return;
+      changeRoute(route) {
+        if (this.$route.fullPath === route) return;
         this.$router.push(route);
       }
     }
@@ -190,15 +197,32 @@
     transition: unset;
   }
 
-
-  .slide-fade-enter-active {
+  .lide-fade-enter-active {
     transition: all 1s ease;
   }
+
+  .lide-fade-leave-active {
+    transition: all .2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+
+  .lide-fade-enter, .slide-fade-leave-to
+    /* .slide-fade-leave-active below version 2.1.8 */
+  {
+    transform: translateX(150px) translateY(150px);
+  }
+
+
+  .slide-fade-enter-active {
+    transition: all 1.5s ease;
+  }
+
   .slide-fade-leave-active {
     transition: all .2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
   }
+
   .slide-fade-enter, .slide-fade-leave-to
-    /* .slide-fade-leave-active below version 2.1.8 */ {
+    /* .slide-fade-leave-active below version 2.1.8 */
+  {
     transform: translateX(150px) translateY(150px);
   }
 
@@ -207,12 +231,30 @@
     font-size: 1.1em;
     padding: 15px 20px;
   }
+
   .side-menu-link:hover {
     color: red !important;
   }
-  .double-side-menu{
+
+  .double-side-menu {
     display: flex;
     align-items: center;
     margin-top: 5px;
+  }
+
+  .chatIcon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 80px;
+    height: 80px;
+    z-index: 5;
+    -webkit-box-shadow: 0px 0px 18px 5px rgba(0,0,0,0.51);
+    box-shadow: 0px 0px 13px 1px rgba(0,0,0,0.31);background: rgba(255, 255, 255, 0.8);
+  }
+
+  .chatImage {
+    width: 80px;
+    height: 80px;
   }
 </style>

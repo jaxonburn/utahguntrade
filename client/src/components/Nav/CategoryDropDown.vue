@@ -1,6 +1,6 @@
 <template>
   <div class="row" style="height: 60px;display: flex; align-items: flex-end;" v-if="$route.path !== '/register'">
-    <div class="col-4" v-for="(category,index) in categories" :key="index" @mouseenter="category.open = true">
+    <div class="col-4" v-for="(category,index) in categories" :key="index" @mouseenter="category.open = true" >
       <q-btn-dropdown
         v-model="category.open"
         class="bg-white text-weight-regular"
@@ -11,8 +11,8 @@
         :ripple="false"
         dropdown-icon=" "
       >
-        <q-list>
-          <q-item clickable v-close-popup v-for="type in category.types">
+        <q-list @mouseleave="category.open = false">
+          <q-item  clickable v-close-popup v-for="type in category.types">
             <q-item-section>
               <q-item-label>{{type}}</q-item-label>
             </q-item-section>

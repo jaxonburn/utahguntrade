@@ -41,10 +41,10 @@
                     <q-badge color="red" floating>0</q-badge>
                   </q-btn>
                   <div class="row flex-between">
-                    <q-btn outlined label="Listings" icon="receipt" size="sm" color="secondary" class="q-mr-sm">
+                    <q-btn outlined label="My listings" @click="$router.push({name: 'my-listings'})" icon="receipt" size="sm" color="secondary" class="q-mr-sm">
                     </q-btn>
 
-                    <q-btn outlined label="Watched" icon="fas fa-eye" size="sm" color="secondary" class="q-ml-sm">
+                    <q-btn outlined label="Watched" @click="$router.push({name: 'my-watched'})" icon="fas fa-eye" size="sm" color="secondary" class="q-ml-sm">
                     </q-btn>
                   </div>
                 </div>
@@ -86,13 +86,34 @@
                 <q-btn outlined color="primary" icon="account_circle" label="log in"></q-btn>
               </router-link>
             </div>
-            <div class="q-pr-xl" v-if="this.user && this.$route.name !== 'create-posting'">
-              <q-btn @click="$router.push({name: 'create-posting'})" label="Create posting" color="primary"/>
-            </div>
-            <div class="q-pr-xl" v-if="this.user && this.$route.name === 'create-posting'">
-              <q-btn @click="$router.push('/')" label="Home page" color="primary" />
-            </div>
           </div>
+
+          <div @mouseover="category.open = true;">
+            <q-btn-dropdown
+              v-model="category.open"
+              class="bg-white text-weight-regular q-mr-lg"
+              :class="category.open ? 'text-primary text-weight-bold' : 'text-black'"
+              :label="category.label"
+              flat
+              :ripple="false"
+              dropdown-icon="list"
+              size="lg"
+            >
+              <q-list>
+                <div @click="changeRoute('/')" class="cursor-pointer">
+                  <q-item-section class="side-menu-link">Home</q-item-section>
+                </div>
+                <div @click="changeRoute('/create-posting')" class="cursor-pointer side-menu-link double-side-menu">
+                  <span>Create Listing</span>
+                  <q-icon class="q-ml-sm" size="sm" name="add" color="primary"></q-icon>
+                </div>
+                <div @click="changeRoute('/listings')" class="cursor-pointer">
+                  <q-item-section class="side-menu-link">Browse Listings</q-item-section>
+                </div>
+              </q-list>
+            </q-btn-dropdown>
+          </div>
+
         </div>
       </div>
       <category-drop-down></category-drop-down>
@@ -121,6 +142,10 @@
       return {
         searchAll: '',
         chat: false,
+        category: {
+          open: false,
+          label: ''
+        }
       }
     },
     computed: {
@@ -141,6 +166,10 @@
             timeout: 3000,
           })
         })
+      },
+      changeRoute(route){
+        if(this.$route.fullPath === route) return;
+        this.$router.push(route);
       }
     }
   }
@@ -173,5 +202,19 @@
   .slide-fade-enter, .slide-fade-leave-to
     /* .slide-fade-leave-active below version 2.1.8 */ {
     transform: translateX(150px) translateY(150px);
+  }
+
+  .side-menu-link {
+    transition: 0.3s all;
+    font-size: 1.1em;
+    padding: 15px 20px;
+  }
+  .side-menu-link:hover {
+    color: red !important;
+  }
+  .double-side-menu{
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
   }
 </style>

@@ -1,48 +1,97 @@
 <template>
-  <q-page class="create-listing-wrapper">
-<!--    <div class="image-uploader">-->
-<!--      <q-icon name="perm_media" class="icon"/>-->
-<!--      <div class="footer">-->
+  <q-page>
+    <div class="create-listing-wrapper" v-if="!isEditing">
+      <!--    <div class="image-uploader">-->
+      <!--      <q-icon name="perm_media" class="icon"/>-->
+      <!--      <div class="footer">-->
 
-<!--      </div>-->
-<!--    </div>-->
-    <multi-image-upload
-      @upload-success="uploadImageSuccess"
-      @before-remove="beforeRemove"
-      :data-images="images"
-      drop-text="Upload images"
-      drag-text="Upload listing images"
-      browse-text=""
-      primary-text="Weapon images"
-      popup-text="We accept most common image formats, including: gif, jpg, png, bmp, jpeg"
-    >
-    </multi-image-upload>
-    <div class="form">
-      <div class="row justify-between q-my-lg">
-        <q-input v-model="listingForm.title" class="col-4" style="width: 30%" label="Title" />
-        <q-input v-model="listingForm.price" class="col-3" type="number" label="Price" />
-        <q-select v-model="listingForm.condition" class="col-4" :options="['New', 'Like New', 'Used']" label="Condition"/>
+      <!--      </div>-->
+      <!--    </div>-->
+      <multi-image-upload
+        @upload-success="uploadImageSuccess"
+        @before-remove="beforeRemove"
+        :data-images="images"
+        drop-text="Upload images"
+        drag-text="Upload listing images"
+        browse-text=""
+        primary-text="Weapon images"
+        popup-text="We accept most common image formats, including: gif, jpg, png, bmp, jpeg"
+      >
+      </multi-image-upload>
+      <div class="form">
+        <div class="row justify-between q-my-lg">
+          <q-input v-model="listingForm.title" class="col-4" style="width: 30%" label="Title" />
+          <q-input v-model="listingForm.price" class="col-3" type="number" label="Price" />
+          <q-select v-model="listingForm.condition" class="col-4" :options="['New', 'Like New', 'Used', 'Worn']" label="Condition"/>
+        </div>
+        <div class="row justify-between q-my-lg">
+          <q-input v-model="listingForm.address" class="col-4" label="Address (optional)" type="address" />
+          <q-input v-model="listingForm.city" class="col-4" label="City (required)" />
+          <q-select v-model="listingForm.category" class="col-3" :options="categories" label="Category" />
+        </div>
+        <q-select
+          label="Tags"
+          filled
+          v-model="listingForm.tags"
+          use-input
+          use-chips
+          multiple
+          hide-dropdown-icon
+          input-debounce="0"
+          new-value-mode="add-unique"
+        />
+        <q-input v-model="listingForm.description" class="q-my-lg" type="textarea" label="Description"/>
+        <q-space></q-space>
+        <div style="text-align: right;" v-if="!isEditing">
+          <q-btn color="secondary" class="q-my-lg" label="Post listing" @click="savePosting"/>
+        </div>
       </div>
-      <div class="row justify-between q-my-lg">
-        <q-input v-model="listingForm.address" class="col-4" label="Address (optional)" type="address" />
-        <q-input v-model="listingForm.city" class="col-4" label="City (required)" />
-        <q-select v-model="listingForm.category" class="col-3" :options="categories" label="Category" />
-      </div>
-      <q-select
-        label="Tags"
-        filled
-        v-model="listingForm.tags"
-        use-input
-        use-chips
-        multiple
-        hide-dropdown-icon
-        input-debounce="0"
-        new-value-mode="add-unique"
-      />
-      <q-input v-model="listingForm.description" class="q-my-lg" type="textarea" label="Description"/>
-      <q-space></q-space>
-      <div style="text-align: right;">
-        <q-btn color="secondary" class="q-my-lg" label="Post listing" @click="savePosting"/>
+    </div>
+
+
+    <div class="create-listing-wrapper" v-else>
+      <multi-image-upload
+        @upload-success="uploadImageSuccess"
+        @before-remove="beforeRemove"
+        :data-images="images"
+        drop-text="Upload images"
+        drag-text="Upload listing images"
+        browse-text=""
+        primary-text="Weapon images"
+        popup-text="We accept most common image formats, including: gif, jpg, png, bmp, jpeg"
+      >
+      </multi-image-upload>
+      <div class="form">
+        <div class="row justify-between q-my-lg">
+          <q-input v-model="listingForm.title" class="col-4" style="width: 30%" label="Title" />
+          <q-input v-model="listingForm.price" class="col-3" type="number" label="Price" />
+          <q-select v-model="listingForm.condition" class="col-4" :options="['New', 'Like New', 'Used', 'Worn']" label="Condition"/>
+        </div>
+        <div class="row justify-between q-my-lg">
+          <q-input v-model="listingForm.address" class="col-4" label="Address (optional)" type="address" />
+          <q-input v-model="listingForm.city" class="col-4" label="City (required)" />
+          <q-select v-model="listingForm.category" class="col-3" :options="categories" label="Category" />
+        </div>
+        <q-select
+          label="Tags"
+          filled
+          v-model="listingForm.tags"
+          use-input
+          use-chips
+          multiple
+          hide-dropdown-icon
+          input-debounce="0"
+          new-value-mode="add-unique"
+        />
+        <q-input v-model="listingForm.description" class="q-my-lg" type="textarea" label="Description"/>
+        <q-space></q-space>
+        <div style="text-align: right;" v-if="!isEditing">
+          <q-btn color="secondary" class="q-my-lg" label="Post listing" @click="savePosting"/>
+        </div>
+        <div v-else style="text-align: right">
+          <q-btn color="primary" class="q-my-lg" label="Cancel" />
+          <q-btn color="secondary" class="q-my-lg q-ml-lg" label="Save Changes" />
+        </div>
       </div>
     </div>
   </q-page>
@@ -80,6 +129,12 @@
           description: '',
           images: []
         }
+      }
+    },
+    props: {
+      isEditing: {
+        type: Boolean,
+        default: false
       }
     },
     computed: {
@@ -151,6 +206,7 @@
       },
       uploadImageSuccess(formData, index, fileList) {
           this.images = fileList;
+          console.log(fileList);
       },
       beforeRemove (index, done, fileList) {
         var r = confirm("remove image")

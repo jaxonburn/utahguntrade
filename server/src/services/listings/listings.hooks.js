@@ -1,4 +1,5 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
+const { fJoinHook } = require('../../hooks/common/fastJoin');
 
 module.exports = {
   before: {
@@ -12,7 +13,7 @@ module.exports = {
   },
 
   after: {
-    all: [],
+    all: [fJoinHook('listedBy', 'users')],
     find: [],
     get: [],
     create: [],

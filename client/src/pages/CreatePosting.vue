@@ -128,7 +128,7 @@
     },
     data() {
       return {
-        categories: ['Rifle', 'Assault Rifle', 'Handgun', 'Submachine Gun', 'Hunting', 'Magazines', 'Scopes', 'Other', '9mm', '223/5.56', '45 ACP', '12-Gauge', '.22', '.308'],
+        categories: ['Rifle', 'AssaultRifle', 'Handgun', 'SubmachineGun', 'Hunting', 'Magazines', 'Scopes', 'Other', '9mm', '223/5.56', '45ACP', '12-Gauge', '.22', '.308'],
         images: [],
         formData: {},
         listingForm: {
@@ -176,7 +176,6 @@
       },
       publishEdited() {
         if (!this.listing) return;
-        this.$q.loading.show();
         this.patchListing([this.listing._id, {
           ...this.listingForm,
         }])
@@ -202,6 +201,7 @@
         this.listingForm.address = location;
       },
       async savePosting() {
+        this.$q.loading.show();
         if (this.images.length === 0 && !this.isEditing) {
           this.publish();
           return;
@@ -252,7 +252,9 @@
       },
       publish() {
         this.listingForm.listedBy = this.user;
+        this.$q.loading.show();
         this.createListing({...this.listingForm}).then(res => {
+          this.$q.loading.hide();
           this.$q.notify({message: 'Listing published!', color: 'positive'});
           let keys = Object.keys(this.listingForm);
           keys.forEach(data => {
@@ -264,6 +266,7 @@
           })
           this.images = [];
         }).catch(err => {
+          this.$q.loading.hide();
           this.$q.notify({
             message: 'Something went wrong, make sure all fields are correct',
             color: 'negative'

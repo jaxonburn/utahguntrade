@@ -17,9 +17,10 @@
             filled
             placeholder="Search Marketplace..."
             style="width: 100%;"
+            @keyup.enter="searchMarketPlace"
           >
             <template v-slot:append>
-              <q-icon name="search" color="primary"/>
+              <q-icon @click="searchMarketPlace" name="search" color="primary"/>
             </template>
           </q-input>
         </div>
@@ -171,6 +172,10 @@
             timeout: 3000,
           })
         })
+      },
+      searchMarketPlace(){
+        this.$router.push({name: 'listings', query: {search: this.searchAll}});
+        this.searchAll = '';
       },
       changeRoute(route) {
         if (this.$route.fullPath === route) return;

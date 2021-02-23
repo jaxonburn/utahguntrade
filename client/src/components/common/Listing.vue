@@ -9,10 +9,10 @@
     </div>
     <div class="bottom">
       <!--      category description listedBy-->
-      <div class="title">{{ listing.title }}</div>
+      <div class="title">{{ listing.title.slice(0, 33) }}</div>
 
       <div style="position: absolute; top: 3px; left: 15px;">
-        <span class="text-primary">{{ $lget(listing.address, 'address.freeformAddress', 'No address') }} </span>
+        <span class="text-primary">{{ $lget(listing.address, 'address.freeformAddress', 'No address').slice(0, 33) }} </span>
         <q-icon name="location_on" style="font-size: 1.4em; margin-bottom: 2px;" color="primary"/>
       </div>
 
@@ -183,7 +183,7 @@
       img {
         width: 100%;
         margin-right: 20px;
-        //height: 50%;
+        max-height: 220px;
       }
 
     }

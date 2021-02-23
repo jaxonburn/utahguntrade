@@ -1,8 +1,11 @@
 /* eslint-disable no-console */
 const logger = require('./logger');
 const app = require('./app');
-const port = app.get('port');
-const server = app.listen(port);
+// const port = app.get('port');
+const port = 9000;
+const server = app.listen(port, '0.0.0.0');
+
+// FIXME CHANGE PORT;
 
 process.on('unhandledRejection', (reason, p) =>
   logger.error('Unhandled Rejection at: Promise ', p, reason)

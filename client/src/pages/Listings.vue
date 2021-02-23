@@ -1,8 +1,13 @@
 <template>
   <div class="listings-page">
 
-    <div v-if="listings.length === 0">
+    <div v-if="isPending" style="z-index: 5">
       <Loading />
+    </div>
+
+    <div class="no-results" v-if="!isPending && listings.length === 0">
+      <div>No results found</div>
+      <q-btn color="primary" label="Reset search" @click="$router.push('/listings');" />
     </div>
 
     <div v-else>
@@ -38,7 +43,7 @@
 
 <script>
 
-  import {mapActions, mapGetters} from 'vuex';
+  import {mapActions, mapGetters, mapState} from 'vuex';
   import Listing from "components/common/Listing";
   import makeFindPaginateMixin from "src/mixins/makeFindPaginated";
   import Loading from 'components/common/Loading';
@@ -52,9 +57,22 @@
       name: 'listings',
       qid: 'listings',
       query(){
-        return {archived: false}
+        return {
+          archived: false,
+          // $regex: {title: '.*M.*'},
+          title: {$regex: `(?i).*${this.$lget(this.$route.query, 'search', '').length > 0 ? this.$route.query.search : ''}.*`},
+          category: {$regex: `(?i).*${this.$lget(this.$route.query, 'category', '').length > 0 ? this.$route.query.category : ''}.*`},
+        }
       }
     })],
+    mounted(){
+      console.log(this.$route.query);
+    },
+    computed: {
+      ...mapState('listings', {
+        isPending: 'isFindPending'
+      }),
+    },
     methods: {
       handlePagination(event){
         this.listingsHandlePageChange(event);
@@ -84,7 +102,7 @@
   }
   .limit-selector {
     position: absolute;
-    right: 80px;
+    right: 110px;
     display: flex;
     align-items: center;
   }
@@ -96,10 +114,16 @@
   }
   .listings-wrapper {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     justify-items: center;
     grid-gap: 40px;
     padding: 50px 20px;
+  }
+
+  .no-results {
+    text-align: center;
+    font-size: 2em;
+    margin-top: 150px;
   }
 
   @media screen and (max-width: 1050px) {
@@ -117,6 +141,10 @@
   @media screen and (max-width: 620px) {
     .listings-wrapper {
       grid-template-columns: 1fr;
+    }
+    .limit-selector {
+      left: 20px;
+      top: 40px;
     }
   }
 </style>

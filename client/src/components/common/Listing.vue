@@ -12,7 +12,7 @@
       <div class="title">{{ listing.title.slice(0, 33) }}</div>
 
       <div style="position: absolute; top: 3px; left: 15px;">
-        <span class="text-primary">{{ $lget(listing.address, 'address.freeformAddress', 'No address').slice(0, 33) }} </span>
+        <span class="text-primary">{{ $lget(listing.address, 'address.freeformAddress', 'No address').slice(0, 15) }} {{ $lget(listing.address, 'address.freeformAddress', '').length > 15 ? '...' : '' }}</span>
         <q-icon name="location_on" style="font-size: 1.4em; margin-bottom: 2px;" color="primary"/>
       </div>
 
@@ -33,10 +33,10 @@
       </q-icon>
 
       <div class="eye eye-views" v-if="isMyListing">
-        <span class="q-mr-sm" style="font-size: .8em;">{{listing.viewed.length}}</span>
-        <q-icon name="visibility" size="sm">
-          <q-tooltip>{{ listing.viewed.length }} {{ listing.viewed.length === 1 ? 'view' : 'views' }}</q-tooltip>
+        <span class="q-mr-xs" style="font-size: .8em;">{{listing.viewed.length}}</span>
+        <q-icon name="visibility" size="xs">
         </q-icon>
+        <q-tooltip>{{ listing.viewed.length }} {{ listing.viewed.length === 1 ? 'view' : 'views' }}</q-tooltip>
       </div>
 
       <q-icon @click="unarchiveListing" v-if="isMyListing && listing.archived" class="eye eye-archive" name="unarchive" size="xs">
@@ -208,17 +208,18 @@
       .eye {
         position: absolute;
         right: 15px;
-        top: 25px;
+        top: 5px;
         cursor: pointer;
-        font-size: 1.7em !important;
+        font-size: 1.3em !important;
       }
 
       .eye-archive {
-        right: 48px;
+        right: 40px;
       }
       .eye-views {
-        right: 85px;
-        top: 19px;
+        right: 68px;
+        //font-size: 1em !important;
+        top: -1px;
       }
     }
   }

@@ -9,8 +9,8 @@ class Users extends BaseModel {
   // Define default properties here
   static instanceDefaults() {
     return {
-      users: null,
-      messages: [],
+      watched: [],
+      messages: []
     }
   }
 }

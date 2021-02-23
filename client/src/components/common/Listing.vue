@@ -12,7 +12,7 @@
       <div class="title">{{ listing.title }}</div>
 
       <div style="position: absolute; top: 3px; left: 15px;">
-        <span class="text-primary">{{ listing.city }} </span>
+        <span class="text-primary">{{ listing.address }} </span>
         <q-icon name="location_on" style="font-size: 1.4em; margin-bottom: 2px;" color="primary"/>
       </div>
 
@@ -82,6 +82,9 @@
           this.patchUser([this.user._id, {
             $push: {
               watch: this.listing._id
+            },
+            params: {
+              name: 'baxus'
             }
           }])
         }

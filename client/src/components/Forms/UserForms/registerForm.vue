@@ -104,10 +104,14 @@
       ...mapActions('auth', {
         authenticate: 'authenticate'
       }),
+      ...mapActions('users', {
+        createUser: 'create'
+      }),
       createUser(){
         this.$q.loading.show();
         let user = new models.api.Users(this.userData);
         let userData = {email: user.email, password: user.password};
+        console.log('hello');
         user.create().then(() => {
           this.$q.loading.hide();
           this.$q.notify({

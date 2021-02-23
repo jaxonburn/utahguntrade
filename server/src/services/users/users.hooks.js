@@ -43,7 +43,7 @@ module.exports = {
       initialChat,
     ],
     update: [],
-    patch: [],
+    patch: [ctx => console.log(ctx)],
     remove: []
   },
 

@@ -85,7 +85,7 @@
 
           </q-scroll-area>
           <div>
-            <q-input outlined class="q-ma-sm bg-grey-3" label="Message" v-model="yourChat" style="overflow: scroll;">
+            <q-input outlined class="q-ma-sm bg-grey-3" label="Message" v-model="yourChat" style="overflow: scroll;" @keyup.enter="sendMessage">
               <template v-slot:append>
                 <q-btn round dense flat icon="send" push class="text-primary" @click="sendMessage"/>
               </template>

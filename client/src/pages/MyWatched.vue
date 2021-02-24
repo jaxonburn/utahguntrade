@@ -60,7 +60,7 @@
 <style scoped lang="scss">
   .listings-wrapper {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     justify-items: center;
     grid-gap: 40px;
     padding: 50px 20px;

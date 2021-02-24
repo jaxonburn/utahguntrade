@@ -1,8 +1,10 @@
+
 // Application hooks that run for every service
+const removeFastJoin = require('./hooks/common/remove-fastjoin');
 
 module.exports = {
   before: {
-    all: [],
+    all: [removeFastJoin()],
     find: [],
     get: [],
     create: [],

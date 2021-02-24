@@ -5,9 +5,16 @@
         <div
           class="mainBackground">
           <div>
-            <q-card class="flex flex-center mainCard">
-              <div class="text-xxl text-mb-xxl" style="text-align: center;">Browse Gun Listings all over Utah</div>
-            </q-card>
+<!--            <q-card class="flex flex-center mainCard">-->
+<!--              <div class="text-xxl text-mb-xxl" style="text-align: center;">Browse Gun Listings all over Utah</div>-->
+<!--            </q-card>-->
+<!--            temp changes-->
+            <div class="flex flex-center mainCard">
+              <div class="text-mb-xxl" style="text-align: center;">Browse Gun Listings all over Utah</div>
+            </div>
+            <div style="text-align: center; color: white; margin-top: 13px; font-size: 1.3em;">
+              <div>The new way of selling weapons, but we're much more than that.</div>
+            </div>
             <div style="text-align: center;">
               <q-btn @click="$router.push('listings')" class="q-mt-lg" style="text-align: center;" color="primary"
                      label="Browse listings"/>
@@ -160,14 +167,25 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    // temp changes
+    width: 100vw;
+    height: 100%;
+    background-size: cover;
   }
 
   .mainCard {
-
     background: rgba(255, 255, 255, 0.7);
     font-size: 4em;
     border-radius: 15px;
     font-family: 'alegreyaregular', 'Arial', 'sans-serif';
+
+    // temp changes
+    background: none;
+    color: white;
+    font-family: 'Arial';
+    font-weight: 450;
+    font-size: 3.5em;
   }
 </style>
 

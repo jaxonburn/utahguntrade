@@ -18,6 +18,7 @@ const initialChat = async context => {
   });
   return context;
 };
+
 const modifyWatched = async context => {
   let params = lget(context.arguments[1], 'params.name', '');
   let id = lget(context.arguments[1], 'params.id', '');
@@ -34,7 +35,7 @@ const modifyWatched = async context => {
         watchedBy: context.result._id
       }
     }
-    context.app.service('listings').patch(id, patchObj);
+    context.app.service('listings').patch(id, patchObj).then(res => console.log(res)).catch(err => console.log(err));
   }
 }
 

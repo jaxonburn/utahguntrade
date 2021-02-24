@@ -42,6 +42,11 @@
           </span>
             <q-separator/>
           </div>
+          <div class="q-mt-md q-pl-xs">
+            <input v-model="takeListings" type="checkbox" :disabled="!editing"/>
+            <span style="margin-left: 10px; font-size: 1.1em;">Take me to listings when I log on</span>
+            <q-separator />
+          </div>
         </div>
         <div class="flex justify-start items-end" style="width: 100%;">
           <span class="text-subtitle1 q-ma-xs">Member since: {{
@@ -50,9 +55,10 @@
         </div>
       </div>
       <div class="column">
+        <q-btn @click="$router.push({name: 'my-listings'})" class="q-ma-md" outlined icon="receipt" label="My listings"
+               color="secondary"></q-btn>
         <q-btn class="q-ma-md" outlined icon="receipt" label="Watched Listings" color="secondary"></q-btn>
-        <q-btn class="q-ma-md" outlined icon="chat" label="Messages" color="secondary">
-        </q-btn>
+        <q-btn class="q-ma-md" outlined icon="chat" label="Messages" color="secondary"></q-btn>
         <q-space/>
         <q-btn v-if="!editing" rounded outline label="Edit Profile" icon="create" color="primary" class="q-ma-sm"
                @click="editing = true">
@@ -93,6 +99,7 @@
         editing: false,
         date: date,
         images: [],
+        takeListings: false
       }
     },
     computed: {
@@ -103,24 +110,25 @@
         return this.user.clone();
       }
     },
+    mounted(){
+      if(!this.user.takeToListings) {
+        this.takeListings = false;
+      } else {
+        this.takeListings = true;
+      }
+      console.log(this.user);
+    },
     methods: {
       uploadImageSuccess(formData, index, fileList) {
-        console.log('data', formData, index, fileList)
         this.images = fileList;
-        // Upload image api
-        // axios.post('http://your-url-upload', formData).then(response => {
-        //   console.log(response)
-        // })
       },
       beforeRemove(index, done, fileList) {
-        console.log('index', index, fileList)
         let r = confirm("remove image")
         if (r) {
           done()
           this.images = fileList;
         } else {
         }
-
       },
       editImage(formData, index, fileList) {
         console.log('edit data', formData, index, fileList)
@@ -150,15 +158,10 @@
               ContentType: image.type,
               ACL: 'public-read'
             };
-            console.log('params', params);
             // eslint-disable-next-line no-console
             s3.upload(params, options, function (err, data) {
               if (err) {
-                // eslint-disable-next-line no-console
-                console.log('Something went wrong:', err);
               } else {
-                // eslint-disable-next-line no-console
-                console.log('Something went right:', data);
                 if (data['details'] === undefined) {
                   data['details'] = {};
                 }
@@ -167,6 +170,7 @@
                 data['details']['type'] = image.type;
                 data['details']['lastModifiedDate'] = image.lastModifiedDate;
                 doubleCloned.avatar = data.Location;
+                doubleCloned.takeToListings = this.takeListings;
                 doubleCloned.save().then((res) => {
                   this.$q.loading.hide();
                   this.$q.notify({

@@ -59,15 +59,12 @@
       query(){
         return {
           archived: false,
-          // $regex: {title: '.*M.*'},
+          sold: false,
           title: {$regex: `(?i).*${this.$lget(this.$route.query, 'search', '').length > 0 ? this.$route.query.search : ''}.*`},
           category: {$regex: `(?i).*${this.$lget(this.$route.query, 'category', '').length > 0 ? this.$route.query.category : ''}.*`},
         }
       }
     })],
-    mounted(){
-      console.log(this.$route.query);
-    },
     computed: {
       ...mapState('listings', {
         isPending: 'isFindPending'

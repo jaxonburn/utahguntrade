@@ -12,7 +12,7 @@
         dropdown-icon=" "
       >
         <q-list @mouseleave="category.open = false">
-          <q-item  clickable v-close-popup v-for="type in category.types" :key="type">
+          <q-item  clickable v-close-popup v-for="type in category.types" :key="type.label">
             <q-item-section>
               <q-item-label @click="$router.push({name: 'listings', query: {category: type.routeTo}})">{{type.display}}</q-item-label>
             </q-item-section>
@@ -25,7 +25,7 @@
 
 <script>
 
-  // ['Rifle', 'AssaultRifle', 'Handgun', 'SubmachineGun', 'Hunting', 'Magazines', 'Scopes', 'Other', '9mm', '223/5.56', '45ACP', '12-Gauge', '.22', '.308' ]
+  // ['Knives', 'Rifle', 'AssaultRifle', 'Handgun', 'SubmachineGun', 'Hunting', 'Magazines', 'Scopes', 'Other', 'AssaultAmmo', 'HandgunAmmo.', 'RifleAmmo', 'ShotgunAmmo', 'SubmachineAmmo', 'Misc' ]
   export default {
     name: 'CategoryDropDown',
     data() {
@@ -58,28 +58,28 @@
             open: false,
             types: [
               {
-                display: '9mm',
-                routeTo: '9mm'
+                display: 'Assault Rifle Ammo',
+                routeTo: 'AssaultAmmo'
               },
               {
-                display: '223/5.56',
-                routeTo: '223/5.56'
+                display: 'Handgun Ammo',
+                routeTo: 'HandgunAmmo'
               },
               {
-                display: '45 ACP',
-                routeTo: '45ACP'
+                display: 'Rifle Ammo',
+                routeTo: 'RifleAmmo'
               },
               {
-                display: '12-Gauge',
-                routeTo: '12-Gauge'
+                display: 'Shotgun Ammo',
+                routeTo: 'ShotgunAmmo'
               },
               {
-                display: '.22',
-                routeTo: '.22'
+                display: 'Submachine Gun Ammo',
+                routeTo: 'SubmachineAmmo'
               },
               {
-                display: '.308',
-                routeTo: '.308'
+                display: 'Misc',
+                routeTo: 'Misc'
               },
               {
                 display: 'Magazines',

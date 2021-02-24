@@ -1,31 +1,34 @@
 <template>
   <div class="flex flex-center">
-    <q-select
-      filled
-      transition-show="scale"
-      transition-hide="scale"
-      v-model="location"
-      clearable
-      use-input
-      hide-selected
-      fill-input
-      input-debounce="500"
-      label="Search City or Postal"
-      :options="options"
-      :option-label="opt => Object(opt) === opt ? opt.address.freeformAddress : ''"
-      emit-value
-      @filter="loadAddress"
-      @filter-abort="abortFilterFn"
-      style="width: 500px"
-    >
-      <template v-slot:no-option>
-        <q-item>
-          <q-item-section class="text-grey">
-            No results
-          </q-item-section>
-        </q-item>
-      </template>
-    </q-select>
+    <q-form autocomplete="off">
+      <q-select
+        autocomplete="off"
+        filled
+        transition-show="scale"
+        transition-hide="scale"
+        v-model="location"
+        clearable
+        use-input
+        hide-selected
+        fill-input
+        input-debounce="500"
+        label="Search City or Postal"
+        :options="options"
+        :option-label="opt => Object(opt) === opt ? opt.address.freeformAddress : ''"
+        emit-value
+        @filter="loadAddress"
+        @filter-abort="abortFilterFn"
+        style="width: 500px"
+      >
+        <template v-slot:no-option>
+          <q-item>
+            <q-item-section class="text-grey">
+              No results
+            </q-item-section>
+          </q-item>
+        </template>
+      </q-select>
+    </q-form>
   </div>
 </template>
 

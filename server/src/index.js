@@ -5,8 +5,6 @@ const port = app.get('port');
 // const port = 9000;
 const server = app.listen(port);
 
-// FIXME CHANGE PORT;
-
 process.on('unhandledRejection', (reason, p) =>
   logger.error('Unhandled Rejection at: Promise ', p, reason)
 );

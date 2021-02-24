@@ -128,7 +128,7 @@
     },
     data() {
       return {
-        categories: ['Rifle', 'AssaultRifle', 'Handgun', 'SubmachineGun', 'Hunting', 'Magazines', 'Scopes', 'Other', '9mm', '223/5.56', '45ACP', '12-Gauge', '.22', '.308'],
+        categories: ['Knives', 'Rifle', 'AssaultRifle', 'Handgun', 'SubmachineGun', 'Hunting', 'Magazines', 'Scopes', 'Other', 'AssaultAmmo', 'HandgunAmmo.', 'RifleAmmo', 'ShotgunAmmo', 'SubmachineAmmo', 'Misc' ],
         images: [],
         formData: {},
         listingForm: {
@@ -139,7 +139,10 @@
           category: '',
           tags: [],
           description: '',
-          images: []
+          images: [],
+          sold: false,
+          archived: false,
+          point: {}
         }
       }
     },
@@ -255,7 +258,7 @@
         this.$q.loading.show();
         this.createListing({...this.listingForm}).then(res => {
           this.$q.loading.hide();
-          this.$q.notify({message: 'Listing published!', color: 'positive'});
+          this.$q.notify({message: 'Listing published! After listing is marked as sold you can attach bill of sale securely', color: 'positive'});
           let keys = Object.keys(this.listingForm);
           keys.forEach(data => {
             if (Array.isArray(this.listingForm[data])) {
@@ -267,6 +270,7 @@
           this.images = [];
         }).catch(err => {
           this.$q.loading.hide();
+          console.log(err);
           this.$q.notify({
             message: 'Something went wrong, make sure all fields are correct',
             color: 'negative'
@@ -292,7 +296,6 @@
   .create-listing-wrapper {
     padding: 50px;
     display: flex;
-
   }
 
   .image-uploader {

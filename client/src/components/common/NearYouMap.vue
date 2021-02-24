@@ -10,7 +10,7 @@
           <location-form></location-form>
           <div class="row" style="display: flex; justify-content: center;align-items: center;">
             <q-select rounded outlined label="Radius" v-model="radius" class="q-my-lg"
-                      :options="[5, 10, 15, 20, 25, 30, 40,  50, 75, 100]" style="width: 100px;"></q-select>
+                      :options="[5, 10, 15, 20, 25, 30, 40,  50, 75, 100]" style="width: 110px;"></q-select>
             <div class="text-weight-bold text-md text-mb-md q-ml-lg">miles</div>
           </div>
           <div class="flex justify-end">

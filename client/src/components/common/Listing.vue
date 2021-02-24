@@ -2,6 +2,14 @@
   <q-card class="listing">
     <div class="hover-btn" v-if="!$q.platform.is.mobile">
       <q-btn color="secondary" @click="$router.push(`listing-details/${listing._id}`)" label="View Details" />
+      <div v-if="isMyListing && !listing.sold">
+        <q-btn @click="markAsSolidDialog = true" size="sm" class="q-ml-sm sold-icon" icon="attach_money" color="green" rounded>
+          <q-tooltip>Mark as sold</q-tooltip>
+        </q-btn>
+        <q-btn @click="deleteListingDialog = true" size="sm" class="q-mr-sm delete-icon" icon="close" color="negative" rounded>
+          <q-tooltip>Permanently Delete</q-tooltip>
+        </q-btn>
+      </div>
     </div>
     <div class="top">
       <img
@@ -11,7 +19,7 @@
       <!--      category description listedBy-->
       <div class="title">{{ listing.title.slice(0, 33) }}</div>
 
-      <div style="position: absolute; top: 3px; left: 15px;">
+      <div style="position: absolute; top: 3px; left: 15px; font-size: .95em;">
         <span class="text-primary">{{ $lget(listing.address, 'address.freeformAddress', 'No address').slice(0, 15) }} {{ $lget(listing.address, 'address.freeformAddress', '').length > 15 ? '...' : '' }}</span>
         <q-icon name="location_on" style="font-size: 1.4em; margin-bottom: 2px;" color="primary"/>
       </div>
@@ -24,12 +32,16 @@
         <q-tooltip>Add to watch list</q-tooltip>
       </q-icon>
 
-      <q-icon @click="editListing" v-if="isMyListing" class="eye" name="create" size="xs">
+      <q-icon @click="editListing" v-if="isMyListing && !listing.sold" class="eye" name="create" size="xs">
         <q-tooltip>Edit</q-tooltip>
       </q-icon>
 
-      <q-icon @click="archiveListing" v-if="isMyListing && listing.archived === false" class="eye eye-archive" name="archive" size="xs">
+      <q-icon @click="archiveListing" v-if="(isMyListing && listing.archived === false) && !listing.sold" class="eye eye-archive" name="archive" size="xs">
         <q-tooltip>Archive Listing</q-tooltip>
+      </q-icon>
+
+      <q-icon v-if="isMyListing && listing.sold" name="description" class="eye eye-doc">
+        <q-tooltip>Document bill of sale</q-tooltip>
       </q-icon>
 
       <div class="eye eye-views" v-if="isMyListing">
@@ -57,6 +69,44 @@
       <EditListing :listing="listing"/>
     </q-dialog>
 
+    <q-dialog v-model="markAsSolidDialog">
+      <q-card style="min-width: 350px; max-width: 70vw;">
+        <q-card-section>
+          <span class="text-h5">Are you sure you wish to mark <span class="text-red">{{ listing.title }}</span> as sold?</span>
+          <div class="text-h6 q-mb-lg q-mt-sm">You will not be able to undo this action</div>
+          <div>Type <span class="text-red">{{ listing.title }}</span> to confirm</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-input dense v-model="confirmAction" autofocus />
+        </q-card-section>
+
+        <q-card-actions align="right" class="text-primary">
+          <q-btn flat label="Cancel" color="secondary" v-close-popup />
+          <q-btn @click="confirmSold" flat label="Confirm" :disable="confirmAction !== listing.title" v-close-popup/>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+    <q-dialog v-model="deleteListingDialog">
+      <q-card style="min-width: 350px">
+        <q-card-section>
+          <span class="text-h5">Are you sure you wish delete <span class="text-red">{{ listing.title }}?</span></span>
+          <div class="text-h6 q-mb-lg">You will not be able to undo this action</div>
+          <div>Type <span class="text-red">{{ listing.title }}</span> to confirm</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-input dense v-model="confirmAction" autofocus />
+        </q-card-section>
+
+        <q-card-actions align="right" class="text-primary">
+          <q-btn flat label="Cancel" color="secondary" v-close-popup />
+          <q-btn @click="confirmDelete" flat label="Delete" :disable="confirmAction !== listing.title" v-close-popup/>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
   </q-card>
 </template>
 
@@ -71,7 +121,10 @@
     components: {EditListing},
     data(){
       return {
-        editListingDialog: false
+        editListingDialog: false,
+        deleteListingDialog: false,
+        markAsSolidDialog: false,
+        confirmAction: ''
       }
     },
     props: {
@@ -90,7 +143,8 @@
         patchUser: 'patch'
       }),
       ...mapActions('listings', {
-        patchListing: 'patch'
+        patchListing: 'patch',
+        deleteListing: 'remove'
       }),
       getConditionColor(condition) {
         if (condition === 'New') return 'green'
@@ -147,6 +201,38 @@
         else {
           this.editListingDialog = true;
         }
+      },
+      confirmSold(){
+        if(this.listing.listedBy !== this.user._id) return;
+        this.confirmAction = '';
+        this.patchListing([this.listing._id, {
+          sold: true
+        }]).then(() => {
+          this.$q.notify({
+            message: 'Listing added to sold',
+            color: 'positive'
+          })
+        }).catch(err => {
+          this.$q.notify({
+            message: err.message,
+            color: 'negative'
+          })
+        })
+      },
+      confirmDelete(){
+        if(this.listing.listedBy !== this.user._id) return;
+        this.confirmAction = '';
+        this.deleteListing([this.listing._id]).then(() => {
+          this.$q.notify({
+            message: 'Listing deleted successfully',
+            color: 'positive'
+          })
+        }).catch(err => {
+          this.$q.notify({
+            message: err.message,
+            color: 'negative'
+          })
+        })
       }
     },
     computed: {
@@ -172,11 +258,21 @@
       top: 0;
       left: 0;
       width: 100%;
-      background-color: rgba(0, 0, 0, 0.3);
+      background-color: rgba(0, 0, 0, 0.5);
       text-align: center;
       padding: 8px 0;
       opacity: 0;
       transition: 0.3s all;
+
+      .sold-icon, .delete-icon {
+        position: absolute;
+        top: 13px;
+        right: 10px;
+      }
+
+      .delete-icon {
+        left: 10px;
+      }
     }
 
     .top {
@@ -193,7 +289,7 @@
       position: relative;
 
       .title {
-        font-size: 1.8em;
+        font-size: 1.5em;
         margin-bottom: 9px;
         margin-top: 14px;
       }
@@ -211,6 +307,10 @@
         top: 5px;
         cursor: pointer;
         font-size: 1.3em !important;
+      }
+
+      .eye-doc{
+        top: 6px;
       }
 
       .eye-archive {

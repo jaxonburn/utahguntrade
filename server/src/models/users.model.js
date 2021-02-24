@@ -18,7 +18,7 @@ module.exports = function (app) {
     chats: [{type: Schema.Types.ObjectId, ref: 'chats'}],
     googleId: { type: String },
     facebookId: { type: String },
-
+    takeToListings: { type: Boolean, default: false }
   }, {
     timestamps: true
   });

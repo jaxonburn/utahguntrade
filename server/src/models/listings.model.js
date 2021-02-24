@@ -14,15 +14,25 @@ module.exports = function (app) {
       url: String
     }],
     address: {},
+    document: {},
+    point: {
+      type: {
+        type: String,
+        enum: ['Point'],
+      },
+      coordinates: {
+        type: [Number],
+      }
+    },
     title: {type: String, required: true},
     description: {type: String},
     watchedBy: [{type: Schema.Types.ObjectId, ref: 'users'}],
-    category: {type: String, enum: ['Knives', 'Rifle', 'AssaultRifle', 'Handgun', 'SubmachineGun', 'Hunting', 'Magazines', 'Scopes', 'Other', '9mm', '223/5.56', '45ACP', '12-Gauge', '.22', '.308' ]},
+    category: {type: String, enum: ['Knives', 'Rifle', 'AssaultRifle', 'Handgun', 'SubmachineGun', 'Hunting', 'Magazines', 'Scopes', 'Other', 'AssaultAmmo', 'HandgunAmmo.', 'RifleAmmo', 'ShotgunAmmo', 'SubmachineAmmo', 'Misc' ]},
     condition: {type: String, enum: ['New', 'Like New','Used', 'Worn']},
     tags: [{type: String}],
-    sold: {type: Boolean},
+    sold: {type: Boolean, default: false},
     viewed: [{type: Schema.Types.ObjectId, ref: 'users'}],
-    archived: {type: Boolean, default: false}
+    archived: {type: Boolean, default: false},
   }, {
     timestamps: true
   });

@@ -1,10 +1,15 @@
 
 // Application hooks that run for every service
+const {paramsFromClient} = require('feathers-hooks-common');
+
 const removeFastJoin = require('./hooks/common/remove-fastjoin');
 
 module.exports = {
   before: {
-    all: [removeFastJoin()],
+    all: [
+      paramsFromClient(),
+      removeFastJoin()
+    ],
     find: [],
     get: [],
     create: [],

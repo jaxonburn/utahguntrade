@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import routes from './routes'
-
+const {Notify} = require('quasar');
 Vue.use(VueRouter)
 import Routes from './routes';
 /*

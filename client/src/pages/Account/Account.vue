@@ -210,7 +210,6 @@
             }.bind(this));
           })
         } else {
-          console.log('do i have new image', doubleCloned);
           doubleCloned.save().then((res) => {
             this.$q.loading.hide();
             this.$q.notify({

@@ -2,7 +2,7 @@ import feathers from '@feathersjs/feathers'
 import socketio from '@feathersjs/socketio-client'
 import auth from '@feathersjs/authentication-client'
 import io from 'socket.io-client'
-import { iff, discard } from 'feathers-hooks-common'
+import { iff, discard, paramsForServer } from 'feathers-hooks-common'
 import feathersVuex from 'feathers-vuex'
 
 const socket = io('http://localhost:3030', {transports: ['websocket']})
@@ -16,7 +16,10 @@ const feathersClient = feathers()
         iff(
           context => ['create', 'update', 'patch'].includes(context.method),
           discard('__id', '__isTemp')
-        )
+        ),
+        context => {
+          context.params = paramsForServer(context.params);
+        }
       ]
     }
   })

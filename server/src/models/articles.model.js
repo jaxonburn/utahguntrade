@@ -16,7 +16,11 @@ module.exports = function (app) {
         image: {key: String, url: String},
       }
     ],
-    
+    readTime: {type: String, required: false},
+    createdBy: {type: String, required: true},
+    published: {type: Boolean, default: false},
+    views: {type: Number},
+    publishedAt: {type: Date}
   }, {
     timestamps: true
   });

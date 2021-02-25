@@ -107,10 +107,6 @@
       uploadImageSuccess(formData, index, fileList) {
         console.log('data', formData, index, fileList)
         this.images = fileList;
-        // Upload image api
-        // axios.post('http://your-url-upload', formData).then(response => {
-        //   console.log(response)
-        // })
       },
       beforeRemove(index, done, fileList) {
         console.log('index', index, fileList)
@@ -206,7 +202,6 @@
             }.bind(this));
           })
         } else {
-          console.log('do i have new image', doubleCloned);
           doubleCloned.save().then((res) => {
             this.$q.loading.hide();
             this.$q.notify({

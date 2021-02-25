@@ -1,8 +1,12 @@
 // Application hooks that run for every service
+const {paramsFromClient} = require('feathers-hooks-common');
+
 
 module.exports = {
   before: {
-    all: [],
+    all: [
+      paramsFromClient(),
+    ],
     find: [],
     get: [],
     create: [],

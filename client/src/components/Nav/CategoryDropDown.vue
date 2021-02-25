@@ -35,7 +35,7 @@
             label: 'Guns',
             open: false,
             types: [
-              'Rifles', 'Handguns', 'Submachine Guns', 'Assault Rifles', 'Shotguns',
+              'Rifles', 'Handguns', 'Shotguns',
             ]
           },
           {

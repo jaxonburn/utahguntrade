@@ -17,7 +17,7 @@ module.exports = function (app) {
     title: {type: String, required: true},
     description: {type: String},
     watchedBy: [{type: Schema.Types.ObjectId, ref: 'users'}],
-    category: {type: String, enum: ['Rifle', 'Assault Rifle', 'Handgun', 'Submachine Gun', 'Hunting', 'Magazines', 'Scopes','Other', '9mm', '223/5.56', '45 ACP', '12-Gauge', '.22', '.308' ]},
+    category: {type: String, enum: ['Rifle', 'Handgun', 'Hunting', 'Magazines', 'Scopes','Other', '9mm', '223/5.56', '45 ACP', '12-Gauge', '.22', '.308' ]},
     condition: {type: String, enum: ['New', 'Like New','Used', 'Worn']},
     tags: [{type: String}],
     sold: {type: Boolean},

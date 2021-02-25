@@ -1,11 +1,12 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header class="bg-white" elevated style="display: flex;flex-direction: column;"
-              :style="$route.path === '/register' ? 'height: 90px;' : 'height: 150px'">
-      <div class="row" style="height: 90px;width: 100%;display: grid; grid-template-columns: 0.5fr 2fr 0.5fr;">
+              :style="$route.path === '/register' || $q.platform.is.mobile ? 'height: 90px;' : 'height: 150px'">
+      <div class="row" style="height: 90px;width: 100%;display: grid; grid-template-columns: 0.5fr 2fr 0.3fr 0.3fr;" :style="!user ? 'grid-template-columns: 0.5fr 2fr 0.5fr 0.2fr;' : 'grid-template-columns: 0.5fr 2fr 0.3fr 0.3fr;'">
         <div>
           <img @click="$router.push('/')"
                height="90px"
+               width="80%"
                src="https://www.freelogoservices.com/api/main/images/1j+ojFVDOMkX9Wytexe43D6kif+EqhZNmBfIwXs1M3EMoAJtliEvhfVt9vU4"
                class="q-ml-lg cursor-pointer"
                alt="MainLogo"
@@ -23,72 +24,24 @@
             </template>
           </q-input>
         </div>
-        <div class="text-primary" style="display: flex; justify-content: flex-end; align-items: center;"
+        <div class="text-primary" style="display: flex;align-items: center;" :style="!user ? 'justify-content: space-between;' : 'justify-content: center'"
              v-if="$route.path !== '/register'">
-          <div class="q-pa-xs" v-if="user">
-            <q-btn-dropdown
-              class="glossy"
-              color="primary"
-              icon="account_circle"
-            >
-              <div class="row q-pa-md">
-                <div class="column flex justify-between">
-                  <div class="text-h6 q-mb-md text-center text-weight-thin" style="border-bottom: 1px solid black;">
-                    Notifications
-                  </div>
-                  <q-btn outlined label="Messages" icon="chat" size="sm" color="secondary" @click="chat = !chat">
-                  </q-btn>
-                  <div class="row flex-between">
-                    <q-btn outlined label="My listings" @click="$router.push({name: 'my-listings'})" icon="receipt"
-                           size="sm" color="secondary" class="q-mr-sm">
-                    </q-btn>
-
-                    <q-btn outlined label="Watched" @click="$router.push({name: 'my-watched'})" icon="fas fa-eye"
-                           size="sm" color="secondary" class="q-ml-sm">
-                    </q-btn>
-                  </div>
-                </div>
-
-                <q-separator vertical inset class="q-mx-lg"/>
-
-                <div class="column items-center">
-                  <q-avatar size="72px">
-                    <img :src="user.avatar">
-                  </q-avatar>
-
-                  <div class="text-subtitle1 q-mt-md q-mb-xs"></div>
-                  <q-btn
-                    color="primary"
-                    label="My Account"
-                    @click="$router.push('/account')"
-                    push
-                    size="sm"
-                    class="q-mb-md"
-                    v-close-popup
-                  >
-
-                  </q-btn>
-                  <q-btn
-                    color="primary"
-                    label="Logout"
-                    push
-                    size="sm"
-                    @click="logOut"
-                    v-close-popup
-                  />
-                </div>
-              </div>
-            </q-btn-dropdown>
+          <div class="flex flex-center cursor-pointer">
+            <q-btn round>
+            <q-avatar size="60px">
+            <img src="../assets/newIcon.png" alt="NewsPaper" width="50" height="50"/>
+            </q-avatar>
+            </q-btn>
           </div>
-          <div class="row">
+          <div class="row" v-if="!user">
             <div class="q-pr-xl">
-              <router-link to="/register" style="text-decoration: none;" v-if="!this.user">
-                <q-btn outlined color="primary" icon="account_circle" label="log in"></q-btn>
+              <router-link to="/register" style="text-decoration: none;">
+                <q-btn outlined color="primary"  label="log in"></q-btn>
               </router-link>
             </div>
           </div>
-
-          <div @mouseover="category.open = true;">
+        </div>
+          <div @mouseover="category.open = true;" class="flex flex-center">
             <q-btn-dropdown
               v-model="category.open"
               class="bg-white text-weight-regular q-mr-lg"
@@ -100,21 +53,88 @@
               size="lg"
             >
               <q-list>
-                <div @click="changeRoute('/')" class="cursor-pointer">
+                <q-item clickable v-ripple @click="changeRoute('/')" class="cursor-pointer" v-if="$route.path !== '/'">
+                  <q-item-section avatar>
+                    <q-icon color="primary" name="home" />
+                  </q-item-section>
                   <q-item-section class="side-menu-link">Home</q-item-section>
-                </div>
-                <div @click="changeRoute('/create-posting')" class="cursor-pointer side-menu-link double-side-menu">
-                  <span>Create Listing</span>
-                  <q-icon class="q-ml-sm" size="sm" name="add" color="primary"></q-icon>
-                </div>
-                <div @click="changeRoute('/listings')" class="cursor-pointer">
+                </q-item>
+                <q-separator/>
+                <q-item clickable v-ripple @click="changeRoute('/create-posting')" class="cursor-pointer side-menu-link double-side-menu">
+                  <q-item-section avatar>
+                    <q-icon color="primary" name="add_box" />
+                  </q-item-section>
+                  <q-item-section class="side-menu-link">Create Listing</q-item-section>
+                </q-item>
+                <q-separator/>
+                <q-item clickable v-ripple @click="changeRoute('/listings')" class="cursor-pointer">
+                  <q-item-section avatar>
+                    <q-icon color="primary" name="mdi-text-box-search" />
+                  </q-item-section>
                   <q-item-section class="side-menu-link">Browse Listings</q-item-section>
+                </q-item>
+                <q-separator/>
+                <div style="width: 100%;" v-if="user">
+                  <q-btn-dropdown
+                    class="bg-white text-primary"
+                    icon="account_circle"
+                    label="Account"
+                    style="width: 100%;"
+                    flat
+                  >
+                    <div class="row q-pa-md">
+                      <div class="column flex justify-between">
+                        <div class="text-h6 q-mb-md text-center text-weight-thin" style="border-bottom: 1px solid black;">
+                          Notifications
+                        </div>
+                        <q-btn outlined label="Messages" icon="chat" size="sm" color="secondary" @click="chat = !chat">
+                        </q-btn>
+                        <div class="row flex-between">
+                          <q-btn outlined label="My listings" @click="$router.push({name: 'my-listings'})" icon="receipt"
+                                 size="sm" color="secondary" class="q-mr-sm">
+                          </q-btn>
+
+                          <q-btn outlined label="Watched" @click="$router.push({name: 'my-watched'})" icon="fas fa-eye"
+                                 size="sm" color="secondary" class="q-ml-sm">
+                          </q-btn>
+                        </div>
+                      </div>
+
+                      <q-separator vertical inset class="q-mx-lg"/>
+
+                      <div class="column items-center">
+                        <q-avatar size="72px">
+                          <img :src="user.avatar">
+                        </q-avatar>
+
+                        <div class="text-subtitle1 q-mt-md q-mb-xs"></div>
+                        <q-btn
+                          color="primary"
+                          label="My Account"
+                          @click="$router.push('/account')"
+                          push
+                          size="sm"
+                          class="q-mb-md"
+                          v-close-popup
+                        >
+
+                        </q-btn>
+                        <q-btn
+                          color="primary"
+                          label="Logout"
+                          push
+                          size="sm"
+                          @click="logOut"
+                          v-close-popup
+                        />
+                      </div>
+                    </div>
+                  </q-btn-dropdown>
                 </div>
               </q-list>
             </q-btn-dropdown>
           </div>
 
-        </div>
       </div>
       <category-drop-down v-if="!$q.platform.is.mobile"></category-drop-down>
     </q-header>
@@ -127,8 +147,12 @@
           <img alt="Chat Box" src="../assets/isometricchat.png" class="chatImage q-pa-sm">
         </q-avatar>
       </transition>
-        <chat-box v-if="chat" @close="chat = !chat" :user="user"></chat-box>
+      <chat-box v-if="chat" @close="chat = !chat" :user="user"></chat-box>
     </q-page-container>
+    <div style="height: 20px;position: absolute; bottom: 0;width: 100%;" class="bg-secondary text-center row flex justify-start" >
+      <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline;">Report a bug?</p>
+      <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline;">Contact Owners</p>
+    </div>
   </q-layout>
 </template>
 
@@ -229,7 +253,6 @@
   .side-menu-link {
     transition: 0.3s all;
     font-size: 1.1em;
-    padding: 15px 20px;
   }
 
   .side-menu-link:hover {
@@ -239,18 +262,18 @@
   .double-side-menu {
     display: flex;
     align-items: center;
-    margin-top: 5px;
   }
 
   .chatIcon {
     position: fixed;
-    bottom: 20px;
+    bottom: 30px;
     right: 20px;
     width: 80px;
     height: 80px;
     z-index: 5;
-    -webkit-box-shadow: 0px 0px 18px 5px rgba(0,0,0,0.51);
-    box-shadow: 0px 0px 13px 1px rgba(0,0,0,0.31);background: rgba(255, 255, 255, 0.8);
+    -webkit-box-shadow: 0px 0px 18px 5px rgba(0, 0, 0, 0.51);
+    box-shadow: 0px 0px 13px 1px rgba(0, 0, 0, 0.31);
+    background: rgba(255, 255, 255, 0.8);
   }
 
   .chatImage {

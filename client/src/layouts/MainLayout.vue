@@ -109,14 +109,12 @@
                         <div class="text-h6 q-mb-md text-center text-weight-thin" style="border-bottom: 1px solid black;">
                           Notifications
                         </div>
+                        <div>
                         <q-btn outlined label="Messages" icon="chat" size="sm" color="secondary" @click="chat = !chat">
                         </q-btn>
-                        <div class="row flex-between">
-                          <q-btn outlined label="My listings" @click="$router.push({name: 'my-listings'})" icon="receipt"
-                                 size="sm" color="secondary" class="q-mr-sm">
-                          </q-btn>
-
-                          <q-btn outlined label="Watched" @click="$router.push({name: 'my-watched'})" icon="fas fa-eye"
+                        </div>
+                        <div class="row">
+                          <q-btn outlined label="Go Premium" @click="$router.push({name: 'my-watched'})" icon="fas fa-eye"
                                  size="sm" color="secondary" class="q-ml-sm">
                           </q-btn>
                         </div>

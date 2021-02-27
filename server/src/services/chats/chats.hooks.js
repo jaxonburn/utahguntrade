@@ -51,10 +51,10 @@ module.exports = {
   },
 
   after: {
-    all: [],
-    find: [
+    all: [
       nestedfJoinHook('users', 'users', 'user' )
     ],
+    find: [],
     get: [],
     create: [
       addChatToUser,

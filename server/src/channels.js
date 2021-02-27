@@ -37,6 +37,13 @@ module.exports = function (app) {
 
   // return chat events only to each chat specific channel which users have already been connected to on login.
   app.service('chats').publish((data) => {
+    let userIds = data.users.map(user => user.user);
+    const connections = app.channel('authenticated').connections.filter(conn => {
+      return userIds.includes(String(conn.user._id));
+    });
+    connections.forEach(conn => {
+      if (conn) app.channel(`chats/${data._id}`).join(conn);
+    });
     return app.channel(`chats/${data._id}`);
   });
 
@@ -47,20 +54,21 @@ module.exports = function (app) {
     ];
   });
 
+
   // will need this eventually!!
   // app.service('users').on('patched', updateChannels);
 
 
   // eslint-disable-next-line no-unused-vars
-  // app.publish((data, hook) => {
-  //   // Here you can add event publishers to channels set up in `channels.js`
-  //   // To publish only for a specific event use `app.publish(eventname, () => {})`
-  //
-  //   console.log('Publishing all events to all authenticated users. See `channels.js` and https://docs.feathersjs.com/api/channels.html for more information.'); // eslint-disable-line
-  //   console.log('published event!!!!', data);
-  //   // e.g. to publish all service events to all authenticated users use
-  //   return app.channel('authenticated');
-  // });
+  app.publish((data, hook) => {
+    // Here you can add event publishers to channels set up in `channels.js`
+    // To publish only for a specific event use `app.publish(eventname, () => {})`
+
+    console.log('Publishing all events to all authenticated users. See `channels.js` and https://docs.feathersjs.com/api/channels.html for more information.'); // eslint-disable-line
+    console.log('published event!!!!', data);
+    // e.g. to publish all service events to all authenticated users use
+    return app.channel('authenticated');
+  });
 
   // Here you can also add service specific event publishers
   // e.g. the publish the `users` service `created` event to the `admins` channel

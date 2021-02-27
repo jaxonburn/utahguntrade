@@ -10,6 +10,26 @@ export default {
 </script>
 <style>
   @font-face {
+    font-family: Kuchek;
+    src: url("assets/Poppins/Poppins-Bold.ttf") format("opentype");
+  }
+
+  @font-face {
+    font-family: KuchekMedium;
+    src: url("assets/Poppins/Poppins-SemiBold.ttf") format("opentype");
+  }
+
+  @font-face {
+    font-family: KuchekLight;
+    src: url("assets/Poppins/Poppins-Light.ttf") format("opentype");
+  }
+
+  @font-face {
+    font-family: KuchekThin;
+    src: url("assets/Poppins/Poppins-Thin.ttf") format("opentype");
+  }
+
+  @font-face {
     font-family: 'alegreyaregular';
     src: url('assets/alegreya-regular-webfont.woff2') format('woff2'),
     url('assets/alegreya-regular-webfont.woff') format('woff');

@@ -40,7 +40,7 @@
     },
     methods: {
       uploadImageSuccess(formData, index, fileList) {
-        console.log('data', formData, index, fileList)
+        // console.log('data', formData, index, fileList)
         this.$q.loading.show();
         let s3 = new AWS.S3();
         let today = new Date();
@@ -51,11 +51,11 @@
         if (fileList.length > 0) {
           fileList.forEach((image) => {
             let stream = image.path;
-            var uniqueName = {
+            let uniqueName = {
               path: `profile/${today.getFullYear().toString()}${today.getMonth().toString().padStart(2, "0")}/`,
               file: `guntrade_${image.name.replace(/[^a-zA-Z0-9.]/g, "")}`
             };
-            var params = {
+            let params = {
               Bucket: 'guntrade',
               Key: uniqueName.path + uniqueName.file,
               Body: image.file,
@@ -65,12 +65,7 @@
             };
             s3.upload(params, options, function (err, data) {
               if (err) {
-                // eslint-disable-next-line no-console
-                console.log('Something went wrong:', err);
               } else {
-                // eslint-disable-next-line no-console
-
-                console.log('Something went right:', data);
                 if (data['details'] === undefined) {
                   data['details'] = {};
                 }

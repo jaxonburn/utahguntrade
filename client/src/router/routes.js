@@ -1,20 +1,13 @@
 
 export default function({ store }) {
   // eslint-disable-next-line no-unused-vars
-  const isLoggedIn = (to, from, next) => {
-    store.dispatch('auth/authenticate').then(() => {
-      next();
-    }).catch(() => {
-      next('/');
-    });
-  };
   const routes = [
     {
       path: '/',
       component: () => import('layouts/MainLayout.vue'),
       children: [
         { path: '', component: () => import('pages/Index.vue') },
-        { path: 'register', component: () => import('pages/Account/Register.vue'),meta: { requiresAuth: false },},
+        { path: 'register', name: 'register', component: () => import('pages/Account/Register.vue'),meta: { requiresAuth: false },},
         { path: 'account', component: () => import('pages/Account/Account.vue'),meta: { requiresAuth: true },},
         { path: 'create-posting', name: 'create-posting', component: () => import('pages/CreatePosting'), meta: { requiresAuth: true } },
         { path: 'listings', name: 'listings', component: () => import('pages/Listings') },
@@ -28,8 +21,9 @@ export default function({ store }) {
       component: () => import('layouts/Manage'),
       children: [
         {path: '', component: () => import('pages/Manage/Manage.vue'), meta: {requiresAuth: true}},
+        {path: 'reports', component: () => import('pages/Manage/Reports'), meta: {requiresAuth: true}},
         {path: 'articles', component: () => import('pages/Manage/Articles'), meta: {requiresAuth: true}},
-        {path: 'reports', component: () => import('pages/Manage/Reports'), meta: {requiresAuth: true}}
+        {path: 'articles/:id', component: () => import('pages/Manage/ArticleView'), meta: {requiresAuth: true}},
       ]
     },
 

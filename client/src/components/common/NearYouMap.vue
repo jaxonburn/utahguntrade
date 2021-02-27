@@ -61,7 +61,9 @@
         this.map.addControl(new tt.FullscreenControl());
         this.map.addControl(new tt.NavigationControl());
         res.data.map((listing) => {
-          this.createMarker([listing.address.position.lon, listing.address.position.lat], '#FFFFFF', `${listing.title} $${listing.price}`);
+          if(listing.address){
+            this.createMarker([this.$lget(listing, 'address.position.lon' , 0), this.$lget(listing, 'address.position.lat', 0)], '#FFFFFF', `${listing.title} $${listing.price}`);
+          }
         })
       });
       this.locationLoading = false;
@@ -81,7 +83,6 @@
       setAddress(location) {
         this.address = location;
         console.log(location.position.lat, location.position.lon)
-
       },
       createRadius() {
         this.locationLoading = true;

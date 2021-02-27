@@ -13,7 +13,7 @@
               <div class="text-mb-xxl" style="text-align: center;">Browse Gun Listings all over Utah</div>
             </div>
             <div style="text-align: center; color: white; margin-top: 13px; font-size: 1.3em;">
-              <div>The new way of selling weapons, but we're much more than that.</div>
+              <div>Trade | Connect | Educate</div>
             </div>
             <div style="text-align: center;">
               <q-btn @click="$router.push('listings')" class="q-mt-lg" style="text-align: center;" color="primary"

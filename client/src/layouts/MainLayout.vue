@@ -2,12 +2,12 @@
   <q-layout view="lHh Lpr lFf">
     <q-header class="bg-white" elevated style="display: flex;flex-direction: column;"
               :style="$route.path === '/register' || $q.platform.is.mobile ? 'height: 90px;' : 'height: 150px'">
-      <div class="row" style="height: 90px;width: 100%;display: grid; grid-template-columns: 0.5fr 2fr 0.3fr 0.3fr;" :style="!user ? 'grid-template-columns: 0.5fr 2fr 0.5fr 0.2fr;' : 'grid-template-columns: 0.5fr 2fr 0.3fr 0.3fr;'">
+      <div class="row" style="height: 90px;width: 100%;display: grid; grid-template-columns: 0.3fr 2fr 0.3fr 0.3fr;" :style="!user ? 'grid-template-columns: 0.5fr 2fr 0.5fr 0.2fr;' : 'grid-template-columns: 0.5fr 2fr 0.3fr 0.3fr;'">
         <div>
           <img @click="$router.push('/')"
                height="90px"
                width="80%"
-               src="https://www.freelogoservices.com/api/main/images/1j+ojFVDOMkX9Wytexe43D6kif+EqhZNmBfIwXs1M3EMoAJtliEvhfVt9vU4"
+               src="../assets/utahgunhub.png"
                class="q-ml-lg cursor-pointer"
                alt="MainLogo"
           />
@@ -42,7 +42,7 @@
             </div>
           </div>
         </div>
-          <div @mouseover="category.open = true;" class="flex flex-center">
+          <div @mouseover="category.open = true;" class="flex flex-center" v-if="$route.path !== '/register'">
             <q-btn-dropdown
               v-model="category.open"
               class="bg-white text-weight-regular q-mr-lg"

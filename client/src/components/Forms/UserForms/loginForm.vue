@@ -36,7 +36,7 @@
           </q-input>
         </div>
         <div>
-          <span class="text-weight-bold text-primary cursor-pointer" @click="$emit('register')">Don't have an account?</span>
+          <span class="text-weight-bold text-primary cursor-pointer" @click="$emit('register')" v-if="!mini">Don't have an account?</span>
           <div class="flex justify-end">
             <q-btn rounded type="submit" color="primary">
               Log in
@@ -52,6 +52,9 @@
   import {mapActions} from 'vuex';
   export default {
     name: 'loginForm',
+    props: {
+      mini: Boolean,
+    },
     data() {
       return {
         showPassword: false,
@@ -84,7 +87,12 @@
             position: 'top-right',
             timeout: 3000,
           })
-          this.$router.push('/');
+          if(!this.mini){
+            this.$router.push('/');
+          }else {
+            this.$emit('close');
+          }
+
         }).catch(() => {
           this.$q.loading.hide();
           this.$q.notify({

@@ -18,7 +18,10 @@ class Articles extends BaseModel {
           image: null,
         }
       ],
+      comments: [],
+      favorites: [],
       createdBy: null,
+      createdAt: new Date(),
       published: false,
       publishedAt: null,
       readTime: null

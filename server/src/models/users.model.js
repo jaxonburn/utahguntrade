@@ -16,6 +16,7 @@ module.exports = function (app) {
     listings: [{type: Schema.Types.ObjectId, ref: 'listings'}],
     watched: [{type: Schema.Types.ObjectId, ref: 'listings'}],
     chats: [{type: Schema.Types.ObjectId, ref: 'chats'}],
+    comments: [{type: Schema.Types.ObjectId, ref: 'articles'}],
     googleId: { type: String },
     facebookId: { type: String },
     takeToListings: { type: Boolean, default: false }

@@ -18,9 +18,20 @@ module.exports = function (app) {
     ],
     readTime: {type: String, required: false},
     createdBy: {type: String, required: true},
+    avatar: {key: String, url: String,},
+    about: {type: String, required: false},
     published: {type: Boolean, default: false},
     views: {type: Number},
-    publishedAt: {type: Date}
+    publishedAt: {type: Date},
+    favorites: [{type: Schema.Types.ObjectId, ref: 'users'}],
+    comments: [new Schema({
+      sentBy: {type: Schema.Types.ObjectId, ref: 'users', required: true},
+      message: {type: String, required: true},
+      upVote: [{type: Schema.Types.ObjectId, ref: 'users'}],
+      replies: [{sentBy: {type: Schema.Types.ObjectId, ref: 'users'}, message: {type: String, required: true}}],
+      createdAt: {type: Date, default: new Date()}
+    }, {
+    })],
   }, {
     timestamps: true
   });

@@ -8,8 +8,12 @@
         <q-card-section>
           <img :src="article.mainImage.url"  style="height: 200px" width="100%"/>
         </q-card-section>
-          <q-card-section class="text-black">
-          {{article.mainTitle}}
+          <q-card-section class="text-black row flex justify-between">
+            <div>{{article.mainTitle}}</div>
+            <div>
+              <q-icon name="visibility" color="black" size="sm" class="cursor-pointer" @click="$router.push('articles/' + article._id)"/>
+              <q-icon name="delete" color="red" size="sm" class="cursor-pointer" @click="article.remove()"/>
+            </div>
           </q-card-section>
       </q-card>
     </div>

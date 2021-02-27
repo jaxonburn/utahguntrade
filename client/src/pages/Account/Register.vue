@@ -21,6 +21,9 @@
 
   export default {
     name: 'Register',
+    mounted(){
+      this.register = true;
+    },
     components: {
       LoginForm,
       RegisterForm,

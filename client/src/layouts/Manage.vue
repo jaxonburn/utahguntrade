@@ -1,8 +1,8 @@
 <template>
   <q-layout view="hHh lpR fFf">
 
-    <q-header elevated class="bg-primary text-white" height-hint="98" style="-webkit-box-shadow: 0px 5px 10px 2px rgba(0,0,0,0.5);
-box-shadow: 0px 5px 10px 2px rgba(0,0,0,0.5);">
+    <q-header elevated class="bg-primary text-white" height-hint="98" style="-webkit-box-shadow: 0 5px 10px 2px rgba(0,0,0,0.5);
+box-shadow: 0 5px 10px 2px rgba(0,0,0,0.5);">
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="left = !left" />
 
@@ -19,7 +19,7 @@ box-shadow: 0px 5px 10px 2px rgba(0,0,0,0.5);">
     </q-header>
 
     <q-drawer show-if-above v-model="left" side="left" elevated>
-      <q-scroll-area class="fit">
+      <q-scroll-area class="fit" style="height: 100vh;">
         <q-list>
 
           <template v-for="(menuItem, index) in menuList">

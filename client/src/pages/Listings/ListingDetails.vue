@@ -89,7 +89,6 @@
         let newChat = new models.api.Chats({users: [{user: this.user._id, unreadMessages: []}, {user: this.listing._fastjoin.listedBy._id, unreadMessages: []}]});
         newChat.create().then((res) => {
           this.$q.loading.hide();
-          console.log(res);
           this.$router.push({name: 'messages', params: { chatId: String(res._id) }});
         }).catch(err => {
           if(err.name === 'GeneralError') {

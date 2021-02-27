@@ -34,6 +34,14 @@ const checkIfChatExists = async (ctx) => {
   return ctx;
 };
 
+const channelUpdateCheck = async (context) => {
+  checkContext(context, 'after');
+
+  if (context.result.chat) {
+    const chat = await context.app.service('chats').get(context.result.chat);
+    context.app.service('chats').emit('updated', chat);
+  }
+};
 
 module.exports = {
   before: {

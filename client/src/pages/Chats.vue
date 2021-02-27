@@ -40,7 +40,10 @@
     name: "Messages",
     components: {AddFriendForm, EmojiPicker},
     mounted(){
-      this.loadChats({query: {_id: {$in: this.user.chats}}});
+      this.loadChats({query: {_id: {$in: this.user.chats}}}).then(res => {
+        this.selectedChat = res.data[0];
+        console.log(res);
+      })
     },
     data(){
       return {
@@ -80,10 +83,13 @@
 <style scoped lang="scss">
   .chats-wrapper {
     display: flex;
+    overflow: Hidden;
 
     .sidebar {
       flex: 0.27;
       box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.3);
+      height: 90vh;
+      overflow-y: scroll;
 
       .create-chat {
         background-color: #dadfea;
@@ -101,6 +107,7 @@
 
       .chat {
         .user-chat {
+          border-bottom: 1px solid black;
           display: flex;
           align-items: center;
           justify-content: flex-start;

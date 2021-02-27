@@ -61,11 +61,32 @@
                   <q-item-section class="side-menu-link">Home</q-item-section>
                 </q-item>
                 <q-separator/>
+                <q-item clickable v-ripple @click="changeRoute('/messages')" class="cursor-pointer" v-if="$route.path !== '/messages'">
+                  <q-item-section avatar>
+                    <q-icon color="primary" name="message" />
+                  </q-item-section>
+                  <q-item-section class="side-menu-link">Messages</q-item-section>
+                </q-item>
+                <q-separator/>
                 <q-item clickable v-ripple @click="changeRoute('/create-posting')" class="cursor-pointer side-menu-link double-side-menu">
                   <q-item-section avatar>
                     <q-icon color="primary" name="add_box" />
                   </q-item-section>
                   <q-item-section class="side-menu-link">Create Listing</q-item-section>
+                </q-item>
+                <q-separator/>
+                <q-item clickable v-ripple @click="changeRoute('/my-listings')" class="cursor-pointer side-menu-link double-side-menu">
+                  <q-item-section avatar>
+                    <q-icon color="primary" name="grading" />
+                  </q-item-section>
+                  <q-item-section class="side-menu-link">My listings</q-item-section>
+                </q-item>
+                <q-separator/>
+                <q-item clickable v-ripple @click="changeRoute('/my-watched')" class="cursor-pointer side-menu-link double-side-menu">
+                  <q-item-section avatar>
+                    <q-icon color="primary" name="visibility" />
+                  </q-item-section>
+                  <q-item-section class="side-menu-link">My watched</q-item-section>
                 </q-item>
                 <q-separator/>
                 <q-item clickable v-ripple @click="changeRoute('/listings')" class="cursor-pointer">
@@ -167,6 +188,11 @@
     components: {
       ChatBox,
       CategoryDropDown
+    },
+    mounted(){
+      if(this.user && this.user.takeToListings && this.$route.path !== '/listings') {
+        this.$router.push({name: 'listings'});
+      }
     },
     data() {
       return {

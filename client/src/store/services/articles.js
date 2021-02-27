@@ -15,7 +15,7 @@ class Articles extends BaseModel {
         {
           title: '',
           body: '',
-          image: null,
+          image: {},
         }
       ],
       createdBy: null,

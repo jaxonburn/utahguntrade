@@ -5,14 +5,20 @@
       <Loading />
     </div>
 
+    <div class="text-h5 q-mt-xl q-ml-xl">
+      Showing Most relevant results <span>{{ $route.query.search ? `for "${$route.query.search}"` : $route.query.category ? `for "${$route.query.category}"` : '' }}</span>
+    </div>
+
     <div class="no-results" v-if="!isPending && listings.length === 0">
       <div>No results found</div>
       <q-btn color="primary" label="Reset search" @click="$router.push('/listings');" />
     </div>
 
     <div v-else>
-      <div class="filter-menu row">
-
+      <div class="filter-menu row q-px-xl q-pt-lg">
+<!--        <q-select class="col-2 q-mr-xl" filled :value="'Sort by low to high'"></q-select>-->
+<!--        <q-select class="col-2 q-mr-xl" filled :value="'Sort by low to high'"></q-select>-->
+<!--        <q-select class="col-2 q-mr-xl" filled :value="'Sort by low to high'"></q-select>-->
       </div>
       <div class="listings-wrapper">
         <Listing :listing="listing" :key="idx" v-for="(listing, idx) of listings"></Listing>

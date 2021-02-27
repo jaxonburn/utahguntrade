@@ -1,5 +1,6 @@
 const {authenticate} = require('@feathersjs/authentication').hooks;
 const lget = require('lodash.get');
+const { checkContext } = require('feathers-hooks-common');
 
 const {
   hashPassword, protect
@@ -8,9 +9,9 @@ const {
 const initialChat = async context => {
   const userId = context.result._id;
   await context.app.service('chats').create({
-    users: [{user: userId, unreadMessages: []}, {user: '603472e5e0c4550e71c2437e', unreadMessages: []}],
+    users: [{user: userId, unreadMessages: []}, {user: '603aaafb1fcbe60d5424bb5a', unreadMessages: []}],
     messages: [{
-      sentBy: '603472e5e0c4550e71c2437e',
+      sentBy: '603aaafb1fcbe60d5424bb5a',
       message: `Hi ${context.result.username}, welcome to Utah Gun Trade! Here you can send messages to others and negotiate on trades,offers, or other firearm related business. If you have any issues or questions don't hesitate to contact guntradesupport@gmail.com.`
     }]
   }).then((res) => {
@@ -39,8 +40,6 @@ const modifyWatched = async context => {
   }
 }
 
-
-
 module.exports = {
   before: {
     all: [],
@@ -66,7 +65,7 @@ module.exports = {
       initialChat,
     ],
     update: [],
-    patch: [modifyWatched],
+    patch: [modifyWatched,],
     remove: []
   },
 

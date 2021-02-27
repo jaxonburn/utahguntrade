@@ -7,7 +7,8 @@
   z-index: 5;
   -webkit-box-shadow: 0px 0px 8px 4px rgba(0,0,0,0.39);
 box-shadow: 0px 0px 8px 4px rgba(0,0,0,0.39);
-">
+overflow-y: scroll;
+" >
       <q-inner-loading :showing="loadingChats">
         <q-spinner-comment size="75px" color="primary"/>
       </q-inner-loading>
@@ -32,7 +33,7 @@ box-shadow: 0px 0px 8px 4px rgba(0,0,0,0.39);
             <q-icon name="cancel" size="sm" class="q-ma-sm cursor-pointer" color="secondary"
                     @click="$emit('close')"></q-icon>
           </div>
-          <div style="overflow-y: scroll;">
+          <div>
             <div v-for="(chat,index) in chats" :key="index" class="test">
               <q-item class="q-my-sm" clickable v-ripple @click.stop="openChat(chat)">
                 <q-badge v-if="chat.users.filter((chatUser) => chatUser.user === user._id)[0].unreadMessages.length > 0"

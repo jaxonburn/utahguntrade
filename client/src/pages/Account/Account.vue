@@ -43,7 +43,7 @@
             <q-separator/>
           </div>
           <div class="q-mt-md q-pl-xs">
-            <input v-model="takeListings" type="checkbox" :disabled="!editing"/>
+            <input v-model="clonedUser.takeToListings" type="checkbox" :disabled="!editing"/>
             <span style="margin-left: 10px; font-size: 1.1em;">Take me to listings when I log on</span>
             <q-separator />
           </div>
@@ -99,7 +99,6 @@
         editing: false,
         date: date,
         images: [],
-        takeListings: false
       }
     },
     computed: {
@@ -109,14 +108,6 @@
       clonedUser() {
         return this.user.clone();
       }
-    },
-    mounted(){
-      if(!this.user.takeToListings) {
-        this.takeListings = false;
-      } else {
-        this.takeListings = true;
-      }
-      console.log(this.user);
     },
     methods: {
       uploadImageSuccess(formData, index, fileList) {

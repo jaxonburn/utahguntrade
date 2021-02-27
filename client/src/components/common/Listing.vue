@@ -17,10 +17,12 @@
     </div>
     <div class="bottom">
       <!--      category description listedBy-->
-      <div class="title">{{ listing.title.slice(0, 33) }}</div>
+      <div class="title">{{ listing.title.slice(0, 33) }} {{ listing.title.length > 33 ? '...' : '' }}
+        <q-tooltip v-if="listing.title.length > 33">{{ listing.title }}</q-tooltip>
+      </div>
 
       <div style="position: absolute; top: 3px; left: 15px; font-size: .95em;">
-        <span class="text-primary">{{ $lget(listing.address, 'address.freeformAddress', 'No address').slice(0, 15) }} {{ $lget(listing.address, 'address.freeformAddress', '').length > 15 ? '...' : '' }}</span>
+        <span class="text-primary">{{ $lget(listing, 'address.address.freeformAddress', 'No address').slice(0, 15) }} {{ $lget(listing, 'address.address.freeformAddress', '').length > 15 ? '...' : '' }} <q-tooltip v-if="$lget(listing, 'address.address.freeformAddress', '').length > 15">{{ $lget(listing, 'address.address.freeformAddress', 'No address') }}</q-tooltip></span>
         <q-icon name="location_on" style="font-size: 1.4em; margin-bottom: 2px;" color="primary"/>
       </div>
 
@@ -40,8 +42,16 @@
         <q-tooltip>Archive Listing</q-tooltip>
       </q-icon>
 
-      <q-icon v-if="isMyListing && listing.sold" name="description" class="eye eye-doc">
-        <q-tooltip>Document bill of sale</q-tooltip>
+      <q-icon @click="attachDocument" v-if="isMyListing && listing.sold && !listing.document" name="description" class="eye eye-doc">
+        <q-tooltip>Attach a document</q-tooltip>
+      </q-icon>
+
+      <q-icon @click="viewDocument" v-if="isMyListing && listing.sold && listing.document" name="find_in_page" class="eye" size="xs">
+        <q-tooltip>View document</q-tooltip>
+      </q-icon>
+
+      <q-icon @click="unarchiveListing" v-if="isMyListing && listing.archived" class="eye eye-archive" name="unarchive" size="xs">
+        <q-tooltip>Un-archive Listing</q-tooltip>
       </q-icon>
 
       <div class="eye eye-views" v-if="isMyListing">
@@ -50,10 +60,6 @@
         </q-icon>
         <q-tooltip>{{ listing.viewed.length }} {{ listing.viewed.length === 1 ? 'view' : 'views' }}</q-tooltip>
       </div>
-
-      <q-icon @click="unarchiveListing" v-if="isMyListing && listing.archived" class="eye eye-archive" name="unarchive" size="xs">
-        <q-tooltip>Un-archive Listing</q-tooltip>
-      </q-icon>
 
       <div class="price">Listed price: ${{ listing.price }}</div>
       <div class="condition">Condition: <span :style="{color: getConditionColor(listing.condition), fontWeight: '600'}">{{
@@ -67,6 +73,14 @@
 
     <q-dialog v-model="editListingDialog" full-width>
       <EditListing :listing="listing"/>
+    </q-dialog>
+
+    <q-dialog v-model="documentDialog" full-width full-height>
+      <CreateDocument :listing="listing" />
+    </q-dialog>
+
+    <q-dialog v-model="viewDocumentDialog">
+      <ViewDocument :id="listing.document"/>
     </q-dialog>
 
     <q-dialog v-model="markAsSolidDialog">
@@ -115,15 +129,19 @@
   // import noImage from '../../assets/no_image.png';
   import {mapGetters, mapActions} from 'vuex';
   import EditListing from "components/Forms/EditListing";
+  import CreateDocument from "components/Forms/DocumentForms/CreateDocument";
+  import ViewDocument from "components/common/ViewDocument";
 
   export default {
     name: "Listing",
-    components: {EditListing},
+    components: {ViewDocument, CreateDocument, EditListing},
     data(){
       return {
         editListingDialog: false,
         deleteListingDialog: false,
         markAsSolidDialog: false,
+        documentDialog: false,
+        viewDocumentDialog: false,
         confirmAction: ''
       }
     },
@@ -168,6 +186,10 @@
           message: `${res.title} successfully un-archived, change view to see posted listings`
         }));
       },
+      viewDocument(){
+        if(this.user._id !== this.listing.listedBy) return;
+        this.viewDocumentDialog = true;
+      },
       addToWatchList(){
         if(this.user.watched.includes(this.listing._id)) return;
         else {
@@ -201,6 +223,9 @@
         else {
           this.editListingDialog = true;
         }
+      },
+      attachDocument(){
+        this.documentDialog = true;
       },
       confirmSold(){
         if(this.listing.listedBy !== this.user._id) return;
@@ -279,7 +304,7 @@
       img {
         width: 100%;
         margin-right: 20px;
-        max-height: 220px;
+        max-height: 300px;
       }
 
     }

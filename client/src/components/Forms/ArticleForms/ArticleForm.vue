@@ -78,7 +78,7 @@
         let section = {
           title: '',
           body: '',
-          image: null,
+          image: {},
         }
         this.form.sections.push(section);
       }

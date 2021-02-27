@@ -1,6 +1,7 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { nestedfJoinHook } = require('../../hooks/common/fastJoin');
 const { GeneralError } = require('@feathersjs/errors');
+const { checkContext } = require('feathers-hooks-common');
 
 const addMessageToUnread = (ctx) => {
   let sentBy = ctx.data.messages[ctx.data.messages.length - 1];
@@ -23,14 +24,16 @@ const addChatToUser = (ctx) => {
 };
 
 const checkIfChatExists = async (ctx) => {
-  await ctx.app.service('chats').find({query: {users: {$in: [ctx.data.users]}}}).then((res) => {
-    if(res.data.length > 0){
-      throw new GeneralError('Chat Already Exists');
-    }else {
-      return ctx;
-    }
-  });
+  if(String(ctx.data.users[0].user) === String(ctx.data.users[1].user)) {
+    throw new GeneralError('Cannot make a chat with yourself');
+    return;
+  }
+  // await ctx.app.service('chats').find({query: {'users.user': {$in: [user]}}}).then((res) => {
+  //
+  // });
+  return ctx;
 };
+
 
 module.exports = {
   before: {
@@ -38,7 +41,7 @@ module.exports = {
     find: [],
     get: [],
     create: [
-      checkIfChatExists
+      // checkIfChatExists
     ],
     update: [],
     patch: [
@@ -54,7 +57,7 @@ module.exports = {
     ],
     get: [],
     create: [
-      addChatToUser
+      addChatToUser,
     ],
     update: [],
     patch: [],

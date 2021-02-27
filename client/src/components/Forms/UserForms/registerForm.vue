@@ -29,7 +29,7 @@
         </div>
 
         <div class="q-my-md">
-          <q-input rounded outlined v-model="userData.phone" label="Phone" mask="###-###-####"
+          <q-input rounded outlined hint="Phone number is recommended for people who plan to sell" v-model="userData.phone" label="Phone" mask="###-###-####"
                    unmasked-value>
             <template v-slot:prepend>
               <q-icon name="call"/>
@@ -107,6 +107,20 @@
       createUser(){
         this.$q.loading.show();
         let user = new models.api.Users(this.userData);
+        if(!user.username){
+          this.$q.notify({
+            message: 'Must create a username',
+            color: 'negative'
+          });
+          return;
+        }
+        if(!user.email || !user.password){
+          this.$q.notify({
+            message: 'User must have valid email and password',
+            color: 'negative'
+          });
+          return;
+        }
         let userData = {email: user.email, password: user.password};
         console.log('this is the user', user);
         user.create().then(() => {

@@ -16,11 +16,12 @@ export default function({ store }) {
         { path: '', component: () => import('pages/Index.vue') },
         { path: 'register', component: () => import('pages/Account/Register.vue'),meta: { requiresAuth: false },},
         { path: 'account', component: () => import('pages/Account/Account.vue'),meta: { requiresAuth: true },},
-        { path: 'create-posting', name: 'create-posting', component: () => import('pages/CreatePosting'), meta: { requiresAuth: true } },
+        { path: 'create-posting', name: 'create-posting', component: () => import('pages/Listings/CreatePosting'), meta: { requiresAuth: true } },
         { path: 'listings', name: 'listings', component: () => import('pages/Listings') },
-        { path: 'my-watched', name: 'my-watched', component: () => import('pages/MyWatched'), meta: { requiresAuth: true } },
-        { path: 'my-listings', name: 'my-listings', component: () => import('pages/MyListings'), meta: { requiresAuth: true } },
-        { path: 'listing-details/:id', component: () => import('pages/ListingDetails') },
+        { path: 'my-watched', name: 'my-watched', component: () => import('pages/Listings/MyWatched'), meta: { requiresAuth: true } },
+        { path: 'my-listings', name: 'my-listings', component: () => import('pages/Listings/MyListings'), meta: { requiresAuth: true } },
+        { path: 'listing-details/:id', component: () => import('pages/Listings/ListingDetails') },
+        { path: 'messages', name: 'messages', component: () => import('pages/Chats'), meta: { requiresAuth: true } }
       ],
     },
     {

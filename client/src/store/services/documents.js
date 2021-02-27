@@ -1,36 +1,21 @@
 import feathersClient, { makeServicePlugin, BaseModel } from '../../feathers-client'
 
-class Articles extends BaseModel {
+class Documents extends BaseModel {
   constructor(data, options) {
     super(data, options)
   }
   // Required for $FeathersVuex plugin to work after production transpile.
-  static modelName = 'Articles'
+  static modelName = 'Documents'
   // Define default properties here
   static instanceDefaults() {
     return {
-      mainImage: {},
-      mainTitle: '',
-      sections: [
-        {
-          title: '',
-          body: '',
-          image: {},
-        }
-      ],
-      comments: [],
-      favorites: [],
-      createdBy: null,
-      createdAt: new Date(),
-      published: false,
-      publishedAt: null,
-      readTime: null
+      users: [],
     }
   }
 }
-const servicePath = 'articles'
+const servicePath = 'documents'
 const servicePlugin = makeServicePlugin({
-  Model: Articles,
+  Model: Documents,
   service: feathersClient.service(servicePath),
   servicePath
 })

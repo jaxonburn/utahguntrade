@@ -92,7 +92,7 @@
         let section = {
           title: '',
           body: '',
-          image: null,
+          image: {},
         }
         this.show.section1 = false;
         this.form.sections.push(section);

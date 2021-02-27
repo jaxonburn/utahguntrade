@@ -50,6 +50,10 @@
               {
                 display: 'Shotguns',
                 routeTo: 'Shotgun'
+              },
+              {
+                display: 'Handguns',
+                routeTo: 'Handgun'
               }
             ]
           },
@@ -102,6 +106,10 @@
               {
                 display: 'Scopes',
                 routeTo: 'Scopes'
+              },
+              {
+                display: 'Other',
+                routeTo: 'Other'
               }
             ]
           }

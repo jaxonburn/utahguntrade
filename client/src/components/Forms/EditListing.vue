@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import CreatePosting from "pages/CreatePosting";
+  import CreatePosting from "pages/Listings/CreatePosting";
   export default {
     name: "EditListing",
     components: {CreatePosting},

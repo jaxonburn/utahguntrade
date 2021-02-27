@@ -14,7 +14,7 @@ module.exports = function (app) {
       url: String
     }],
     address: {},
-    document: {},
+    document: { required: false, default: null, type: Schema.Types.ObjectId, ref: 'documents' },
     point: {
       type: {
         type: String,

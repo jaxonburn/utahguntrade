@@ -78,7 +78,6 @@
       addChat() {
         this.$isLoading = true;
         let newChat = new models.api.Chats({users: [{user: this.user._id, unreadMessages: []}, {user: this.searchUser, unreadMessages: []}]})
-        console.log(newChat);
         newChat.create().then((res) => {
           this.$q.notify({
             color: 'secondary',

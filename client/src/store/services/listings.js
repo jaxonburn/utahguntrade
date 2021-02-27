@@ -11,7 +11,6 @@ class Listings extends BaseModel {
     return {
       listedBy: undefined,
       price: 0,
-      city: '',
       images: [],
       address: '',
       title: '',

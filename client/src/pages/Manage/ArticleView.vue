@@ -86,9 +86,11 @@
     <q-dialog v-model="notLoggedIn" :maximized="$q.screen.lt.md">
       <not-logged-in @close="notLoggedIn = !notLoggedIn"></not-logged-in>
     </q-dialog>
-    <q-drawer v-model="commentDrawer" side="right" bordered :maximized="$q.screen.lt.md">
-      <Comments :article="clonedArticle" :user="user"></Comments>
-    </q-drawer>
+    <div class="sticky">
+      <q-drawer v-model="commentDrawer" side="right" bordered :maximized="$q.screen.lt.md">
+        <Comments :article="clonedArticle" :user="user"></Comments>
+      </q-drawer>
+    </div>
   </q-page>
 </template>
 

@@ -37,9 +37,9 @@
         <div class="flex justify-between avatarFont q-mx-md q-mb-sm">
           <div class="flex flex-center">
             <q-icon style="font-size: 1.5em;" name="fas fa-heart" color="red"></q-icon>
-            <span style="font-size: 1.5em;">{{ $lget(articles, '[0].favorites.length', 0) }}</span>
+            <span style="font-size: 1.5em; margin-left: 5px;">{{ $lget(articles, '[0].favorites.length', 0) }}</span>
             <q-icon style="font-size: 1.6em;" name="fas fa-comments" color="light-blue" class="q-ml-md"/>
-            <span class="q-ml-xs" style="font-size: 1.5em;">{{ $lget(articles, '[0].comments.length', 0) }}</span>
+            <span class="q-ml-xs" style="font-size: 1.5em; margin-left: 5px;">{{ $lget(articles, '[0].comments.length', 0) }}</span>
           </div>
           <div>
             Published {{ $lget(articles, '[0].publishedAt', '')| format }} ago

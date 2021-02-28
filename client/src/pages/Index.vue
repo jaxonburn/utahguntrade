@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div style="display: flex; flex-direction: column;">
-      <div style="height: 550px;display: flex; justify-content: center; align-items: center;">
+      <div style="height: 600px;display: flex; justify-content: center; align-items: center;">
         <div
           class="mainBackground">
           <div>
@@ -10,14 +10,14 @@
 <!--            </q-card>-->
 <!--            temp changes-->
             <div class="flex flex-center mainCard">
-              <div class="text-mb-xxl" style="text-align: center;">Browse Gun Listings all over Utah</div>
+              <div class="text-mb-xxl mainTitleFont" style="text-align: center;">Browse Gun Listings all over Utah</div>
             </div>
             <div style="text-align: center; color: white; margin-top: 13px; font-size: 1.3em;">
-              <div>Trade | Connect | Educate</div>
+              <div class="readFont">Trade | Connect | Educate</div>
             </div>
             <div style="text-align: center;">
-              <q-btn @click="$router.push('listings')" class="q-mt-lg" style="text-align: center;" color="primary"
-                     label="Browse listings"/>
+              <q-btn @click="$router.push('listings')" class="q-mt-md" style="text-align: center;" color="primary"
+                     label="Browse listings" size="lg"/>
             </div>
           </div>
         </div>
@@ -186,6 +186,20 @@
     font-family: 'Arial';
     font-weight: 450;
     font-size: 3.5em;
+  }
+
+  .mainTitleFont {
+    font-family: "Kuchek", Times, Serif;
+    line-height: 1.2em;
+    font-weight: 500;
+    font-size: 1.15em;
+  }
+
+  .readFont {
+    font-family: "KuchekLight", Times, Serif;
+    line-height: 1.6em;
+    font-size: 1.3em;
+    font-weight: 100;
   }
 </style>
 

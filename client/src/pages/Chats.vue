@@ -109,6 +109,10 @@
             res.data.forEach(chat => {
               if(chat._id === this.$route.params.chatId) {
                 this.selectedChat = chat;
+                setTimeout(() => {
+                  let box = document.getElementById(('chatBox'));
+                  box.scrollTop = box.scrollHeight;
+                }, 200)
               }
             })
           }
@@ -122,6 +126,10 @@
           if(newVal.length !== oldVal.length && !this.selectedFromDetails) {
             this.selectedChat = newVal[newVal.length - 1];
             this.selectedFromDetails = true;
+            setTimeout(() => {
+              let box = document.getElementById(('chatBox'));
+              box.scrollTop = box.scrollHeight;
+            }, 200)
           }
         }
       }

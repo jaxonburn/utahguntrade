@@ -1,13 +1,26 @@
 <template>
-  <div class="listing-details">
+  <div class="listing-details" v-if="!$q.platform.is.mobile">
     <Loading v-if="!listing"/>
     <div v-else class="listing">
 
       <div class="left">
-        <ImageSlider :images="$lget(listing, 'images', [])"/>
+
+        <VueAgile class="agile-comp" :initial-slide="1" :dots="false" :fade="true" :nav-buttons="true">
+          <img class="slide" v-for="(image, idx) of listing.images" :src="image.url" :key="idx"/>
+          <template slot="prevButton">
+            <q-icon name="chevron_left" />
+          </template>
+          <template slot="nextButton">
+            <q-icon name="chevron_right"/>
+          </template>
+          <template slot="caption">
+            <div class="text-center q-my-md text-h6">Swipe to view images</div>
+          </template>
+        </VueAgile>
+
         <div class="footer">
           <div class="q-mt-lg right-footer">
-            <div class="text-h5">Contact seller</div>
+            <div class="text-h4">Contact seller</div>
             <div class="q-my-sm" v-if="listing._fastjoin.listedBy.email">Email: {{ listing._fastjoin.listedBy.email }}</div>
             <div v-if="listing._fastjoin.listedBy.phone">Phone: {{ listing._fastjoin.listedBy.phone }}</div>
           </div>
@@ -23,13 +36,11 @@
       <div class="right">
 <!--        title, condition, price, category, address, watchedBy, user._fastjoin.email, phone-->
         <div class="title text-h4">
-          {{ listing.title }}
+          <div>{{ listing.title }}</div>
+          <div>${{ listing.price }}</div>
         </div>
         <div class="condition text-h6 q-mt-lg">
           Condition: <span :style="{color: getConditionColor(listing.condition)}">{{ listing.condition }}</span>
-        </div>
-        <div class="price text-h6 q-mt-lg">
-          Price: ${{ listing.price }}
         </div>
         <div class="category text-h6 q-mt-lg">
           Category: {{ listing.category }}
@@ -57,11 +68,11 @@
   import Loading from "components/common/Loading";
   import {mapActions, mapGetters} from "vuex";
   import { models } from 'feathers-vuex';
-  import ImageSlider from "components/common/ImageSlider";
+  import { VueAgile } from "vue-agile";
 
   export default {
     name: "ListingDetails",
-    components: {ImageSlider, Loading},
+    components: {Loading, VueAgile},
     mounted() {
       this.loadListing(this.$route.params.id).then((res) => {
         this.slide = res.images[0].url;
@@ -130,13 +141,20 @@
       height: 70vh;
 
       .footer {
-        position: absolute;
-        bottom: 20px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         width: 100%;
+
+        .right-footer {
+          flex: .3;
+        }
+        .left-footer {
+          flex: .7;
+          margin-top: 25px;
+        }
       }
+
     }
     .right {
       flex: 0.42;
@@ -149,7 +167,87 @@
       .title {
         padding-bottom: 5px;
         border-bottom: 2px solid black;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        div:last-child {
+          font-weight: 300;
+          color: #089808;
+        }
       }
     }
+  }
+  .agile-comp {
+    width: 50vw;
+  }
+  .agile {
+    &__nav-button {
+      background: transparent;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 24px;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      transition-duration: 0.3s;
+      width: 80px;
+      &:hover {
+        background-color: rgba(black, 0.5);
+        opacity: 1;
+      }
+      &--prev {
+        left: 0;
+      }
+      &--next {
+        right: 0;
+      }
+    }
+    &__dots {
+      bottom: 10px;
+      left: 50%;
+      position: absolute;
+      transform: translateX(-50%);
+    }
+    &__dot {
+      margin: 0 10px;
+      button {
+        background-color: transparent;
+        border: 1px solid white;
+        border-radius: 50%;
+        cursor: pointer;
+        display: block;
+        height: 10px;
+        font-size: 0;
+        line-height: 0;
+        margin: 0;
+        padding: 0;
+        transition-duration: 0.3s;
+        width: 10px;
+      }
+      &--current,
+      &:hover {
+        button {
+          background-color: white;
+        }
+      }
+    }
+  }
+
+  // Slides styles
+  .slide {
+    display: block;
+    height: 500px;
+    object-fit: cover;
+    width: 100%;
+    border-color: black;
+    border-width: 2px;
+
+    border-top-style: solid;
+    border-bottom-style: solid;
+    -webkit-box-shadow: 0px 14px 29px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 14px 29px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 14px 29px 0px rgba(0, 0, 0, 0.75);
   }
 </style>

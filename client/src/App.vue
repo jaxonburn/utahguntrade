@@ -37,6 +37,12 @@ export default {
     font-style: normal;
 
   }
+
+  a {
+    color: black;
+    text-decoration: none;
+  }
+
   .marker-icon {
     background-position: center;
     background-size: 22px 22px;

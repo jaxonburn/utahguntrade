@@ -1,8 +1,8 @@
 <template>
-  <q-page class="flex justify-center" ref="fullPage">
+  <q-page class="flex justify-center flex-center" ref="fullPage" style="width: 100vw;">
     <q-btn style="position: absolute;top: 80px; left: 15%;" icon="keyboard_backspace" @click="$router.go(-1)"/>
     <transition name="slide-fade">
-      <div style="position: fixed; top: 20%;left: 5%;border-radius: 25px;display: flex; justify-content: flex-start; align-items: flex-start;flex-direction: column;z-index: 2000;"
+      <div style="position: fixed; top: 25%;left: 5%;border-radius: 25px;display: flex; justify-content: flex-start; align-items: flex-start;flex-direction: column;z-index: 2000;"
            v-show="scroll > 200" class="q-pa-sm">
         <div style="display: flex; flex-direction: row;align-items: flex-end;border-bottom: 0.5px solid #dedede;" class="q-mb-xs">
           <p class="specialFont" v-html="$lget(article, 'createdBy')"></p>
@@ -44,13 +44,20 @@
         </div>
       </div>
     </transition>
-    <div style="height: 100vh;" :style="$q.screen.lt.sm ? 'width: 95%' : 'width: 55%;'">
+    <div style="height: 100%;width: 100%;" v-if="loadingArticle" class="flex flex-center">
+      <q-spinner
+        color="primary"
+        size="15em"
+        :thickness="2"
+      />
+    </div>
+    <div v-else style="height: 100%;" :style="$q.screen.lt.sm ? 'width: 95%' : 'width: 55%;'">
       <h2 class="text-weight-bold specialFont">{{ article.mainTitle }}</h2>
       <div style="width: 100%;display: flex;align-items: center; flex-direction: row;" class="q-my-md">
         <div style="display: flex; align-items: flex-end;height: 100%;width: 100%; justify-content: space-between;">
           <div style="display: flex; flex-direction: row;align-items: flex-end;position: relative;">
             <q-avatar size="50px">
-              <img :src="$lget(article, 'avatar.url')"/>
+              <q-img :src="$lget(article, 'avatar.url')"/>
             </q-avatar>
             <div class="avatarFont q-mx-sm">{{ article.createdBy }}</div>
             <q-icon name="fiber_manual_record" style="font-size: 0.5em;margin-bottom: 10px;"
@@ -63,14 +70,14 @@
         </div>
       </div>
       <div style="background-color: rgba(255, 255, 255, 1);">
-        <img :src="$lget(article, 'mainImage.url')" :alt="article.mainTitle + ' Image'"
+        <q-img :src="$lget(article, 'mainImage.url')" :alt="article.mainTitle + ' Image'"
              style="vertical-align: center; width: 100%;background-color: rgba(255, 255, 255, 1);" height="auto"/>
       </div>
       <div v-for="(section,index) in article.sections" :key="index">
         <h4 v-if="section.title" class="specialFont">{{ section.title }}</h4>
         <p v-if="section.body" v-html="section.body" class="paragraphFont"></p>
         <div v-if="section.image">
-          <img :src="section.image.url" :alt="section.image + ' Image'" style="width: 100%; height: 100%;"/>
+          <q-img :src="section.image.url" :alt="section.image + ' Image'" style="width: 100%; height: 100%;"/>
         </div>
       </div>
       <div style="height: 100px;">
@@ -107,13 +114,19 @@
     mounted() {
       this.loadArticles(this.$route.params.id).then((res) => {
         this.article = res;
-        console.log(this.article);
+        setTimeout(() => {
+          this.loadingArticle = false;
+        }, 700)
       }).catch((err) => {
-        console.log(err);
+        this.$q.notify({
+          type: 'error',
+          message: 'Something went wrong when loading this article, please refresh and try again'
+        })
       });
     },
     data() {
       return {
+        loadingArticle: true,
         article: {},
         scroll: 0,
         heartItem: {},
@@ -273,7 +286,6 @@
     line-height: 1.6em;
     font-size: 1.3em;
     font-weight: 100;
-
   }
 
   .paragraphFont {

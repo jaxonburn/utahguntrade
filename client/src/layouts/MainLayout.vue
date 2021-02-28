@@ -28,7 +28,7 @@
         <div class="text-primary" style="display: flex;align-items: center;" :style="!user ? 'justify-content: space-between;' : 'justify-content: center'"
              v-if="$route.path !== '/register'">
           <div class="flex flex-center cursor-pointer">
-            <q-btn round>
+            <q-btn round @click="$router.push({name: 'articleSearch'})">
             <q-avatar size="60px">
             <img src="../assets/newIcon.png" alt="NewsPaper" width="50" height="50"/>
             </q-avatar>
@@ -169,7 +169,7 @@
       </transition>
       <chat-box v-if="chat" @close="chat = !chat" :user="user"></chat-box>
     </q-page-container>
-    <div style="height: 20px;position: absolute; bottom: 0;width: 100%;" class="bg-secondary text-center row flex justify-start" >
+    <div style="height: 20px;position: absolute; bottom: 0;width: 100%;" class="bg-blue-grey-6 text-center row flex justify-start" >
       <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline;">Report a bug?</p>
       <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline;">Contact Owners</p>
     </div>

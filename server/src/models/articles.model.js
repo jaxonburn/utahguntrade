@@ -22,7 +22,7 @@ module.exports = function (app) {
     about: {type: String, required: false},
     published: {type: Boolean, default: false},
     views: {type: Number},
-    publishedAt: {type: Date},
+    publishedAt: {type: Date, default: new Date()},
     favorites: [{type: Schema.Types.ObjectId, ref: 'users'}],
     comments: [new Schema({
       sentBy: {type: Schema.Types.ObjectId, ref: 'users', required: true},

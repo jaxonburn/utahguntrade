@@ -14,7 +14,9 @@ export default function({ store }) {
         { path: 'my-watched', name: 'my-watched', component: () => import('pages/Listings/MyWatched'), meta: { requiresAuth: true } },
         { path: 'my-listings', name: 'my-listings', component: () => import('pages/Listings/MyListings'), meta: { requiresAuth: true } },
         { path: 'listing-details/:id', component: () => import('pages/Listings/ListingDetails') },
-        { path: 'messages', name: 'messages', component: () => import('pages/Chats'), meta: { requiresAuth: true } }
+        { path: 'messages', name: 'messages', component: () => import('pages/Chats'), meta: { requiresAuth: true } },
+        { path: 'articles', name: 'articleSearch', component: () => import('pages/BrowseArticles'), },
+        { path: 'articles/:id', name: 'article', component: () => import('pages/Manage/ArticleView'),}
       ],
     },
     {

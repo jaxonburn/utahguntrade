@@ -54,6 +54,12 @@ module.exports = function (app) {
     ];
   });
 
+  app.service('users').publish(() => {
+    return [
+      app.channel('authenticated'),
+    ];
+  });
+
 
   // will need this eventually!!
   // app.service('users').on('patched', updateChannels);

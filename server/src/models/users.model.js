@@ -19,6 +19,7 @@ module.exports = function (app) {
     comments: [{type: Schema.Types.ObjectId, ref: 'articles'}],
     googleId: { type: String },
     facebookId: { type: String },
+    stripeId: {type: String},
     takeToListings: { type: Boolean, default: false }
   }, {
     timestamps: true

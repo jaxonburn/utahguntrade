@@ -17,7 +17,7 @@
           <q-avatar size="40px"><img :src="comment.user.avatar" alt="User Avatar"/></q-avatar>
           <div style="display: flex; flex-direction: column;" class="q-ml-sm">
             <span class="nameFont">{{ comment.user.username }}</span>
-            <span class="aboutFont">{{ comment.createdAt | format }} ago</span>
+            <span class="aboutFont q-mt-xs">{{ comment.createdAt | format }} ago</span>
           </div>
           <q-space/>
           <div>
@@ -162,6 +162,7 @@
           message: this.message,
           upVote: [],
           replies: [],
+          createdAt: new Date(),
         };
         this.article.comments.push(comment);
         this.article.save().then(() => {

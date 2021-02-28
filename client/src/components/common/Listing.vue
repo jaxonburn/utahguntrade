@@ -61,10 +61,12 @@
         <q-tooltip>{{ listing.viewed.length }} {{ listing.viewed.length === 1 ? 'view' : 'views' }}</q-tooltip>
       </div>
 
-      <div class="price">Listed price: ${{ listing.price }}</div>
-      <div class="condition">Condition: <span :style="{color: getConditionColor(listing.condition), fontWeight: '600'}">{{
-          listing.condition
-        }}</span></div>
+      <div class="footer">
+        <div class="price">Listed price: ${{ listing.price }}</div>
+        <div class="condition">Condition: <span :style="{color: getConditionColor(listing.condition), fontWeight: '600'}">{{
+            listing.condition
+          }}</span></div>
+      </div>
     </div>
 
     <div v-if="$q.platform.is.mobile" style="text-align: center; padding: 20px 0;">
@@ -319,11 +321,23 @@
         margin-top: 14px;
       }
 
-      .condition {
-        font-size: 1em;
-        position: absolute;
-        bottom: 15px;
-        right: 15px;
+      //.condition {
+      //  font-size: 1em;
+      //  position: absolute;
+      //  bottom: 15px;
+      //  right: 15px;
+      //}
+
+      .footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        text-align: center;
+
+        .condition, .price {
+          text-align: center;
+        }
       }
 
       .eye {

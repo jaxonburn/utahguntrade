@@ -18,13 +18,13 @@
 
     <div v-else>
       <div class="filter-menu row justify-between q-px-xl q-pt-lg">
-        <div class="row col-8">
-          <q-select class="q-mr-xl col-4" v-model="priceSort" filled label="Sort by price"
+        <div class="row col-8 col-xs-12 col-sm-8">
+          <q-select class="q-mr-xl col-4 col-xs-12 col-sm-4 q-mt-md" v-model="priceSort" filled label="Sort by price"
                     :options="['Price low to high', 'Price high to low']"></q-select>
-          <q-select class="q-mr-xl col-4" v-model="dateSort" filled label="Sort by date"
+          <q-select class="q-mr-xl col-4 col-xs-12 q-mt-md col-sm-4" v-model="dateSort" filled label="Sort by date"
                     :options="['Date newest to oldest', 'Date oldest to newest']"></q-select>
         </div>
-        <q-btn label="Reset search" @click="$router.push('/listings')" color="primary" align="right"/>
+        <q-btn label="Reset search" @click="$router.push('/listings')" color="primary" class="q-mt-md" align="right"/>
       </div>
       <div class="listings-wrapper">
         <Listing :listing="listing" :key="idx" v-for="(listing, idx) of listings"></Listing>
@@ -162,19 +162,32 @@
     }
   }
 
-  @media screen and (max-width: 820px) {
-    .listings-wrapper {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
-  @media screen and (max-width: 620px) {
+  @media screen and (max-width: 700px) {
     .listings-wrapper {
       grid-template-columns: 1fr;
     }
     .limit-selector {
       left: 20px;
-      top: 40px;
+      //top: 40px;
+    }
+    .listing {
+      width: 60%;
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    .listings-wrapper {
+      grid-template-columns: 1fr;
+    }
+    .limit-selector {
+      left: 10px;
+    }
+    .listing {
+      width: 90%;
+    }
+    .pagination-wrapper {
+      justify-content: flex-end;
+      padding-right: 30px;
     }
   }
 </style>

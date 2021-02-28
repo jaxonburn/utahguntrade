@@ -69,7 +69,7 @@
   .left-icon {
     position: absolute;
     left: -50px;
-    top: 190px;
+    top: 210px;
     cursor: pointer;
   }
 
@@ -77,7 +77,7 @@
     cursor: pointer;
     position: absolute;
     right: -50px;
-    top: 190px;
+    top: 210px;
   }
 
   .footer {

@@ -26,7 +26,7 @@ const addChatToUser = (ctx) => {
 const checkIfChatExists = async (ctx) => {
   await ctx.app.service('chats').find({query: {'users.user': {$in: [ctx.data.users[0].user, ctx.data.users[1].user]}}}).then((res) => {
     if(res.data.length > 0){
-      throw new GeneralError(String(res.data[0]._id));
+      throw new GeneralError(String(res.data[3]._id));
     }else {
       return ctx;
     }

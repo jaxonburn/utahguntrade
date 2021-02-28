@@ -50,7 +50,7 @@
         <q-tooltip>View document</q-tooltip>
       </q-icon>
 
-      <q-icon @click="unarchiveListing" v-if="isMyListing && listing.archived" class="eye eye-archive" name="unarchive" size="xs">
+      <q-icon @click="unarchiveListing" v-if="isMyListing && listing.archived && !listing.sold" class="eye eye-archive" name="unarchive" size="xs">
         <q-tooltip>Un-archive Listing</q-tooltip>
       </q-icon>
 

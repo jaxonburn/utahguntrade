@@ -64,7 +64,6 @@
           return {
             query: {
               listedBy: {$in: this.user._id},
-              archived: false,
               sold: true,
               $limit: 200
             }

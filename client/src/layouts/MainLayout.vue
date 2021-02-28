@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header class="bg-white" elevated style="display: flex;flex-direction: column;"
+    <q-header class="bg-white" elevated style="display: flex;flex-direction: column"
               :style="$route.path === '/register' || $q.platform.is.mobile ? 'height: 90px;' : 'height: 150px'">
       <div class="row" style="height: 90px;width: 100%;display: grid; grid-template-columns: 0.3fr 2fr 0.3fr 0.3fr;" :style="!user ? 'grid-template-columns: 0.5fr 2fr 0.5fr 0.2fr;' : 'grid-template-columns: 0.5fr 2fr 0.3fr 0.3fr;'">
         <div>
@@ -163,7 +163,7 @@
     <q-page-container>
       <router-view/>
       <transition name="lide-fade" appear>
-        <q-avatar v-if="!chat && $lget(user, '_id', false)" class="chatIcon cursor-pointer" @click="chat = !chat">
+        <q-avatar v-if="!chat && $lget(user, '_id', false) && $route.name !== 'messages'" class="chatIcon cursor-pointer" @click="chat = !chat">
           <img alt="Chat Box" src="../assets/isometricchat.png" class="chatImage q-pa-sm">
         </q-avatar>
       </transition>

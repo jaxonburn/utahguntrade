@@ -6,10 +6,12 @@
       <div class="left">
         <ImageSlider :images="$lget(listing, 'images', [])"/>
         <div class="footer">
+          <div class="q-mt-lg right-footer">
+            <div class="text-h5">Contact seller</div>
+            <div class="q-my-sm" v-if="listing._fastjoin.listedBy.email">Email: {{ listing._fastjoin.listedBy.email }}</div>
+            <div v-if="listing._fastjoin.listedBy.phone">Phone: {{ listing._fastjoin.listedBy.phone }}</div>
+          </div>
           <div class="left-footer">
-            <div class="description q-mb-lg text-h6" style="width: 100%;">
-              {{ listing.description ? listing.description : 'No description' }}
-            </div>
             <q-chip class="q-mr-md" :key="tag" square v-for="tag of listing.tags">
               <q-avatar color="red" text-color="white" icon="sell"></q-avatar>
               <span class="q-pl-sm">{{ tag }}</span>
@@ -38,10 +40,8 @@
         <div class="text-primary text-h6 q-mt-lg">
           Address: <span>{{ $lget(listing.address, 'address.freeformAddress', 'No address') }}</span><q-icon name="location_on" class="q-ml-sm q-mb-xs"  size="sm" />
         </div>
-        <div class="q-mt-lg">
-          <div class="text-h5">Contact seller</div>
-          <div class="q-my-sm" v-if="listing._fastjoin.listedBy.email">Email: {{ listing._fastjoin.listedBy.email }}</div>
-          <div v-if="listing._fastjoin.listedBy.phone">Phone: {{ listing._fastjoin.listedBy.phone }}</div>
+        <div class="description q-my-lg text-h6" style="width: 100%;">
+          Description: {{ listing.description ? listing.description : 'No description' }}
         </div>
         <div v-if="listing.listedBy !== user._id" class="text-h6 q-mt-lg">
           <q-btn @click="startChat" class label="Start chat with user" color="primary"/>
@@ -89,12 +89,11 @@
         let newChat = new models.api.Chats({users: [{user: this.user._id, unreadMessages: []}, {user: this.listing._fastjoin.listedBy._id, unreadMessages: []}]});
         newChat.create().then((res) => {
           this.$q.loading.hide();
-          this.$router.push({name: 'messages', params: { chatId: String(res._id) }});
+          this.$router.push({name: 'messages', params: { chatId: String(res._id), created: 'true' }});
         }).catch(err => {
           if(err.name === 'GeneralError') {
             this.$q.loading.hide();
-            console.log(err.message);
-            this.$router.push({name: 'messages', params: { chatId: String(err.message) }});
+            this.$router.push({name: 'messages', params: { chatId: String(err.message), created: 'false' }});
           }
         })
       },
@@ -135,6 +134,7 @@
         bottom: 20px;
         display: flex;
         justify-content: space-between;
+        align-items: center;
         width: 100%;
       }
     }

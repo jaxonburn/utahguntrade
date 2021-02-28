@@ -24,23 +24,14 @@ const addChatToUser = (ctx) => {
 };
 
 const checkIfChatExists = async (ctx) => {
-  if(String(ctx.data.users[0].user) === String(ctx.data.users[1].user)) {
-    throw new GeneralError('Cannot make a chat with yourself');
-    return;
-  }
-  // await ctx.app.service('chats').find({query: {'users.user': {$in: [user]}}}).then((res) => {
-  //
-  // });
+  await ctx.app.service('chats').find({query: {'users.user': {$in: [ctx.data.users[0].user, ctx.data.users[1].user]}}}).then((res) => {
+    if(res.data.length > 0){
+      throw new GeneralError(String(res.data[0]._id));
+    }else {
+      return ctx;
+    }
+  });
   return ctx;
-};
-
-const channelUpdateCheck = async (context) => {
-  checkContext(context, 'after');
-
-  if (context.result.chat) {
-    const chat = await context.app.service('chats').get(context.result.chat);
-    context.app.service('chats').emit('updated', chat);
-  }
 };
 
 module.exports = {
@@ -49,7 +40,7 @@ module.exports = {
     find: [],
     get: [],
     create: [
-      // checkIfChatExists
+      checkIfChatExists
     ],
     update: [],
     patch: [

@@ -258,7 +258,7 @@
         this.$q.loading.show();
         this.createListing({...this.listingForm}).then(res => {
           this.$q.loading.hide();
-          this.$q.notify({message: 'Listing published! After listing is marked as sold you can attach bill of sale securely', color: 'positive'});
+          this.$q.notify({message: 'Listing published! After listing is marked as sold you can attach a document', color: 'positive'});
           let keys = Object.keys(this.listingForm);
           keys.forEach(data => {
             if (Array.isArray(this.listingForm[data])) {

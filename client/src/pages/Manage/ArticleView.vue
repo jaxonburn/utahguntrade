@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex justify-center" ref="fullPage" style="width: 100vw;">
+  <q-page class="flex justify-center flex-center" ref="fullPage" style="width: 100vw;">
     <q-btn style="position: absolute;top: 80px; left: 15%;" icon="keyboard_backspace" @click="$router.go(-1)"/>
     <transition name="slide-fade">
       <div style="position: fixed; top: 25%;left: 5%;border-radius: 25px;display: flex; justify-content: flex-start; align-items: flex-start;flex-direction: column;z-index: 2000;"
@@ -44,7 +44,14 @@
         </div>
       </div>
     </transition>
-    <div style="height: 100%;" :style="$q.screen.lt.sm ? 'width: 95%' : 'width: 55%;'">
+    <div style="height: 100%;width: 100%;" v-if="loadingArticle" class="flex flex-center">
+      <q-spinner
+        color="primary"
+        size="15em"
+        :thickness="2"
+      />
+    </div>
+    <div v-else style="height: 100%;" :style="$q.screen.lt.sm ? 'width: 95%' : 'width: 55%;'">
       <h2 class="text-weight-bold specialFont">{{ article.mainTitle }}</h2>
       <div style="width: 100%;display: flex;align-items: center; flex-direction: row;" class="q-my-md">
         <div style="display: flex; align-items: flex-end;height: 100%;width: 100%; justify-content: space-between;">
@@ -106,11 +113,11 @@
     },
     mounted() {
       this.loadArticles(this.$route.params.id).then((res) => {
-        this.loadingArticle = false;
         this.article = res;
-        console.log(this.article);
+        setTimeout(() => {
+          this.loadingArticle = false;
+        }, 700)
       }).catch((err) => {
-        this.loadingArticle = false;
         this.$q.notify({
           type: 'error',
           message: 'Something went wrong when loading this article, please refresh and try again'

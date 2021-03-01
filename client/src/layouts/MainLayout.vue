@@ -169,8 +169,8 @@
       </transition>
       <chat-box v-if="chat" @close="chat = !chat" :user="user"></chat-box>
     </q-page-container>
-    <div style="height: 20px;position: absolute; bottom: 0;width: 100%;"
-         class="bg-blue-grey-6a text-center row flex justify-start">
+    <div style="height: 20px;width: 100%;"
+         class="bg-blue-grey-6 text-center row flex justify-start">
       <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline;">Report a bug?</p>
       <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline;">Contact Owners</p>
     </div>
@@ -257,6 +257,15 @@
         loadNotifications: 'find',
         deleteNotification: 'remove'
       }),
+      viewNotification(noti) {
+        this.deleteNotification(noti._id).then(res => {
+          if(this.$route.path === '/messages') return;
+          this.$router.push({ name: 'messages', params: { chatId: String(noti.modelId), created: 'false' } });
+        })
+      },
+      dismissNotification(noti){
+        this.deleteNotification(noti._id);
+      },
       logOut() {
         this.$store.dispatch('auth/logout').then(() => {
           this.$router.push('/');

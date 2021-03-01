@@ -54,8 +54,6 @@
 
 <script>
 
-  import {Swiper, SwiperSlide, directive} from 'vue-awesome-swiper';
-  import 'swiper/css/swiper.css';
   import NearYouMap from 'components/common/NearYouMap';
 
 
@@ -63,34 +61,9 @@
     name: 'PageIndex',
     components: {
       NearYouMap,
-      Swiper,
-      SwiperSlide,
     },
     data() {
       return {
-        featuredProducts: [
-          {
-            artist: '',
-            image: 'https://images.unsplash.com/photo-1545915312-f6e4a6de60fb?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80'
-          },
-          {
-            artist: '',
-            image: 'https://images.unsplash.com/photo-1592698426264-d5a81aaa4ec8?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2850&q=80',
-          },
-          {
-            artist: '',
-            image: 'https://images.unsplash.com/photo-1551485913-b5dbedb723bb?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTR8fGd1bnxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60'
-          },
-          {
-            artist: '',
-            image: 'https://images.unsplash.com/photo-1559740983-b9c5ffbac1ff?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=975&q=80'
-          },
-          {
-            name: '',
-            image: 'https://images.unsplash.com/photo-1579541814924-49fef17c5be5?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=919&q=80'
-          }
-
-        ],
         swiperOption: {
           effect: 'coverflow',
           grabCursor: true,
@@ -120,42 +93,6 @@
 
 
 <style lang="scss" scoped>
-  .example-3d {
-    width: 80px;
-    height: 300px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .swiper {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .swiper-slide {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 0 20px;
-      height: 300px;
-      text-align: center;
-      font-weight: bold;
-      font-size: 1.5rem;
-      border-radius: 5px;
-      //background-position: center;
-      background-size: cover;
-      color: #ffffff;
-    }
-
-    .swiper-pagination {
-      .swiper-pagination-bullet.swiper-pagination-bullet-active {
-        background-color: black;
-      }
-    }
-  }
 
   .mainBackground {
     background-image: url('../assets/mainPagePhoto.jpeg');

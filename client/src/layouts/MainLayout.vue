@@ -118,25 +118,6 @@
                         <q-btn outlined label="Messages" icon="chat" size="sm" color="secondary" @click="chat = !chat">
                         </q-btn>
                       </div>
-                      <div class="row">
-                        <stripe-checkout
-                          ref="checkoutRef"
-                          mode="subscription"
-                          pk="pk_test_51IPfrSJZXWwylQALUNgUyfEtrVlbnV1nQ4nrUD4ZQ0FMkV0oKMDNkpubR4F6GalGhOuxYuZ5YBVcLt2CtWtCHIxb00JJXfQGgU"
-                          :line-items="[
-                              {
-                                price: 'price_1IPfucJZXWwylQALdYqBL2yN',
-                                quantity: 1,
-                              }
-                            ]"
-                          :customerEmail="user.email"
-                          success-url="http://localhost:8080"
-                          cancel-url="http://localhost:8080"
-                          @loading="v => loading = v"
-                        />
-                        <q-btn @click="submit" class="bg-yellow-8 text-white" size="sm">Go Premium</q-btn>
-<!--                        <q-btn @click="openCustomerPortal" class="bg-yellow-8 text-white" size="sm">Customer Portal</q-btn>-->
-                      </div>
                     </div>
 
                     <q-separator vertical inset class="q-mx-lg"/>
@@ -193,29 +174,23 @@
       <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline;">Report a bug?</p>
       <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline;">Contact Owners</p>
     </div>
-    {{ notifications }}
   </q-layout>
 </template>
 
 <script>
-  import {mapState, mapActions} from 'vuex';
+  import {mapState, mapActions, mapGetters} from 'vuex';
   import CategoryDropDown from 'components/Nav/CategoryDropDown';
   import ChatBox from 'components/Chat/chatBox';
-  import {StripeCheckout} from '@vue-stripe/vue-stripe';
 
   export default {
     name: 'MainLayout',
     components: {
       ChatBox,
       CategoryDropDown,
-      StripeCheckout,
     },
     mounted() {
       if (this.user && this.user.takeToListings && this.$route.path !== '/listings') {
         this.$router.push({name: 'listings'});
-      }
-      if(this.user.notifications) {
-        this.loadNotifications({query: {notifications: {$in: this.user.notifications}}})
       }
     },
     data() {
@@ -233,7 +208,7 @@
       ...mapState('auth', {
         user: 'user'
       }),
-      ...mapActions('notifications', {
+      ...mapGetters('notifications', {
         getNotifications: 'find'
       }),
       notifications(){
@@ -242,23 +217,9 @@
       }
     },
     methods: {
-      ...mapActions('create-customer-portal-session', {
-        createPortal: 'create'
-      }),
       ...mapActions('notifications', {
         loadNotifications: 'find'
       }),
-      openCustomerPortal () {
-        this.createPortal({stripeId: this.user.stripeId}).then((res) => {
-          console.log(res);
-          window.location = res.result;
-        }).catch((err) => {
-          console.log(err);
-        })
-      },
-      submit() {
-        this.$refs.checkoutRef.redirectToCheckout();
-      },
       logOut() {
         this.$store.dispatch('auth/logout').then(() => {
           this.$router.push('/');

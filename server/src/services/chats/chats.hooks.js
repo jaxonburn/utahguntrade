@@ -8,8 +8,22 @@ const addMessageToUnread = (ctx) => {
   let filterUsers = ctx.data.users.filter((user) => {
     return String(user.user) !== String(sentBy.sentBy);
   });
-  filterUsers.forEach(user => {
-    user.unreadMessages.push(sentBy.sentBy);
+  let noti = {
+    modelId: ctx.data._id,
+    text: sentBy.message,
+    type: 'Chat',
+    messageObj: sentBy
+  }
+  ctx.app.service('notifications').create(noti).then(res => {
+    filterUsers.forEach(user => {
+      user.unreadMessages.push(sentBy.sentBy);
+      ctx.app.service('users').patch(user.user, { $push: { notifications: res._id } });
+    });
+  }).catch(err => {
+    console.log('SOmething wernt wrong when adding notification on chats: ', err.message);
+    filterUsers.forEach(user => {
+      user.unreadMessages.push(sentBy.sentBy);
+    });
   });
   return ctx;
 };

@@ -80,13 +80,21 @@
         priceSort: ''
       }
     },
+    watch: {
+      listings: {
+        handler(newVal) {
+          console.log(newVal);
+        }
+      }
+    },
     computed: {
       ...mapState('listings', {
         isPending: 'isFindPending'
       }),
       sort() {
         return {
-          price: this.priceSort === 'Price low to high' ? -1 : 1
+          price: this.priceSort === 'Price low to high' ? -1 : 1,
+          createdAt: this.dateSort === 'Date newest to oldest' ? 1 : -1
         }
       },
       listingQuery() {

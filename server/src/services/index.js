@@ -6,6 +6,7 @@ const articles = require('./articles/articles.service.js');
 const documents = require('./documents/documents.service.js');
 const stripeWebhook = require('./stripe-webhook/stripe-webhook.service.js');
 const createCustomerPortalSession = require('./create-customer-portal-session/create-customer-portal-session.service.js');
+const notifications = require('./notifications/notifications.service.js');
 // eslint-disable-next-line no-unused-vars
 module.exports = function (app) {
   app.configure(users);
@@ -16,4 +17,5 @@ module.exports = function (app) {
   app.configure(documents);
   app.configure(stripeWebhook);
   app.configure(createCustomerPortalSession);
+  app.configure(notifications);
 };

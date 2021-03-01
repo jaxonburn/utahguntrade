@@ -1,27 +1,30 @@
 <template>
-  <div class="listing-details" v-if="!$q.platform.is.mobile">
+  <div class="listing-details" >
     <Loading v-if="!listing"/>
     <div v-else class="listing">
 
       <div class="left">
 
-        <VueAgile class="agile-comp" :initial-slide="1" :dots="false" :fade="true" :nav-buttons="true">
+        <VueAgile class="agile-comp" :initial-slide="0" :dots="false" :fade="true" :nav-buttons="true">
           <img class="slide" v-for="(image, idx) of listing.images" :src="image.url" :key="idx"/>
           <template slot="prevButton">
-            <q-icon name="chevron_left" />
+            <q-icon size="md" name="chevron_left"/>
           </template>
           <template slot="nextButton">
-            <q-icon name="chevron_right"/>
+            <q-icon size="md" name="chevron_right"/>
           </template>
           <template slot="caption">
             <div class="text-center q-my-md text-h6">Swipe to view images</div>
           </template>
         </VueAgile>
 
-        <div class="footer">
+        <div v-if="!$q.platform.is.mobile" class="footer">
           <div class="q-mt-lg right-footer">
             <div class="text-h4">Contact seller</div>
-            <div class="q-my-sm" v-if="listing._fastjoin.listedBy.email">Email: {{ listing._fastjoin.listedBy.email }}</div>
+            <div class="q-my-sm" v-if="listing._fastjoin.listedBy.email">Email: {{
+                listing._fastjoin.listedBy.email
+              }}
+            </div>
             <div v-if="listing._fastjoin.listedBy.phone">Phone: {{ listing._fastjoin.listedBy.phone }}</div>
           </div>
           <div class="left-footer">
@@ -34,10 +37,27 @@
       </div>
 
       <div class="right">
-<!--        title, condition, price, category, address, watchedBy, user._fastjoin.email, phone-->
+        <!--        title, condition, price, category, address, watchedBy, user._fastjoin.email, phone-->
         <div class="title text-h4">
           <div>{{ listing.title }}</div>
           <div>${{ listing.price }}</div>
+        </div>
+
+        <div v-if="$q.platform.is.mobile" class="footer">
+          <div class="q-mt-lg right-footer">
+            <div class="text-h4">Contact seller</div>
+            <div class="q-my-sm" v-if="listing._fastjoin.listedBy.email">Email: {{
+                listing._fastjoin.listedBy.email
+              }}
+            </div>
+            <div v-if="listing._fastjoin.listedBy.phone">Phone: {{ listing._fastjoin.listedBy.phone }}</div>
+          </div>
+          <div class="left-footer">
+            <q-chip class="q-mr-md" :key="tag" square v-for="tag of listing.tags">
+              <q-avatar color="red" text-color="white" icon="sell"></q-avatar>
+              <span class="q-pl-sm">{{ tag }}</span>
+            </q-chip>
+          </div>
         </div>
         <div class="condition text-h6 q-mt-lg">
           Condition: <span :style="{color: getConditionColor(listing.condition)}">{{ listing.condition }}</span>
@@ -49,7 +69,8 @@
           Watched by {{ listing.watchedBy.length }} {{ listing.watchedBy.length === 1 ? 'Person' : 'People' }}
         </div>
         <div class="text-primary text-h6 q-mt-lg">
-          Address: <span>{{ $lget(listing.address, 'address.freeformAddress', 'No address') }}</span><q-icon name="location_on" class="q-ml-sm q-mb-xs"  size="sm" />
+          Address: <span>{{ $lget(listing.address, 'address.freeformAddress', 'No address') }}</span>
+          <q-icon name="location_on" class="q-ml-sm q-mb-xs" size="sm"/>
         </div>
         <div class="description q-my-lg text-h6" style="width: 100%;">
           Description: {{ listing.description ? listing.description : 'No description' }}
@@ -67,8 +88,8 @@
 
   import Loading from "components/common/Loading";
   import {mapActions, mapGetters} from "vuex";
-  import { models } from 'feathers-vuex';
-  import { VueAgile } from "vue-agile";
+  import {models} from 'feathers-vuex';
+  import {VueAgile} from "vue-agile";
 
   export default {
     name: "ListingDetails",
@@ -95,16 +116,21 @@
       ...mapActions('listings', {
         patchListing: 'patch'
       }),
-      startChat(){
+      startChat() {
         this.$q.loading.show();
-        let newChat = new models.api.Chats({users: [{user: this.user._id, unreadMessages: []}, {user: this.listing._fastjoin.listedBy._id, unreadMessages: []}]});
+        let newChat = new models.api.Chats({
+          users: [{
+            user: this.user._id,
+            unreadMessages: []
+          }, {user: this.listing._fastjoin.listedBy._id, unreadMessages: []}]
+        });
         newChat.create().then((res) => {
           this.$q.loading.hide();
-          this.$router.push({name: 'messages', params: { chatId: String(res._id), created: 'true' }});
+          this.$router.push({name: 'messages', params: {chatId: String(res._id), created: 'true'}});
         }).catch(err => {
-          if(err.name === 'GeneralError') {
+          if (err.name === 'GeneralError') {
             this.$q.loading.hide();
-            this.$router.push({name: 'messages', params: { chatId: String(err.message), created: 'false' }});
+            this.$router.push({name: 'messages', params: {chatId: String(err.message), created: 'false'}});
           }
         })
       },
@@ -149,6 +175,7 @@
         .right-footer {
           flex: .3;
         }
+
         .left-footer {
           flex: .7;
           margin-top: 25px;
@@ -156,6 +183,7 @@
       }
 
     }
+
     .right {
       flex: 0.42;
 
@@ -178,9 +206,11 @@
       }
     }
   }
+
   .agile-comp {
     width: 50vw;
   }
+
   .agile {
     &__nav-button {
       background: transparent;
@@ -193,25 +223,31 @@
       top: 0;
       transition-duration: 0.3s;
       width: 80px;
+
       &:hover {
         background-color: rgba(black, 0.5);
         opacity: 1;
       }
+
       &--prev {
         left: 0;
       }
+
       &--next {
         right: 0;
       }
     }
+
     &__dots {
       bottom: 10px;
       left: 50%;
       position: absolute;
       transform: translateX(-50%);
     }
+
     &__dot {
       margin: 0 10px;
+
       button {
         background-color: transparent;
         border: 1px solid white;
@@ -226,6 +262,7 @@
         transition-duration: 0.3s;
         width: 10px;
       }
+
       &--current,
       &:hover {
         button {
@@ -249,5 +286,39 @@
     -webkit-box-shadow: 0px 14px 29px 0px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: 0px 14px 29px 0px rgba(0, 0, 0, 0.75);
     box-shadow: 0px 14px 29px 0px rgba(0, 0, 0, 0.75);
+  }
+
+  @media screen and (max-width: 1050px) {
+    .listing {
+      flex-direction: column;
+    }
+
+    .title {
+      flex-direction: column;
+
+      div:first-child {
+        margin-bottom: 15px;
+      }
+    }
+
+    .agile-comp {
+      width: 90vw;
+    }
+
+    .right {
+      margin-top: 40px;
+    }
+
+    .footer .right-footer {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+  }
+
+  @media screen and (max-width: 550px) {
+    .agile-comp {
+      width: 80vw;
+      margin-right: 15px;
+    }
   }
 </style>

@@ -35,6 +35,18 @@
                 <img src="../assets/newIcon.png" alt="NewsPaper" width="50" height="50"/>
               </q-avatar>
             </q-btn>
+
+            <q-btn-dropdown color="yellow" class="q-ml-lg" dropdown-icon="notifications_active">
+              <q-list>
+                <q-item clickable v-for="(noti, idx) of notifications" :key="idx">
+                  <q-item-section>
+                    <q-item-label>{{ noti.text }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+              </q-list>
+            </q-btn-dropdown>
+
           </div>
           <div class="row" v-if="!user">
             <div class="q-pr-xl">
@@ -154,7 +166,6 @@
             </q-list>
           </q-btn-dropdown>
         </div>
-
       </div>
       <category-drop-down v-if="!$q.platform.is.mobile && $route.path === '/'"></category-drop-down>
     </q-header>
@@ -181,12 +192,14 @@
   import {mapState, mapActions, mapGetters} from 'vuex';
   import CategoryDropDown from 'components/Nav/CategoryDropDown';
   import ChatBox from 'components/Chat/chatBox';
+  import {StripeCheckout} from '@vue-stripe/vue-stripe';
 
   export default {
     name: 'MainLayout',
     components: {
       ChatBox,
       CategoryDropDown,
+      StripeCheckout,
     },
     mounted() {
       if (this.user && this.user.takeToListings && this.$route.path !== '/listings') {
@@ -226,6 +239,7 @@
               if(!box) return;
               box.scrollTop = box.scrollHeight;
             }, 100)
+            if(noti.expired) return;
             this.$q.notify({
               message: `<div>${noti._fastjoin.messageObj.sentBy.username} Said: ${noti.text.length > 35 ? noti.text.substr(0, 33) + '...' : noti.text}</div>`,
               avatar: noti._fastjoin.messageObj.sentBy.avatar,
@@ -234,8 +248,10 @@
                 { label: 'Dismiss', color: 'yellow', handler: () => this.dismissNotification(noti) },
               ],
               position: 'top-right',
-              html: true
+              html: true,
+              timeout: 10000
             })
+            this.expireNoti(noti);
           }
           this.lastNotification = newVal.notifications[newVal.notifications.length - 1];
         }
@@ -247,15 +263,18 @@
       }),
       ...mapGetters('notifications', {
         getNotification: 'get'
+        getNotification: 'get',
+        allNotifications: 'find'
       }),
+      notifications(){
+        return this.allNotifications({ query: { $limit: 200, _id: {$in: this.user.notifications} } }).data;
+      }
     },
     methods: {
-      ...mapActions('create-customer-portal-session', {
-        createPortal: 'create'
-      }),
       ...mapActions('notifications', {
         loadNotifications: 'find',
-        deleteNotification: 'remove'
+        deleteNotification: 'remove',
+        patchNotification: 'patch'
       }),
       viewNotification(noti) {
         this.deleteNotification(noti._id).then(res => {

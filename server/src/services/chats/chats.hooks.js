@@ -12,9 +12,10 @@ const addMessageToUnread = async (ctx) => {
     modelId: ctx.data._id,
     text: sentBy.message,
     type: 'Chat',
-    messageObj: sentBy
+    messageObj: sentBy,
+    expired: false
   };
-  ctx.app.service('notifications').create(noti).then(res => {
+  await ctx.app.service('notifications').create(noti).then(res => {
     filterUsers.forEach(user => {
       user.unreadMessages.push(sentBy.sentBy);
       ctx.app.service('users').patch(user.user, { $push: { notifications: res._id } });

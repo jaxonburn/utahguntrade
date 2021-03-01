@@ -69,4 +69,28 @@
     font-size: 2em;
     padding: 40px 40px 0 40px;
   }
+
+  @media screen and (max-width: 1050px) {
+    .listings-wrapper {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+
+  @media screen and (max-width: 700px) {
+    .listings-wrapper {
+      grid-template-columns: 1fr;
+    }
+    .listing {
+      width: 60%;
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    .listings-wrapper {
+      grid-template-columns: 1fr;
+    }
+    .listing {
+      width: 90%;
+    }
+  }
 </style>

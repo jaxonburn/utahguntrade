@@ -31,6 +31,7 @@
             :key="message._id"
             :name="$lget(message, 'sentBy', '') === user._id ? user.username : $lget(notUser, 'username', '')"
             :avatar="$lget(message, 'sentBy', '') === user._id ? user.avatar : $lget(notUser, 'avatar', '')"
+            :stamp="date.formatDate($lget(message, 'createdAt', new Date()), 'MMM D, h:mm:a')"
             :text="[message.message]"
             :sent="$lget(message, 'sentBy', '') === user._id"
             :bg-color="$lget(message, 'sentBy', '') === user._id ? 'primary' : 'secondary'"
@@ -139,7 +140,8 @@
         selectedChat: null,
         addChat: false,
         selectedFromDetails: false,
-        yourChat: ''
+        yourChat: '',
+        date: date
       }
     },
     directives: {

@@ -193,6 +193,7 @@
       <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline;">Report a bug?</p>
       <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline;">Contact Owners</p>
     </div>
+    {{ notifications }}
   </q-layout>
 </template>
 

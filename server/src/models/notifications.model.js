@@ -11,6 +11,7 @@ module.exports = function (app) {
     text: { type: String, required: false },
     type: { required: true, type: String, enum: ['Chat', 'Other'] },
     messageObj: { type: Object, required: false },
+    expired: { type: Boolean, default: false }
   }, {
     timestamps: true
   });

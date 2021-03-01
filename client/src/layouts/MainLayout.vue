@@ -35,6 +35,18 @@
                 <img src="../assets/newIcon.png" alt="NewsPaper" width="50" height="50"/>
               </q-avatar>
             </q-btn>
+
+            <q-btn-dropdown color="yellow" class="q-ml-lg" dropdown-icon="notifications_active">
+              <q-list>
+                <q-item clickable v-for="(noti, idx) of notifications" :key="idx">
+                  <q-item-section>
+                    <q-item-label>{{ noti.text }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+              </q-list>
+            </q-btn-dropdown>
+
           </div>
           <div class="row" v-if="!user">
             <div class="q-pr-xl">
@@ -154,7 +166,6 @@
             </q-list>
           </q-btn-dropdown>
         </div>
-
       </div>
       <category-drop-down v-if="!$q.platform.is.mobile && $route.path === '/'"></category-drop-down>
     </q-header>
@@ -228,6 +239,7 @@
               if(!box) return;
               box.scrollTop = box.scrollHeight;
             }, 100)
+            if(noti.expired) return;
             this.$q.notify({
               message: `<div>${noti._fastjoin.messageObj.sentBy.username} Said: ${noti.text.length > 35 ? noti.text.substr(0, 33) + '...' : noti.text}</div>`,
               avatar: noti._fastjoin.messageObj.sentBy.avatar,
@@ -236,8 +248,10 @@
                 { label: 'Dismiss', color: 'yellow', handler: () => this.dismissNotification(noti) },
               ],
               position: 'top-right',
-              html: true
+              html: true,
+              timeout: 10000
             })
+            this.expireNoti(noti);
           }
           this.lastNotification = newVal.notifications[newVal.notifications.length - 1];
         }
@@ -248,11 +262,11 @@
         user: 'user'
       }),
       ...mapGetters('notifications', {
-        getNotification: 'get'
+        getNotification: 'get',
+        allNotifications: 'find'
       }),
       notifications(){
-        console.log(this.getNotifications({query: {notifications: {$in: this.user.notifications}}}))
-        return 'hello';
+        return this.allNotifications({ query: { $limit: 200, _id: {$in: this.user.notifications} } }).data;
       }
     },
     methods: {
@@ -261,7 +275,8 @@
       }),
       ...mapActions('notifications', {
         loadNotifications: 'find',
-        deleteNotification: 'remove'
+        deleteNotification: 'remove',
+        patchNotification: 'patch'
       }),
       openCustomerPortal () {
         this.createPortal({stripeId: this.user.stripeId}).then((res) => {
@@ -273,6 +288,15 @@
       },
       submit() {
         this.$refs.checkoutRef.redirectToCheckout();
+      },
+      expireNoti(noti) {
+        setTimeout(async () => {
+          let res = await this.getNotification(noti._id);
+          if(res == null) return;
+          this.patchNotification([noti._id, {
+            expired: true
+          }])
+        }, 10000)
       },
       viewNotification(noti) {
         this.deleteNotification(noti._id).then(res => {

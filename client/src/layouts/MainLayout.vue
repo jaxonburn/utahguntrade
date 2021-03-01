@@ -192,6 +192,13 @@
       if (this.user && this.user.takeToListings && this.$route.path !== '/listings') {
         this.$router.push({name: 'listings'});
       }
+      if(this.user && this.user.notifications) {
+        this.loadNotifications({ query: { $limit: 200, _id: {$in: this.user.notifications} } }).then(res => {
+          if(res.data.length === 0) return;
+          let last = res.data[res.data.length - 1];
+          this.lastNotification = last._id;
+        })
+      }
     },
     data() {
       return {
@@ -201,6 +208,36 @@
         category: {
           open: false,
           label: ''
+        },
+        lastNotification: ''
+      }
+    },
+    watch: {
+      user: {
+        deep: true,
+        async handler(newVal){
+          if(this.$lget(newVal, 'notifications', []).length === 0) return;
+          if(this.lastNotification !== this.$lget(newVal.notifications[newVal.notifications.length - 1])) {
+            let noti = await this.getNotification(newVal.notifications[newVal.notifications.length - 1]);
+            if(!noti) return;
+            if(noti.type !== 'Chat') return;
+            setTimeout(() => {
+              let box = document.getElementById(('chatBox'));
+              if(!box) return;
+              box.scrollTop = box.scrollHeight;
+            }, 100)
+            this.$q.notify({
+              message: `<div>${noti._fastjoin.messageObj.sentBy.username} Said: ${noti.text.length > 35 ? noti.text.substr(0, 33) + '...' : noti.text}</div>`,
+              avatar: noti._fastjoin.messageObj.sentBy.avatar,
+              actions: [
+                { label: 'View', color: 'green', handler: () => this.viewNotification(noti) },
+                { label: 'Dismiss', color: 'yellow', handler: () => this.dismissNotification(noti) },
+              ],
+              position: 'top-right',
+              html: true
+            })
+          }
+          this.lastNotification = newVal.notifications[newVal.notifications.length - 1];
         }
       }
     },
@@ -209,16 +246,16 @@
         user: 'user'
       }),
       ...mapGetters('notifications', {
-        getNotifications: 'find'
+        getNotification: 'get'
       }),
-      notifications(){
-        console.log(this.getNotifications({query: {notifications: {$in: this.user.notifications}}}))
-        return 'hello';
-      }
     },
     methods: {
+      ...mapActions('create-customer-portal-session', {
+        createPortal: 'create'
+      }),
       ...mapActions('notifications', {
-        loadNotifications: 'find'
+        loadNotifications: 'find',
+        deleteNotification: 'remove'
       }),
       logOut() {
         this.$store.dispatch('auth/logout').then(() => {

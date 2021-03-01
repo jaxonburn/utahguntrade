@@ -3,7 +3,7 @@ const { nestedfJoinHook } = require('../../hooks/common/fastJoin');
 const { GeneralError } = require('@feathersjs/errors');
 const { checkContext } = require('feathers-hooks-common');
 
-const addMessageToUnread = (ctx) => {
+const addMessageToUnread = async (ctx) => {
   let sentBy = ctx.data.messages[ctx.data.messages.length - 1];
   let filterUsers = ctx.data.users.filter((user) => {
     return String(user.user) !== String(sentBy.sentBy);

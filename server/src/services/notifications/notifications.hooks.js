@@ -1,4 +1,19 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
+const { fJoinHook } = require('../../hooks/common/fastJoin');
+
+const removeFromUser = async context => {
+  // let patchObj = {
+  //   $pull: {
+  //     notifications: context.arguments[0]
+  //   }
+  // }
+  let user = context.params.user;
+  user.notifications = user.notifications.filter(noti => {
+    return String(noti) !== String(context.arguments[0]);
+  });
+  await context.app.service('users').patch(user._id, user);
+  return context;
+}
 
 module.exports = {
   before: {
@@ -12,13 +27,13 @@ module.exports = {
   },
 
   after: {
-    all: [],
+    all: [fJoinHook('messageObj.sentBy', 'users')],
     find: [],
     get: [],
     create: [],
     update: [],
     patch: [],
-    remove: []
+    remove: [removeFromUser]
   },
 
   error: {

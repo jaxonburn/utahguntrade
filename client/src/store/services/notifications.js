@@ -9,22 +9,7 @@ class Notifications extends BaseModel {
   // Define default properties here
   static instanceDefaults() {
     return {
-      mainImage: {},
-      mainTitle: '',
-      sections: [
-        {
-          title: '',
-          body: '',
-          image: {},
-        }
-      ],
-      comments: [],
-      favorites: [],
-      createdBy: null,
-      createdAt: new Date(),
-      published: false,
-      publishedAt: null,
-      readTime: null
+
     }
   }
 }

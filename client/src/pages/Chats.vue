@@ -102,7 +102,22 @@
     mounted(){
       this.loadChats({query: {_id: {$in: this.user.chats}}}).then(res => {
         if(!this.$route.params.chatId) {
+          if(res.data.length === 0) return;
           this.selectedChat = res.data[0];
+          let unReadChat = this.selectedChat.clone();
+          let save = false;
+          unReadChat.users.forEach((chatUser) => {
+            if ((chatUser.user === this.user._id) && (chatUser.unreadMessages.length !== 0)) {
+              chatUser.unreadMessages = [];
+              save = true;
+            }
+          });
+          if(save) this.$store.dispatch('chats/update', [unReadChat._id, unReadChat])
+          setTimeout(() => {
+            let box = document.getElementById(('chatBox'));
+            if(!box) return;
+            box.scrollTop = box.scrollHeight;
+          }, 100)
         } else {
           if(this.$route.params.created === 'true') {
             // this.selectedChat = res.data[0];
@@ -110,6 +125,15 @@
             res.data.forEach(chat => {
               if(chat._id === this.$route.params.chatId) {
                 this.selectedChat = chat;
+                let unReadChat = this.selectedChat.clone();
+                let save = false;
+                unReadChat.users.forEach((chatUser) => {
+                  if ((chatUser.user === this.user._id) && (chatUser.unreadMessages.length !== 0)) {
+                    chatUser.unreadMessages = [];
+                    save = true;
+                  }
+                });
+                if(save) this.$store.dispatch('chats/update', [unReadChat._id, unReadChat])
                 setTimeout(() => {
                   let box = document.getElementById(('chatBox'));
                   box.scrollTop = box.scrollHeight;
@@ -127,13 +151,9 @@
           if(newVal.length !== oldVal.length && !this.selectedFromDetails) {
             this.selectedChat = newVal[newVal.length - 1];
             this.selectedFromDetails = true;
-            setTimeout(() => {
-              let box = document.getElementById(('chatBox'));
-              box.scrollTop = box.scrollHeight;
-            }, 200)
           }
         }
-      }
+      },
     },
     data(){
       return {

@@ -1,8 +1,8 @@
 {
   "name": "client",
   "version": "0.0.1",
-  "description": "The #1 Rated Marketplace for buying and selling firearms.",
-  "productName": "Utah Gun Trade",
+  "description": "",
+  "productName": "Utah Gun Trade | Gun Marketplace",
   "author": "jaxonburningham <jaxon@ionrev.com>",
   "private": true,
   "scripts": {

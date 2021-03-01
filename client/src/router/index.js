@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
+import Premium from '../plugins/isPremium';
+Vue.use(Premium);
 import routes from './routes'
 const {Notify} = require('quasar');
 Vue.use(VueRouter)
 import Routes from './routes';
+
 /*
  * If not building with SSR mode, you can
  * directly export the Router instantiation;

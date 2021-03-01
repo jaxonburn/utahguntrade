@@ -1,8 +1,9 @@
 <template>
-  <q-page>
-    <div style="width: 100%;display: flex;flex-direction: row;">
+  <q-page style="width: 100%;">
+    <div :style="$q.screen.lt.md ?  'width: 100%;display: flex; flex-direction: column;': 'width: 100%;display: flex;flex-direction: row'">
       <div
-        style="width: 60%;height: 500px;border-right: 0.5px solid #bfbfbf;display: flex; flex-direction: column;justify-content: space-evenly;">
+        class="NewestArticle"
+        :style="$q.screen.lt.md ? 'width: 100%;': 'width: 60%;'">
         <div
           :style="{backgroundImage: `url(${$lget(articles, '[0].mainImage.url', '')})`,}"
           class="backGroundImage"
@@ -46,7 +47,8 @@
           </div>
         </div>
       </div>
-      <div style="display: flex; justify-content: center;align-items: center;width: 40%;" class="q-ma-md">
+      <q-separator/>
+      <div :style="$q.screen.lt.md ? 'width: 100%' : 'width: 40%;'" class="q-ma-md socialLinksCard">
         <q-card style="width: 100%; height: 50%;display: flex;justify-content: center;flex-direction: column;" flat>
           <q-card-section class="aboutFont" style="font-size: 2em;display: flex; justify-content: center;border-bottom: 1px solid var(--q-color-primary);">
             See More From Utah Gun Hub
@@ -94,6 +96,21 @@
 </script>
 
 <style scoped>
+
+  .socialLinksCard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .NewestArticle {
+    height: 500px;
+    border-right: 0.5px solid #bfbfbf;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+
   .backGroundImage {
     height: 70%;
     width: 100%;

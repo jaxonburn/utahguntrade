@@ -178,7 +178,6 @@
       <category-drop-down v-if="!$q.platform.is.mobile && $route.path === '/'"></category-drop-down>
     </q-header>
 
-
     <q-page-container>
       <router-view/>
       <transition name="lide-fade" appear>
@@ -214,6 +213,9 @@
       if (this.user && this.user.takeToListings && this.$route.path !== '/listings') {
         this.$router.push({name: 'listings'});
       }
+      if(this.user.notifications) {
+        this.loadNotifications({query: {notifications: {$in: this.user.notifications}}})
+      }
     },
     data() {
       return {
@@ -230,10 +232,20 @@
       ...mapState('auth', {
         user: 'user'
       }),
+      ...mapActions('notifications', {
+        getNotifications: 'find'
+      }),
+      notifications(){
+        console.log(this.getNotifications({query: {notifications: {$in: this.user.notifications}}}))
+        return 'hello';
+      }
     },
     methods: {
       ...mapActions('create-customer-portal-session', {
         createPortal: 'create'
+      }),
+      ...mapActions('notifications', {
+        loadNotifications: 'find'
       }),
       openCustomerPortal () {
         this.createPortal({stripeId: this.user.stripeId}).then((res) => {

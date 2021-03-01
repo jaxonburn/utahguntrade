@@ -76,8 +76,8 @@
     })],
     data() {
       return {
-        dateSort: '',
-        priceSort: ''
+        dateSort: -1,
+        priceSort: -1
       }
     },
     watch: {

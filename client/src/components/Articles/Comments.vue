@@ -120,10 +120,10 @@
           })
           this.article.save().then((res) => {
             this.$q.notify({
-              color: 'primary',
+              color: 'secondary',
               textColor: 'white',
               icon: '',
-              message: 'Unliked',
+              message: 'Unfavorited',
               position: 'bottom',
               timeout: 3000,
             })
@@ -139,7 +139,7 @@
           this.article.save().then((res) => {
             console.log(res);
             this.$q.notify({
-              color: 'primary',
+              color: 'secondary',
               textColor: 'white',
               icon: 'fas fa-thumbs-up',
               message: 'Liked',
@@ -173,7 +173,7 @@
             icon: 'mdi-comment-text-multiple',
             message: 'Comment Added',
             position: 'bottom',
-            timeout: 6000,
+            timeout: 3000,
           })
           this.message = '';
         }).catch(() => {

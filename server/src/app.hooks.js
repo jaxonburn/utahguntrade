@@ -7,7 +7,7 @@ const removeFastJoin = require('./hooks/common/remove-fastjoin');
 module.exports = {
   before: {
     all: [
-      paramsFromClient('$and'),
+      paramsFromClient(),
       removeFastJoin()
     ],
     find: [],

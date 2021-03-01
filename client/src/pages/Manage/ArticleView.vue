@@ -1,19 +1,18 @@
 <template>
   <q-page class="flex justify-center flex-center" ref="fullPage" style="width: 100vw;">
-    <q-btn style="position: absolute;top: 80px; left: 15%;" icon="keyboard_backspace" @click="$router.go(-1)"/>
+    <q-btn :style="$q.screen.lt.md ?  'position: absolute; top: 15px; left: 10px;' : 'position: absolute;top: 80px; left: 15%;'" icon="keyboard_backspace" @click="$router.go(-1)"/>
     <transition name="slide-fade">
-      <div style="position: fixed; top: 25%;left: 5%;border-radius: 25px;display: flex; justify-content: flex-start; align-items: flex-start;flex-direction: column;z-index: 2000;"
-           v-show="scroll > 200" class="q-pa-sm">
-        <div style="display: flex; flex-direction: row;align-items: flex-end;border-bottom: 0.5px solid #dedede;" class="q-mb-xs">
-          <p class="specialFont" v-html="$lget(article, 'createdBy')"></p>
+      <div v-show="scroll > 200" class="q-pa-sm aboutAuthorContainer" :style="$q.screen.lt.md ? 'background: rgba(225, 225, 225, 0.9);padding: 5px;' : ''">
+        <div style="display: flex; flex-direction: row;align-items: flex-end;border-bottom: 0.5px solid black;" class="q-mb-xs">
+          <p class="specialFont" v-html="$lget(article, 'createdBy')" style="font-size: 1.2em;"></p>
         </div>
-        <div style="border-bottom: 0.5px solid #dedede;" class="q-mb-xs">
-          <p class="aboutFont" v-html="$lget(article, 'about')"></p>
+        <div style="border-bottom: 0.5px solid black;" class="q-mb-xs">
+          <p class="aboutFont" style="font-size: 1.2em;" v-html="$lget(article, 'about')"></p>
         </div>
 
         <div style="display: flex; justify-content: flex-start;" class="q-mt-md">
-          <div class="cursor-pointer" style="display: flex; flex-direction: column;">
-            <div @click="addComment" style="display: flex; flex-direction: row; justify-content: space-between;align-items: center;">
+          <div class="cursor-pointer columnOnly">
+            <div @click="addComment" class="commentContainer">
             <vLottiePlayer
               class="cursor-pointer q-mr-sm"
               name="Heart"
@@ -51,21 +50,23 @@
         :thickness="2"
       />
     </div>
-    <div v-else style="height: 100%;" :style="$q.screen.lt.sm ? 'width: 95%' : 'width: 55%;'">
-      <h2 class="text-weight-bold specialFont">{{ article.mainTitle }}</h2>
+    <div v-else style="height: 100%;" :style="$q.screen.lt.sm ? 'width: 90%' : 'width: 55%;'" class="q-mt-lg">
+      <h3 class="text-weight-bold specialFont">{{ article.mainTitle }}</h3>
       <div style="width: 100%;display: flex;align-items: center; flex-direction: row;" class="q-my-md">
         <div style="display: flex; align-items: flex-end;height: 100%;width: 100%; justify-content: space-between;">
-          <div style="display: flex; flex-direction: row;align-items: flex-end;position: relative;">
+          <div :class="$q.screen.lt.md ? 'aboutContainerMobile' : 'aboutContainer'">
             <q-avatar size="50px">
               <q-img :src="$lget(article, 'avatar.url')"/>
             </q-avatar>
-            <div class="avatarFont q-mx-sm">{{ article.createdBy }}</div>
-            <q-icon name="fiber_manual_record" style="font-size: 0.5em;margin-bottom: 10px;"
-                    class="text-grey-7"></q-icon>
-            <div class="readFont q-ml-sm">{{ timeSince(new Date(article.createdAt)) + ' ago' }}</div>
+            <div class="avatarFont"><span style="white-space: nowrap;">{{ article.createdBy }}</span></div>
+            <div v-if="$q.screen.gt.md" class="flex flex-center" style="margin: 7px 7px 10px;">
+            <q-icon name="fiber_manual_record" style="font-size: 0.4em;"
+                    class="text-grey-7 q-mx-xs"></q-icon>
+            </div>
+            <div class="readFont"><span style="white-space: nowrap;">{{ timeSince(new Date(article.createdAt)) + ' ago' }}</span></div>
           </div>
-          <div class="readFont q-mr-md q-mb-xs" style="font-size: 1em;font-weight: 100;">
-            {{ article.readTime + ' Min Read' }}
+          <div class="readFont" style="font-size: 1em;font-weight: 100;">
+            <span style="white-space: nowrap;">{{ article.readTime + ' Min Read' }}</span>
           </div>
         </div>
       </div>
@@ -204,7 +205,7 @@
                 this.$q.notify({
                   color: 'secondary',
                   textColor: 'white',
-                  message: 'Unfavorited',
+                  message: 'Unliked',
                   position: 'bottom',
                   timeout: 3000,
                 });
@@ -268,11 +269,43 @@
 
 <style scoped>
 
+  .aboutAuthorContainer {
+    position: fixed;
+    top: 25%;
+    left: 5%;
+    border-radius: 25px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    z-index: 1000;
+  }
+
+  .commentContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   .avatarFont {
     font-family: "KuchekMedium", Times, Serif;
     line-height: 1.6em;
     font-weight: 350;
     font-size: 1.4em;
+  }
+
+  .aboutContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    position: relative;
+  }
+
+  .aboutContainerMobile {
+    display: flex;
+    flex-direction: column;
+    position: relative;
   }
 
 

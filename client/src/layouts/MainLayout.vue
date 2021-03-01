@@ -118,25 +118,6 @@
                         <q-btn outlined label="Messages" icon="chat" size="sm" color="secondary" @click="chat = !chat">
                         </q-btn>
                       </div>
-                      <div class="row">
-                        <stripe-checkout
-                          ref="checkoutRef"
-                          mode="subscription"
-                          pk="pk_test_51IPfrSJZXWwylQALUNgUyfEtrVlbnV1nQ4nrUD4ZQ0FMkV0oKMDNkpubR4F6GalGhOuxYuZ5YBVcLt2CtWtCHIxb00JJXfQGgU"
-                          :line-items="[
-                              {
-                                price: 'price_1IPfucJZXWwylQALdYqBL2yN',
-                                quantity: 1,
-                              }
-                            ]"
-                          :customerEmail="user.email"
-                          success-url="http://localhost:8080"
-                          cancel-url="http://localhost:8080"
-                          @loading="v => loading = v"
-                        />
-                        <q-btn @click="submit" class="bg-yellow-8 text-white" size="sm">Go Premium</q-btn>
-<!--                        <q-btn @click="openCustomerPortal" class="bg-yellow-8 text-white" size="sm">Customer Portal</q-btn>-->
-                      </div>
                     </div>
 
                     <q-separator vertical inset class="q-mx-lg"/>
@@ -210,7 +191,6 @@
       StripeCheckout,
     },
     mounted() {
-      console.log(this.user);
       if (this.user && this.user.takeToListings && this.$route.path !== '/listings') {
         this.$router.push({name: 'listings'});
       }
@@ -270,6 +250,10 @@
       ...mapGetters('notifications', {
         getNotification: 'get'
       }),
+      notifications(){
+        console.log(this.getNotifications({query: {notifications: {$in: this.user.notifications}}}))
+        return 'hello';
+      }
     },
     methods: {
       ...mapActions('create-customer-portal-session', {

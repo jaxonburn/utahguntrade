@@ -3,7 +3,7 @@ const { nestedfJoinHook } = require('../../hooks/common/fastJoin');
 const { GeneralError } = require('@feathersjs/errors');
 const { checkContext } = require('feathers-hooks-common');
 
-const addMessageToUnread = (ctx) => {
+const addMessageToUnread = async (ctx) => {
   let sentBy = ctx.data.messages[ctx.data.messages.length - 1];
   let filterUsers = ctx.data.users.filter((user) => {
     return String(user.user) !== String(sentBy.sentBy);
@@ -14,7 +14,7 @@ const addMessageToUnread = (ctx) => {
     type: 'Chat',
     messageObj: sentBy
   }
-  ctx.app.service('notifications').create(noti).then(res => {
+  await ctx.app.service('notifications').create(noti).then(res => {
     filterUsers.forEach(user => {
       user.unreadMessages.push(sentBy.sentBy);
       ctx.app.service('users').patch(user.user, { $push: { notifications: res._id } });
@@ -38,7 +38,7 @@ const addChatToUser = (ctx) => {
 };
 
 const checkIfChatExists = async (ctx) => {
-  await ctx.app.service('chats').find({query: {'users.user': {$in: [ctx.data.users[0].user, ctx.data.users[1].user]}}}).then((res) => {
+  await ctx.app.service('chats').find({query: {'users.user': {$all: [ctx.data.users[0].user, ctx.data.users[1].user]}}}).then((res) => {
     if(res.data.length > 0){
       throw new GeneralError(String(res.data[3]._id));
     }else {

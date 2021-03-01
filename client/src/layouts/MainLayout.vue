@@ -193,12 +193,11 @@
       <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline;">Report a bug?</p>
       <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline;">Contact Owners</p>
     </div>
-    {{ notifications }}
   </q-layout>
 </template>
 
 <script>
-  import {mapState, mapActions} from 'vuex';
+  import {mapState, mapActions, mapGetters} from 'vuex';
   import CategoryDropDown from 'components/Nav/CategoryDropDown';
   import ChatBox from 'components/Chat/chatBox';
   import {StripeCheckout} from '@vue-stripe/vue-stripe';
@@ -211,11 +210,16 @@
       StripeCheckout,
     },
     mounted() {
+      console.log(this.user);
       if (this.user && this.user.takeToListings && this.$route.path !== '/listings') {
         this.$router.push({name: 'listings'});
       }
-      if(this.user.notifications) {
-        this.loadNotifications({query: {notifications: {$in: this.user.notifications}}})
+      if(this.user && this.user.notifications) {
+        this.loadNotifications({ query: { $limit: 200, _id: {$in: this.user.notifications} } }).then(res => {
+          if(res.data.length === 0) return;
+          let last = res.data[res.data.length - 1];
+          this.lastNotification = last._id;
+        })
       }
     },
     data() {
@@ -226,6 +230,36 @@
         category: {
           open: false,
           label: ''
+        },
+        lastNotification: ''
+      }
+    },
+    watch: {
+      user: {
+        deep: true,
+        async handler(newVal){
+          if(this.$lget(newVal, 'notifications', []).length === 0) return;
+          if(this.lastNotification !== this.$lget(newVal.notifications[newVal.notifications.length - 1])) {
+            let noti = await this.getNotification(newVal.notifications[newVal.notifications.length - 1]);
+            if(!noti) return;
+            if(noti.type !== 'Chat') return;
+            setTimeout(() => {
+              let box = document.getElementById(('chatBox'));
+              if(!box) return;
+              box.scrollTop = box.scrollHeight;
+            }, 100)
+            this.$q.notify({
+              message: `<div>${noti._fastjoin.messageObj.sentBy.username} Said: ${noti.text.length > 35 ? noti.text.substr(0, 33) + '...' : noti.text}</div>`,
+              avatar: noti._fastjoin.messageObj.sentBy.avatar,
+              actions: [
+                { label: 'View', color: 'green', handler: () => this.viewNotification(noti) },
+                { label: 'Dismiss', color: 'yellow', handler: () => this.dismissNotification(noti) },
+              ],
+              position: 'top-right',
+              html: true
+            })
+          }
+          this.lastNotification = newVal.notifications[newVal.notifications.length - 1];
         }
       }
     },
@@ -233,20 +267,17 @@
       ...mapState('auth', {
         user: 'user'
       }),
-      ...mapActions('notifications', {
-        getNotifications: 'find'
+      ...mapGetters('notifications', {
+        getNotification: 'get'
       }),
-      notifications(){
-        console.log(this.getNotifications({query: {notifications: {$in: this.user.notifications}}}))
-        return 'hello';
-      }
     },
     methods: {
       ...mapActions('create-customer-portal-session', {
         createPortal: 'create'
       }),
       ...mapActions('notifications', {
-        loadNotifications: 'find'
+        loadNotifications: 'find',
+        deleteNotification: 'remove'
       }),
       openCustomerPortal () {
         this.createPortal({stripeId: this.user.stripeId}).then((res) => {
@@ -258,6 +289,15 @@
       },
       submit() {
         this.$refs.checkoutRef.redirectToCheckout();
+      },
+      viewNotification(noti) {
+        this.deleteNotification(noti._id).then(res => {
+          if(this.$route.path === '/messages') return;
+          this.$router.push({ name: 'messages', params: { chatId: String(noti.modelId), created: 'false' } });
+        })
+      },
+      dismissNotification(noti){
+        this.deleteNotification(noti._id);
       },
       logOut() {
         this.$store.dispatch('auth/logout').then(() => {

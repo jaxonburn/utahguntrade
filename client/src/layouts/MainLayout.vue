@@ -180,11 +180,11 @@
       </transition>
       <chat-box v-if="chat" @close="chat = !chat" :user="user"></chat-box>
     </q-page-container>
-    <div style="height: 20px;width: 100%;"
-         class="bg-blue-grey-6 text-center row flex justify-start">
-      <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline;">Report a bug?</p>
-      <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline;">Contact Owners</p>
-    </div>
+<!--    <div style="height: 20px;width: 100%;"-->
+<!--         class="bg-blue-grey-6 text-center row flex justify-start">-->
+<!--      <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline;">Report a bug?</p>-->
+<!--      <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline;">Contact Owners</p>-->
+<!--    </div>-->
   </q-layout>
 </template>
 
@@ -228,24 +228,24 @@
     watch: {
       user: {
         deep: true,
-        async handler(newVal){
-          if(this.$lget(newVal, 'notifications', []).length === 0) return;
-          if(this.lastNotification !== this.$lget(newVal.notifications[newVal.notifications.length - 1])) {
+        async handler(newVal) {
+          if (this.$lget(newVal, 'notifications', []).length === 0) return;
+          if (this.lastNotification !== newVal.notifications[newVal.notifications.length - 1]) {
             let noti = await this.getNotification(newVal.notifications[newVal.notifications.length - 1]);
-            if(!noti) return;
-            if(noti.type !== 'Chat') return;
+            if (!noti) return;
+            if (noti.type !== 'Chat') return;
             setTimeout(() => {
               let box = document.getElementById(('chatBox'));
-              if(!box) return;
+              if (!box) return;
               box.scrollTop = box.scrollHeight;
             }, 100)
-            if(noti.expired) return;
+            if (noti.expired) return;
             this.$q.notify({
               message: `<div>${noti._fastjoin.messageObj.sentBy.username} Said: ${noti.text.length > 35 ? noti.text.substr(0, 33) + '...' : noti.text}</div>`,
               avatar: noti._fastjoin.messageObj.sentBy.avatar,
               actions: [
-                { label: 'View', color: 'green', handler: () => this.viewNotification(noti) },
-                { label: 'Dismiss', color: 'yellow', handler: () => this.dismissNotification(noti) },
+                {label: 'View', color: 'green', handler: () => this.viewNotification(noti)},
+                {label: 'Dismiss', color: 'yellow', handler: () => this.dismissNotification(noti)},
               ],
               position: 'top-right',
               html: true,
@@ -266,7 +266,7 @@
         allNotifications: 'find'
       }),
       notifications(){
-        return this.allNotifications({ query: { $limit: 200, _id: {$in: this.user.notifications} } }).data;
+        return this.allNotifications({ query: { $limit: 200, _id: {$in: this.$lget(this.user, 'notifications', [])} } }).data;
       }
     },
     methods: {

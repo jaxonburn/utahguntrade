@@ -26,7 +26,7 @@
         <q-icon name="location_on" style="font-size: 1.4em; margin-bottom: 2px;" color="primary"/>
       </div>
 
-      <q-icon @click="removeFromWatchList" v-if="user.watched.includes(listing._id) && !isMyListing" class="eye" name="remove_done" size="xs">
+      <q-icon @click="removeFromWatchList" v-if="$lget(user, 'watched', []).includes(listing._id) && !isMyListing" class="eye" name="remove_done" size="xs">
         <q-tooltip size="md">Remove from watch list</q-tooltip>
       </q-icon>
 
@@ -301,12 +301,12 @@
         left: 10px;
       }
     }
-
     .top {
       img {
         width: 100%;
         margin-right: 20px;
         max-height: 300px;
+        min-height: 300px;
       }
 
     }

@@ -26,32 +26,13 @@
            style="border-bottom: 3px solid var(--q-color-primary); border-top: 3px solid var(--q-color-primary)">
         <!--        <span class="text-weight-thin text-h4">Featured Listings</span>-->
       </div>
-      <!--      <div style="display: flex; justify-content: center; align-items: center;height: 450px;">-->
-      <!--        <div style="width: 95vw;height: 90%;display: flex; justify-content: center; align-items: center;-->
-      <!--"-->
-      <!--        >-->
-
-      <!--          <swiper class="swiper" :options="swiperOption">-->
-      <!--            <swiper-slide v-for="(product,index) in featuredProducts" :key="index"-->
-      <!--                          :style="{backgroundImage: `url(${product.image})`}">-->
-      <!--              <div :style="{'background-image': product.image}">-->
-      <!--                <div class="q-pa-sm"-->
-      <!--                     style="display: flex; flex-direction: column;background: rgba(130, 130, 130, 0.6);">-->
-      <!--                  <span class="text-xxs text-mb-xxs">{{ product.artist }}</span>-->
-      <!--                </div>-->
-      <!--              </div>-->
-      <!--            </swiper-slide>-->
-      <!--            <div class="swiper-pagination" slot="pagination"></div>-->
-      <!--          </swiper>-->
-      <!--        </div>-->
-      <!--      </div>-->
-      <div style="width: 100%;" class="q-ma-lg">
+      <div style="width: 100%;" class="q-py-md">
         <near-you-map></near-you-map>
       </div>
       <q-separator/>
       <div>
         <div class="readFont bg-primary text-white boxShadow" style="font-size: 2em;text-indent: 20px;height: 50px;">Recently Posted Listings</div>
-        <carousel :autoplay="true" :perPage="$q.screen.lt.md ? 1 : 3">
+        <carousel :perPage="$q.screen.lt.md ? 1 : 3" :speed="30" paginationActiveColor="#011d80">
           <slide v-for="(listing,index) in latestListings" :key="index">
             <listing-card :listing="listing">
 
@@ -59,6 +40,10 @@
           </slide>
         </carousel>
       </div>
+    </div>
+    <q-separator color="primary" size="5px"/>
+    <div style="height: 100px;width: 100%;background: white;">
+
     </div>
   </q-page>
 </template>

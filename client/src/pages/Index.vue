@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page style="width: 100%;">
     <div style="display: flex; flex-direction: column;">
       <div style="height: 600px;display: flex; justify-content: center; align-items: center;">
         <div
@@ -45,8 +45,19 @@
       <!--          </swiper>-->
       <!--        </div>-->
       <!--      </div>-->
-      <div class="map-wrapper">
+      <div style="width: 100%;" class="q-ma-lg">
         <near-you-map></near-you-map>
+      </div>
+      <q-separator/>
+      <div>
+        <div class="readFont bg-primary text-white boxShadow" style="font-size: 2em;text-indent: 20px;height: 50px;">Recently Posted Listings</div>
+        <carousel :autoplay="true" :perPage="$q.screen.lt.md ? 1 : 3">
+          <slide v-for="(listing,index) in latestListings" :key="index">
+            <listing-card :listing="listing">
+
+            </listing-card>
+          </slide>
+        </carousel>
       </div>
     </div>
   </q-page>
@@ -55,15 +66,27 @@
 <script>
 
   import NearYouMap from 'components/common/NearYouMap';
-
+  import { Carousel, Slide } from 'vue-carousel';
+  import Listing from 'components/common/Listing';
+  import {mapActions} from 'vuex';
 
   export default {
     name: 'PageIndex',
     components: {
+      ListingCard: Listing,
       NearYouMap,
+      Carousel,
+      Slide
+    },
+    mounted(){
+      this.findListings({query: {$limit: 6,$sort: {createdAt: -1},sold: false,archived: false}}).then((res) => {
+        console.log(res);
+        this.latestListings = res.data;
+      })
     },
     data() {
       return {
+        latestListings: [],
         swiperOption: {
           effect: 'coverflow',
           grabCursor: true,
@@ -87,6 +110,11 @@
           }
         }
       }
+    },
+    methods: {
+      ...mapActions('listings', {
+        findListings: 'find'
+      })
     }
   }
 </script>

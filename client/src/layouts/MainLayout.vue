@@ -262,7 +262,6 @@
         user: 'user'
       }),
       ...mapGetters('notifications', {
-        getNotification: 'get'
         getNotification: 'get',
         allNotifications: 'find'
       }),
@@ -281,6 +280,15 @@
           if(this.$route.path === '/messages') return;
           this.$router.push({ name: 'messages', params: { chatId: String(noti.modelId), created: 'false' } });
         })
+      },
+      expireNoti(noti) {
+        setTimeout(async () => {
+          let res = await this.getNotification(noti._id);
+          if(res == null) return;
+          this.patchNotification([noti._id, {
+            expired: true
+          }])
+        }, 10000)
       },
       dismissNotification(noti){
         this.deleteNotification(noti._id);

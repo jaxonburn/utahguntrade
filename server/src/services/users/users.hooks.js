@@ -35,10 +35,10 @@ const modifyWatched = async context => {
       $pull: {
         watchedBy: context.result._id
       }
-    }
+    };
     context.app.service('listings').patch(id, patchObj).then(res => console.log(res)).catch(err => console.log(err));
   }
-}
+};
 
 module.exports = {
   before: {
@@ -48,8 +48,8 @@ module.exports = {
     create: [
       hashPassword('password'),
     ],
-    update: [hashPassword('password'), authenticate('jwt')],
-    patch: [hashPassword('password'), authenticate('jwt')],
+    update: [authenticate('jwt')],
+    patch: [authenticate('jwt')],
     remove: [authenticate('jwt')]
   },
 

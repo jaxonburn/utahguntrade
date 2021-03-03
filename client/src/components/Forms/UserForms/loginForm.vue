@@ -93,8 +93,9 @@
             this.$emit('close');
           }
 
-        }).catch(() => {
+        }).catch((err) => {
           this.$q.loading.hide();
+          console.log(err);
           this.$q.notify({
             color: 'secondary',
             textColor: 'white',

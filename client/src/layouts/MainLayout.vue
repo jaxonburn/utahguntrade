@@ -36,16 +36,32 @@
               </q-avatar>
             </q-btn>
 
-<!--            <q-btn-dropdown color="yellow" class="q-ml-lg" dropdown-icon="notifications_active">-->
-<!--              <q-list>-->
-<!--                <q-item clickable v-for="(noti, idx) of notifications" :key="idx">-->
-<!--                  <q-item-section>-->
-<!--                    <q-item-label>{{ noti.text }}</q-item-label>-->
-<!--                  </q-item-section>-->
-<!--                </q-item>-->
+            <q-btn-dropdown color="yellow" class="q-ml-lg" v-if="user" dropdown-icon="notifications_active">
+              <q-list>
+                <q-btn v-if="notifications" @click="clearAllNotifications" class="q-pa-md" label="Clear all notifications" color="blue" flat style="background-color: black;"/>
+                <q-btn v-else class="q-pa-md" label="No notifications" color="blue" flat style="background-color: black;"/>
+                <q-item style="background-color: black; color: white;" clickable v-for="(noti, idx) of notifications" :key="idx">
+                  <q-item-section>
+                    <q-item-label>
+                      <div style="display: flex;align-items: center;">
+                        <q-avatar size="45px">
+                          <img :src="$lget(noti, '_fastjoin.messageObj.sentBy.avatar', '')">
+                        </q-avatar>
+                        <div class="details" style="display: flex;align-items: center;">
+                          <div class="q-mx-sm">{{ $lget(noti, '_fastjoin.messageObj.sentBy.username', '') }}: </div>
+                          <div class="q-mr-sm">{{ noti.text.length > 60 ? noti.text.substr(0, 60) + '...' : noti.text }}</div>
+                        </div>
+                      </div>
+                      <div class="actions">
+                        <q-btn @click="viewNotification(noti)" flat color="green" label="View" />
+                        <q-btn @click="dismissNotification(noti)" flat color="yellow" label="Dismiss" />
+                      </div>
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
 
-<!--              </q-list>-->
-<!--            </q-btn-dropdown>-->
+              </q-list>
+            </q-btn-dropdown>
 
           </div>
           <div class="row" v-if="!user">
@@ -180,11 +196,11 @@
       </transition>
       <chat-box v-if="chat" @close="chat = !chat" :user="user"></chat-box>
     </q-page-container>
-<!--    <div style="height: 20px;width: 100%;"-->
-<!--         class="bg-blue-grey-6 text-center row flex justify-start">-->
-<!--      <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline;">Report a bug?</p>-->
-<!--      <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline;">Contact Owners</p>-->
-<!--    </div>-->
+    <div style="height: 20px;width: 100%;"
+         class="bg-blue-grey-6 text-center row flex justify-start">
+      <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline;">Report a bug?</p>
+      <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline;">Contact Owners</p>
+    </div>
   </q-layout>
 </template>
 
@@ -205,7 +221,7 @@
       if (this.user && this.user.takeToListings && this.$route.path !== '/listings') {
         this.$router.push({name: 'listings'});
       }
-      if(this.user && this.user.notifications) {
+      if(this.$lget(this.user, 'notifications', false)) {
         this.loadNotifications({ query: { $limit: 200, _id: {$in: this.user.notifications} } }).then(res => {
           if(res.data.length === 0) return;
           let last = res.data[res.data.length - 1];
@@ -228,30 +244,31 @@
     watch: {
       user: {
         deep: true,
-        async handler(newVal) {
-          if (this.$lget(newVal, 'notifications', []).length === 0) return;
-          if (this.lastNotification !== newVal.notifications[newVal.notifications.length - 1]) {
+        async handler(newVal){
+          if(this.$lget(newVal, 'notifications', []).length === 0) return;
+          if(this.lastNotification !== this.$lget(newVal.notifications[newVal.notifications.length - 1])) {
             let noti = await this.getNotification(newVal.notifications[newVal.notifications.length - 1]);
-            if (!noti) return;
-            if (noti.type !== 'Chat') return;
-            setTimeout(() => {
-              let box = document.getElementById(('chatBox'));
-              if (!box) return;
-              box.scrollTop = box.scrollHeight;
-            }, 100)
-            if (noti.expired) return;
-            this.$q.notify({
-              message: `<div>${noti._fastjoin.messageObj.sentBy.username} Said: ${noti.text.length > 35 ? noti.text.substr(0, 33) + '...' : noti.text}</div>`,
-              avatar: noti._fastjoin.messageObj.sentBy.avatar,
-              actions: [
-                {label: 'View', color: 'green', handler: () => this.viewNotification(noti)},
-                {label: 'Dismiss', color: 'yellow', handler: () => this.dismissNotification(noti)},
-              ],
-              position: 'top-right',
-              html: true,
-              timeout: 10000
-            })
-            this.expireNoti(noti);
+            if(!noti) return;
+            if(noti.type === 'Chat') {
+              setTimeout(() => {
+                let box = document.getElementById(('chatBox'));
+                if(!box) return;
+                box.scrollTop = box.scrollHeight;
+              }, 100)
+              if(noti.expired) return;
+              this.$q.notify({
+                message: `<div>${this.$lget(noti, '_fastjoin.messageObj.sentBy.username', '')} Said: ${noti.text.length > 35 ? noti.text.substr(0, 33) + '...' : noti.text}</div>`,
+                avatar: noti._fastjoin.messageObj.sentBy.avatar,
+                actions: [
+                  { label: 'View', color: 'green', handler: () => this.viewNotification(noti) },
+                  { label: 'Dismiss', color: 'yellow', handler: () => this.dismissNotification(noti) },
+                ],
+                position: 'top-right',
+                html: true,
+                timeout: 10000
+              })
+              this.expireNoti(noti);
+            }
           }
           this.lastNotification = newVal.notifications[newVal.notifications.length - 1];
         }
@@ -266,7 +283,8 @@
         allNotifications: 'find'
       }),
       notifications(){
-        return this.allNotifications({ query: { $limit: 200, _id: {$in: this.$lget(this.user, 'notifications', [])} } }).data;
+        if(!this.$lget(this.user, 'notifications', false)) return;
+        return this.allNotifications({ query: { $limit: 200, _id: {$in: this.user.notifications} } }).data;
       }
     },
     methods: {
@@ -275,12 +293,6 @@
         deleteNotification: 'remove',
         patchNotification: 'patch'
       }),
-      viewNotification(noti) {
-        this.deleteNotification(noti._id).then(res => {
-          if(this.$route.path === '/messages') return;
-          this.$router.push({ name: 'messages', params: { chatId: String(noti.modelId), created: 'false' } });
-        })
-      },
       expireNoti(noti) {
         setTimeout(async () => {
           let res = await this.getNotification(noti._id);
@@ -290,8 +302,27 @@
           }])
         }, 10000)
       },
+      viewNotification(noti) {
+        this.deleteNotification(noti._id).then(res => {
+          if(this.$route.path === '/messages') return;
+          this.$router.push({ name: 'messages', params: { chatId: String(noti.modelId), created: 'false' } });
+        })
+      },
       dismissNotification(noti){
         this.deleteNotification(noti._id);
+      },
+      clearAllNotifications(){
+        Promise.all(this.notifications.map(async noti => {
+          let not = await this.$store.dispatch('notifications/remove', noti._id);
+          return not;
+        })).then(res => {
+          this.$store.dispatch('users/patch', [this.user._id, {
+            notifications: []
+          }]);
+          console.log(res);
+        }).catch(err => {
+          console.log(err);
+        })
       },
       logOut() {
         this.$store.dispatch('auth/logout').then(() => {

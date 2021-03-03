@@ -43,8 +43,8 @@ const modifyWatched = async context => {
 module.exports = {
   before: {
     all: [],
-    find: [authenticate('jwt')],
-    get: [authenticate('jwt')],
+    find: [],
+    get: [],
     create: [
       hashPassword('password'),
     ],

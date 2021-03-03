@@ -136,7 +136,7 @@
           price: null,
           condition: '',
           address: {},
-          category: '',
+          category: 'Other',
           tags: [],
           description: '',
           images: [],

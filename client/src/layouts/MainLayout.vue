@@ -3,7 +3,7 @@
     <q-header class="bg-white" elevated style="display: flex;flex-direction: column"
               :style="$route.path === '/register' || $q.platform.is.mobile ? 'height: 90px;' : 'height: 130px'">
       <div class="row" style="height: 90px;width: 100%;display: grid; grid-template-columns: 0.3fr 2fr 0.3fr 0.3fr;"
-           :style="!user ? 'grid-template-columns: 0.5fr 2fr 0.5fr 0.2fr;' : 'grid-template-columns: 0.5fr 2fr 0.3fr 0.3fr;'">
+           :style="!user ? 'grid-template-columns: 0.5fr 1.5fr 0.5fr 0.2fr;' : 'grid-template-columns: 0.5fr 1.5fr 0.3fr 0.3fr;'">
         <div>
           <img @click="$router.push('/')"
                height="100px"
@@ -30,26 +30,26 @@
              :style="!user ? 'justify-content: space-between;' : 'justify-content: center'"
              v-if="$route.path !== '/register'">
           <div class="flex flex-center cursor-pointer">
-            <q-btn round @click="$router.push({name: 'articleSearch'})">
+            <q-btn @click="$router.push({name: 'articleSearch'})" flat>
               <q-avatar size="60px">
                 <img src="../assets/newIcon.png" alt="NewsPaper" width="50" height="50"/>
               </q-avatar>
             </q-btn>
 
-            <q-btn-dropdown color="yellow" class="q-ml-lg" dropdown-icon="notifications_active">
-              <q-list>
-                <q-item clickable v-for="(noti, idx) of notifications" :key="idx">
-                  <q-item-section>
-                    <q-item-label>{{ noti.text }}</q-item-label>
-                  </q-item-section>
-                </q-item>
+<!--            <q-btn-dropdown color="yellow" class="q-ml-lg" dropdown-icon="notifications_active">-->
+<!--              <q-list>-->
+<!--                <q-item clickable v-for="(noti, idx) of notifications" :key="idx">-->
+<!--                  <q-item-section>-->
+<!--                    <q-item-label>{{ noti.text }}</q-item-label>-->
+<!--                  </q-item-section>-->
+<!--                </q-item>-->
 
-              </q-list>
-            </q-btn-dropdown>
+<!--              </q-list>-->
+<!--            </q-btn-dropdown>-->
 
           </div>
           <div class="row" v-if="!user">
-            <div class="q-pr-xl">
+            <div>
               <router-link to="/register" style="text-decoration: none;">
                 <q-btn outlined color="primary" label="log in"></q-btn>
               </router-link>

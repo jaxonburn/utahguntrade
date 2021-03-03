@@ -75,7 +75,7 @@
         <div class="description q-my-lg text-h6" style="width: 100%;">
           Description: {{ listing.description ? listing.description : 'No description' }}
         </div>
-        <div v-if="listing.listedBy !== user._id" class="text-h6 q-mt-lg">
+        <div v-if="listing.listedBy !== $lget(user, '_id')" class="text-h6 q-mt-lg">
           <q-btn @click="startChat" class label="Start chat with user" color="primary"/>
         </div>
 
@@ -97,10 +97,10 @@
     mounted() {
       this.loadListing(this.$route.params.id).then((res) => {
         this.slide = res.images[0].url;
-        if (!res.viewed.includes(this.user._id)) {
+        if (!res.viewed.includes(this.$lget(this.user, '_id'))) {
           this.patchListing([this.listing._id, {
             $push: {
-              viewed: this.user._id
+              viewed: this.$lget(this.user, '_id')
             }
           }])
         }

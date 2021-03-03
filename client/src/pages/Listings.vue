@@ -17,12 +17,13 @@
     </div>
 
     <div v-else>
-      <div class="filter-menu row justify-between q-px-xl q-pt-lg">
+      <div class="filter-menu row justify-between q-px-xl q-pt-lg" style="align-items: center;">
         <div class="row col-8 col-xs-12 col-sm-8">
           <q-select class="q-mr-xl col-4 col-xs-12 col-sm-4 q-mt-md" v-model="priceSort" filled label="Sort by price"
                     :options="['Price low to high', 'Price high to low']"></q-select>
           <q-select class="q-mr-xl col-4 col-xs-12 q-mt-md col-sm-4" v-model="dateSort" filled label="Sort by date"
                     :options="['Date newest to oldest', 'Date oldest to newest']"></q-select>
+          <div @click="showFilter" class="col-1" style="display: flex; align-items: center; cursor: pointer;"><span>Filter</span> <q-icon class="q-ml-md" size="sm" name="list" /></div>
         </div>
         <q-btn label="Reset search" @click="$router.push('/listings')" color="primary" class="q-mt-md" align="right"/>
       </div>
@@ -52,6 +53,25 @@
         <q-select :options="[3, 5, 10, 20, 50]" v-model="listingsLimit"></q-select>
       </div>
     </div>
+    <q-drawer
+      v-model="filterMenu"
+      :width="300"
+      :breakpoint="500"
+    >
+      <div class="drawer-wrapper">
+        <div class="filter-row">
+          <span>Filter by price</span>
+          <div class="price-filter">
+            <q-input v-model="filterOptions.minPrice" label="Min" type="number" />
+            <q-input v-model="filterOptions.maxPrice" label="Max" type="number" />
+          </div>
+        </div>
+        <div class="buttons-wrapper">
+          <q-btn color="red" label="Reset" />
+          <q-btn @click="applyFilters" color="secondary" label="Apply filters" />
+        </div>
+      </div>
+    </q-drawer>
   </div>
 </template>
 
@@ -76,15 +96,14 @@
     })],
     data() {
       return {
-        dateSort: -1,
-        priceSort: -1
-      }
-    },
-    watch: {
-      listings: {
-        handler(newVal) {
-          console.log(newVal);
-        }
+        dateSort: '',
+        priceSort: '',
+        filterMenu: false,
+        filterOptions: {
+          minPrice: 0,
+          maxPrice: 0
+        },
+        filtersApplied: false
       }
     },
     computed: {
@@ -98,21 +117,32 @@
         }
       },
       listingQuery() {
-        return {
+        let query = {
           archived: false,
           sold: false,
           title: {$regex: `(?i).*${this.$lget(this.$route.query, 'search', '').length > 0 ? this.$route.query.search : ''}.*`},
           category: {$regex: `(?i).*${this.$lget(this.$route.query, 'category', '').length > 0 ? this.$route.query.category : ''}.*`},
-          $sort: this.sort
-        }
+          price: { $lte: this.filtersApplied && this.filterOptions.maxPrice > 0 ? this.filterOptions.maxPrice : 1000000, $gte: this.filtersApplied && this.filterOptions.minPrice > 0? this.filterOptions.minPrice : 0 },
+          $sort: this.sort,
+        };
+        console.log(query);
+        return query;
       }
     },
     methods: {
+      applyFilters(){
+        this.filtersApplied = true;
+      },
+      showFilter(){
+        this.filterMenu = !this.filterMenu;
+        if(this.filterMenu) {
+          this.filtersApplied = false;
+        }
+      },
       handlePagination(event) {
         this.listingsHandlePageChange(event);
       },
       changePage(type) {
-        console.log(type);
         if (type === 'minus') {
           this.listingsHandlePageChange(this.listingsCurrentPage - 1);
         } else if (type === 'add') {
@@ -197,5 +227,9 @@
       justify-content: flex-end;
       padding-right: 30px;
     }
+  }
+  .drawer-wrapper {
+    height: 100%;
+    border-right: 1px solid #343131;
   }
 </style>

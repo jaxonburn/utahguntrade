@@ -26,11 +26,11 @@
         <q-icon name="location_on" style="font-size: 1.4em; margin-bottom: 2px;" color="primary"/>
       </div>
 
-      <q-icon @click="removeFromWatchList" v-if="user.watched.includes(listing._id) && !isMyListing" class="eye" name="remove_done" size="xs">
+      <q-icon @click="removeFromWatchList" v-if="$lget(user, 'watched', []).includes(listing._id) && !isMyListing" class="eye" name="remove_done" size="xs">
         <q-tooltip size="md">Remove from watch list</q-tooltip>
       </q-icon>
 
-      <q-icon @click="addToWatchList" v-else-if="!isMyListing" class="eye" name="visibility" size="xs">
+      <q-icon @click="addToWatchList" v-else-if="!isMyListing && this.user" class="eye" name="visibility" size="xs">
         <q-tooltip>Add to watch list</q-tooltip>
       </q-icon>
 

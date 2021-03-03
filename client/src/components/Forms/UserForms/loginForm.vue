@@ -93,7 +93,8 @@
             this.$emit('close');
           }
 
-        }).catch(() => {
+        }).catch((err) => {
+          console.log(err);
           this.$q.loading.hide();
           this.$q.notify({
             color: 'secondary',

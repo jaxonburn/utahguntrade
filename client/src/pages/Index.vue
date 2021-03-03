@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page style="width: 100%;">
     <div style="display: flex; flex-direction: column;">
       <div style="height: 600px;display: flex; justify-content: center; align-items: center;">
         <div
@@ -26,28 +26,24 @@
            style="border-bottom: 3px solid var(--q-color-primary); border-top: 3px solid var(--q-color-primary)">
         <!--        <span class="text-weight-thin text-h4">Featured Listings</span>-->
       </div>
-      <!--      <div style="display: flex; justify-content: center; align-items: center;height: 450px;">-->
-      <!--        <div style="width: 95vw;height: 90%;display: flex; justify-content: center; align-items: center;-->
-      <!--"-->
-      <!--        >-->
-
-      <!--          <swiper class="swiper" :options="swiperOption">-->
-      <!--            <swiper-slide v-for="(product,index) in featuredProducts" :key="index"-->
-      <!--                          :style="{backgroundImage: `url(${product.image})`}">-->
-      <!--              <div :style="{'background-image': product.image}">-->
-      <!--                <div class="q-pa-sm"-->
-      <!--                     style="display: flex; flex-direction: column;background: rgba(130, 130, 130, 0.6);">-->
-      <!--                  <span class="text-xxs text-mb-xxs">{{ product.artist }}</span>-->
-      <!--                </div>-->
-      <!--              </div>-->
-      <!--            </swiper-slide>-->
-      <!--            <div class="swiper-pagination" slot="pagination"></div>-->
-      <!--          </swiper>-->
-      <!--        </div>-->
-      <!--      </div>-->
-      <div class="map-wrapper">
+      <div style="width: 100%;" class="q-py-md">
         <near-you-map></near-you-map>
       </div>
+      <q-separator/>
+      <div>
+        <div class="readFont bg-primary text-white boxShadow" style="font-size: 2em;text-indent: 20px;height: 50px;">Recently Posted Listings</div>
+        <carousel :perPage="$q.screen.lt.md ? 1 : 3" :speed="30" paginationActiveColor="#011d80">
+          <slide v-for="(listing,index) in latestListings" :key="index">
+            <listing-card :listing="listing">
+
+            </listing-card>
+          </slide>
+        </carousel>
+      </div>
+    </div>
+    <q-separator color="primary" size="5px"/>
+    <div style="height: 100px;width: 100%;background: white;">
+
     </div>
   </q-page>
 </template>
@@ -55,15 +51,27 @@
 <script>
 
   import NearYouMap from 'components/common/NearYouMap';
-
+  import { Carousel, Slide } from 'vue-carousel';
+  import Listing from 'components/common/Listing';
+  import {mapActions} from 'vuex';
 
   export default {
     name: 'PageIndex',
     components: {
+      ListingCard: Listing,
       NearYouMap,
+      Carousel,
+      Slide
+    },
+    mounted(){
+      this.findListings({query: {$limit: 6,$sort: {createdAt: -1},sold: false,archived: false}}).then((res) => {
+        console.log(res);
+        this.latestListings = res.data;
+      })
     },
     data() {
       return {
+        latestListings: [],
         swiperOption: {
           effect: 'coverflow',
           grabCursor: true,
@@ -87,6 +95,11 @@
           }
         }
       }
+    },
+    methods: {
+      ...mapActions('listings', {
+        findListings: 'find'
+      })
     }
   }
 </script>

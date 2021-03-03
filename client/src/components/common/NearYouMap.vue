@@ -1,8 +1,8 @@
 <template>
   <!--  :style="$q.screen.lt.md ? 'height: 400px;display: flex; flex-direction: column;' : 'height: 400px;display: flex; flex-direction: row;'"-->
-  <div class="map-wrapper">
-    <div>
-      <q-card class="q-ma-xl" style="height: 350px;min-width: 350px;width: 100%;">
+  <div class="map-wrapper" :style="$q.screen.lt.md ? 'grid-template-rows: 1fr 1fr;' : 'grid-template-columns: 1fr 1fr;'">
+    <div class="flex flex-center">
+      <q-card :style="$q.screen.lt.md ? 'width: 350px;' : 'width: 700px'">
         <transition name="slide-fade" appear >
         <div v-if="!this.locationLoading">
         <q-card-section class="text-lg text-mb-lg text-weight-medium flex justify-center">
@@ -10,10 +10,10 @@
         </q-card-section>
         <q-card-section>
           <location-form @input="setAddress"></location-form>
-          <div class="row" style="display: flex; justify-content: center;align-items: center;">
+          <div class="row" style="display: flex;justify-content: center;">
             <q-select rounded outlined label="Radius" v-model="radius" class="q-my-lg"
-                      :options="[5, 10, 15, 20, 25, 30, 40,  50, 75, 100, 150]" style="width: 110px;"></q-select>
-            <div class="text-weight-bold text-md text-mb-md q-ml-lg">miles</div>
+                      :options="[5, 10, 15, 20, 25, 30, 40,  50, 75, 100, 150]"></q-select>
+            <div class="text-weight-bold text-sm text-mb-sm q-ml-sm flex items-end q-mb-lg">miles</div>
           </div>
           <div class="flex justify-end">
             <q-btn label="Search" class="text-white bg-secondary" icon-right="search" @click="createRadius"></q-btn>
@@ -35,7 +35,7 @@
         </transition>
       </q-card>
     </div>
-    <div id="tomtom" class="q-mx-sm flex flex-center tom-tom"></div>
+    <div id="tomtom" class="flex flex-center tom-tom"></div>
   </div>
 </template>
 
@@ -138,13 +138,15 @@
 <style scoped>
 
   .map-wrapper {
-    display: flex;
-    width: 100vw;
-    justify-content: space-around;
+    display: grid;
+    justify-items: stretch;
+    align-content: space-evenly;
+    grid-column-gap: 60px;
+    width: 100%;
   }
 
   .tom-tom {
-    flex: .7;
+    width: 600px;
   }
 
 </style>

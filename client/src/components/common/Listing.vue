@@ -301,12 +301,12 @@
         left: 10px;
       }
     }
-
     .top {
       img {
         width: 100%;
         margin-right: 20px;
         max-height: 300px;
+        min-height: 300px;
       }
 
     }

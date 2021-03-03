@@ -1,7 +1,7 @@
-const { authenticate } = require('@feathersjs/authentication').hooks;
-const { nestedfJoinHook } = require('../../hooks/common/fastJoin');
-const { GeneralError } = require('@feathersjs/errors');
-const { checkContext } = require('feathers-hooks-common');
+const {authenticate} = require('@feathersjs/authentication').hooks;
+const {nestedfJoinHook} = require('../../hooks/common/fastJoin');
+const {GeneralError} = require('@feathersjs/errors');
+const {checkContext} = require('feathers-hooks-common');
 
 const addMessageToUnread = async (ctx) => {
   let sentBy = ctx.data.messages[ctx.data.messages.length - 1];
@@ -18,10 +18,10 @@ const addMessageToUnread = async (ctx) => {
   await ctx.app.service('notifications').create(noti).then(res => {
     filterUsers.forEach(user => {
       user.unreadMessages.push(sentBy.sentBy);
-      ctx.app.service('users').patch(user.user, { $push: { notifications: res._id } });
+      ctx.app.service('users').patch(user.user, {$push: {notifications: res._id}});
     });
   }).catch(err => {
-    console.log('SOmething wernt wrong when adding notification on chats: ', err.message);
+    console.log('Something went wrong when adding notification on chats: ', err.message);
     filterUsers.forEach(user => {
       user.unreadMessages.push(sentBy.sentBy);
     });
@@ -33,16 +33,24 @@ const addChatToUser = (ctx) => {
   let chatId = ctx.result._id;
   let users = ctx.result.users;
   users.forEach((user) => {
-    ctx.app.service('users').patch(user.user, {$push: { chats: chatId}});
+    ctx.app.service('users').patch(user.user, {$push: {chats: chatId}});
   });
   return ctx;
 };
 
 const checkIfChatExists = async (ctx) => {
-  await ctx.app.service('chats').find({query: {'users.user': {$all: [ctx.data.users[0].user, ctx.data.users[1].user]}}}).then((res) => {
-    if(res.data.length > 0){
+  // await ctx.app.service('chats').find({query: {'users.user': {$all: [ctx.data.users[0].user, ctx.data.users[1].user]}}}).then((res) => {
+  await ctx.app.service('chats').find({
+    query: {
+      $and: [
+        {'users.user': ctx.data.users[0].user},
+        {'users.user': ctx.data.users[1].user},
+      ]
+    }
+  }).then((res) => {
+    if (res.data.length > 0) {
       throw new GeneralError(String(res.data[0]._id));
-    }else {
+    } else {
       return ctx;
     }
   });
@@ -51,7 +59,7 @@ const checkIfChatExists = async (ctx) => {
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt') ],
+    all: [authenticate('jwt')],
     find: [],
     get: [],
     create: [
@@ -66,7 +74,7 @@ module.exports = {
 
   after: {
     all: [
-      nestedfJoinHook('users', 'users', 'user' )
+      nestedfJoinHook('users', 'users', 'user')
     ],
     find: [],
     get: [],

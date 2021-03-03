@@ -28,7 +28,7 @@
         <q-btn label="Reset search" @click="$router.push('/listings')" color="primary" class="q-mt-md" align="right"/>
       </div>
       <div class="listings-wrapper">
-        <Listing :listing="listing" :key="idx" v-for="(listing, idx) of listings"></Listing>
+        <ListingCard :listing="listing" :key="idx" v-for="(listing, idx) in listings"></ListingCard>
       </div>
     </div>
 
@@ -84,7 +84,7 @@
 
   export default {
     name: "Listings",
-    components: {Listing, Loading},
+    components: {ListingCard: Listing, Loading},
     mixins: [makeFindPaginateMixin({
       limit: 10,
       service: 'listings',
@@ -112,12 +112,12 @@
       }),
       sort() {
         return {
-          price: this.priceSort === 'Price low to high' ? -1 : 1,
+          price: this.priceSort === 'Price low to high' ? 1 : -1,
           createdAt: this.dateSort === 'Date newest to oldest' ? 1 : -1
         }
       },
       listingQuery() {
-        let query = {
+        return {
           archived: false,
           sold: false,
           title: {$regex: `(?i).*${this.$lget(this.$route.query, 'search', '').length > 0 ? this.$route.query.search : ''}.*`},

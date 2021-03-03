@@ -18,7 +18,6 @@
         emit-value
         @filter="loadAddress"
         @filter-abort="abortFilterFn"
-        style="width: 500px"
       >
         <template v-slot:no-option>
           <q-item>

@@ -1,12 +1,13 @@
 <template>
-  <div class="listing-details" >
+  <q-page class="listing-details" >
     <Loading v-if="!listing"/>
     <div v-else class="listing">
 
       <div class="left">
 
         <VueAgile class="agile-comp" :initial-slide="0" :dots="false" :fade="true" :nav-buttons="true">
-          <img class="slide" v-for="(image, idx) of listing.images" :src="image.url" :key="idx"/>
+<!--          <img class="slide" v-for="(image, idx) of listing.images" :src="image.url" :key="idx"/>-->
+          <div class="slide-img" v-for="(image, idx) of listing.images" :key="idx" :style="{backgroundImage: `url(${image.url})`}"></div>
           <template slot="prevButton">
             <q-icon size="md" name="chevron_left"/>
           </template>
@@ -18,7 +19,7 @@
           </template>
         </VueAgile>
 
-        <div v-if="!$q.platform.is.mobile" class="footer">
+        <div v-if="!$q.platform.is.mobile" class="footer q-pb-xl">
           <div class="q-mt-lg right-footer">
             <div class="text-h4">Contact seller</div>
             <div class="q-my-sm" v-if="listing._fastjoin.listedBy.email">Email: {{
@@ -81,7 +82,7 @@
 
       </div>
     </div>
-  </div>
+  </q-page>
 </template>
 
 <script>
@@ -171,6 +172,7 @@
         justify-content: space-between;
         align-items: center;
         width: 100%;
+        margin-top: -20px;
 
         .right-footer {
           flex: .3;
@@ -205,6 +207,13 @@
         }
       }
     }
+  }
+
+  .slide-img {
+    height: 50vh;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 
   .agile-comp {

@@ -238,13 +238,14 @@
           open: false,
           label: ''
         },
-        lastNotification: ''
+        lastNotification: '',
       }
     },
     watch: {
       user: {
         deep: true,
         async handler(newVal){
+          console.log(newVal.notifications, this.user.notifications);
           if(this.$lget(newVal, 'notifications', []).length === 0) return;
           if(this.lastNotification !== this.$lget(newVal.notifications[newVal.notifications.length - 1])) {
             let noti = await this.getNotification(newVal.notifications[newVal.notifications.length - 1]);

@@ -41,7 +41,7 @@ overflow-y: scroll;
                   <span class="text-weight-bolder">{{ chat.users.filter((chatUser) => chatUser.user === user._id)[0].unreadMessages.length }}</span>
                 </q-badge>
                 <div class="flex flex-center">
-                  <q-icon name="fiber_manual_record" :class="$lget(notUser, 'active', false) ? 'text-positive' : 'text-negative'"
+                  <q-icon name="fiber_manual_record" :color="$lget($lget(chat, '_fastjoin.users', []).filter((chatUser) => chatUser.user !== user._id), '[0].active', false) ? 'positive' : 'negative'"
                           style="font-size: 1em;"></q-icon>
                 </div>
                 <q-item-section avatar

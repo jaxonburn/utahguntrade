@@ -7,7 +7,7 @@
         <div style="height: 70vh;width: 100%;display: flex; flex-direction: row;"
              :style="paymentSucceeded ? 'justify-content: center; align-items: center;' : ''">
           <transition name="slide-fade" :appear="!paymentSucceeded">
-          <div style="width: 50%;" class="flex flex-center" v-if="!paymentSucceeded">
+          <div style="width: 50%;" class="flex flex-center q-pt-md" v-if="!paymentSucceeded">
             <div class="boxShadow premiumCard" style="justify-content: flex-start;">
               <div style="display: flex; justify-content: center;flex-direction: column;">
                 <div><span class="specialFont text-center text-grey-7">Free Plan</span></div>
@@ -46,7 +46,7 @@
             </subscription-complete>
           </transition>
           <transition name="slide-fade" :appear="!paymentSucceeded">
-          <div style="width: 50%;" class="flex flex-center" v-if="!paymentSucceeded">
+          <div style="width: 50%;" class="flex flex-center q-pt-md" v-if="!paymentSucceeded">
             <div class="boxShadow premiumCard" style="justify-content: flex-start;">
               <div style="display: flex; justify-content: center;flex-direction: column;">
                 <div><span class="specialFont text-center text-primary">Premium Membership</span></div>
@@ -110,8 +110,8 @@
                       cancel-url="http://localhost:8080"
                       @loading="v => loading = v"
                     />
-                    <q-btn size="lg" style="background: linear-gradient(0deg, #2F80ED, #B2FFDA)" push @click="submit">Go
-                      Premium
+                    <q-btn size="lg" style="background: linear-gradient(0deg, #2F80ED, #B2FFDA);z-index: 5;" push @click="submit">
+                      Go Premium
                     </q-btn>
                   </div>
 

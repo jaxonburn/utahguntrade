@@ -27,7 +27,7 @@
         <div>
           <div style="height: 60px;text-overflow: ellipsis;overflow: hidden;position: relative;font-size: 1.3em;"
                class="q-mx-xl readFont">
-            <div v-html="articles[0].sections[0].body"></div>
+            <div v-html="$lget(articles, '[0].sections[0].body', '')"></div>
           </div>
           <div class="flex justify-end">
             <q-btn class="q-mr-lg q-mb-sm bg-accent text-white" push
@@ -50,7 +50,14 @@
       <q-separator/>
       <div :style="$q.screen.lt.md ? 'width: 100%' : 'width: 40%;'" class="q-ma-md socialLinksCard">
         <q-card style="width: 100%; height: 50%;display: flex;justify-content: center;flex-direction: column;" flat>
-          <q-card-section class="aboutFont" style="font-size: 2em;display: flex; justify-content: center;border-bottom: 1px solid var(--q-color-primary);">
+          <q-card-section class="avatarFont" style="display: flex; flex-direction: column;justify-content: center;align-items: center;">
+            <span style="font-size: 1.5em;">Go to Utah Gun Hub Community</span>
+            <q-btn color="red" size="lg" class="q-mt-sm">
+              Community
+            </q-btn>
+          </q-card-section>
+          <q-separator/>
+          <q-card-section class="aboutFont" style="font-size: 1.7em;display: flex; justify-content: center;border-bottom: 1px solid var(--q-color-primary);">
             See More From Utah Gun Hub
           </q-card-section>
           <q-card-section>
@@ -62,6 +69,8 @@
       </div>
     </div>
     <q-separator/>
+    <div style="width: 100%;font-size: 1.5em;display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;">
+    </div>
   </q-page>
 </template>
 

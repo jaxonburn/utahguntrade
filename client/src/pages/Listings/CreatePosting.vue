@@ -255,6 +255,7 @@
       },
       publish() {
         this.listingForm.listedBy = this.user;
+        this.listingForm.point = {type: 'Point', coordinates: [this.listingForm.address.position.lon,  this.listingForm.address.position.lat]};
         this.$q.loading.show();
         this.createListing({...this.listingForm}).then(res => {
           this.$q.loading.hide();

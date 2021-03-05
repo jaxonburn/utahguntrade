@@ -57,9 +57,12 @@
       <div class="column">
         <q-btn @click="$router.push({name: 'my-listings'})" class="q-ma-md" outlined icon="receipt" label="My listings"
                color="secondary"></q-btn>
-        <q-btn class="q-ma-md" outlined icon="receipt" label="Watched Listings" color="secondary"></q-btn>
+<!--        <q-btn class="q-ma-md" outlined icon="receipt" label="Watched Listings" color="secondary" ></q-btn>-->
         <q-btn class="q-ma-md" outlined icon="chat" label="Messages" color="secondary"></q-btn>
-        <q-btn class="q-ma-md" outlined icon="chat" label="Test Account" color="secondary" @click="stripeCustomer"></q-btn>
+
+        <q-btn size="lg" style="background: linear-gradient(0deg, #2F80ED, #B2FFDA)" push  @click="$router.push({name: 'premium'})">
+          Go Premium
+        </q-btn>
         <q-space/>
         <q-btn v-if="!editing" rounded outline label="Edit Profile" icon="create" color="primary" class="q-ma-sm"
                @click="editing = true">

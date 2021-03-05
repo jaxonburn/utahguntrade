@@ -3,11 +3,11 @@
     <q-header class="bg-white" elevated style="display: flex;flex-direction: column"
               :style="$route.path === '/register' || $q.platform.is.mobile ? 'height: 90px;' : 'height: 130px'">
       <div class="row" style="height: 90px;width: 100%;display: grid; grid-template-columns: 0.3fr 2fr 0.3fr 0.3fr;"
-           :style="!user ? 'grid-template-columns: 0.5fr 1.5fr 0.5fr 0.2fr;' : 'grid-template-columns: 0.5fr 1.5fr 0.3fr 0.3fr;'">
+           :style="!user ? 'grid-template-columns: 0.2fr 1.5fr 0.5fr 0.2fr;' : 'grid-template-columns: 0.2fr 1.5fr 0.3fr 0.3fr;'">
         <div>
           <img @click="$router.push('/')"
-               height="100px"
-               width="130"
+               height="80%"
+               width="100"
                src="../assets/utahgunhub.png"
                class="q-ml-lg cursor-pointer"
                alt="MainLogo"
@@ -36,7 +36,7 @@
               </q-avatar>
             </q-btn>
 
-            <q-btn-dropdown color="yellow" class="q-ml-lg" v-if="user" dropdown-icon="notifications_active">
+            <q-btn-dropdown color="secondary" class="q-ml-lg" v-if="user" dropdown-icon="notifications_active">
               <q-list>
                 <q-btn v-if="notifications" @click="clearAllNotifications" class="q-pa-md" label="Clear all notifications" color="blue" flat style="background-color: black;"/>
                 <q-btn v-else class="q-pa-md" label="No notifications" color="blue" flat style="background-color: black;"/>
@@ -129,14 +129,23 @@
                 </q-item-section>
                 <q-item-section class="side-menu-link">Browse Listings</q-item-section>
               </q-item>
+              <q-separator/>
               <div style="width: 100%;" v-if="user">
                 <q-btn-dropdown
                   class="bg-white text-primary"
-                  icon="account_circle"
-                  label="Account"
                   style="width: 100%;"
                   flat
                 >
+                  <template v-slot:label>
+                    <div style="display: flex; flex-direction: row; justify-content: space-between;width: 100%;">
+                      <q-avatar size="sm" style="border: 1px solid black;">
+                        <img :src="user.avatar" />
+                      </q-avatar>
+                      <div>
+                        Account
+                      </div>
+                    </div>
+                  </template>
                   <div class="row q-pa-md">
                     <div class="column flex justify-between">
                       <div class="text-h6 q-mb-md text-center text-weight-thin" style="border-bottom: 1px solid black;">
@@ -186,7 +195,7 @@
       <category-drop-down v-if="!$q.platform.is.mobile && $route.path === '/'"></category-drop-down>
     </q-header>
 
-    <q-page-container>
+    <q-page-container style="height: 100%;">
       <router-view/>
       <transition name="lide-fade" appear>
         <q-avatar v-if="!chat && $lget(user, '_id', false) && $route.name !== 'messages'"
@@ -218,6 +227,7 @@
       StripeCheckout,
     },
     mounted() {
+      console.log(this.user);
       if (this.user && this.user.takeToListings && this.$route.path !== '/listings') {
         this.$router.push({name: 'listings'});
       }
@@ -393,6 +403,20 @@
     /* .slide-fade-leave-active below version 2.1.8 */
   {
     transform: translateX(150px) translateY(150px);
+  }
+
+  .slide-fadeBack-enter-active {
+    transition: all 1.5s ease;
+  }
+
+  .slide-fadeBack-leave-active {
+    transition: all 0s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+
+  .slide-fadeBack-enter, .slide-fade-leave-to
+    /* .slide-fade-leave-active below version 2.1.8 */
+  {
+    transform: translateX(-300px);
   }
 
   .side-menu-link {

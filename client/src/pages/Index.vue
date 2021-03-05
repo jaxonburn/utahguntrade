@@ -5,10 +5,6 @@
         <div
           class="mainBackground">
           <div>
-<!--            <q-card class="flex flex-center mainCard">-->
-<!--              <div class="text-xxl text-mb-xxl" style="text-align: center;">Browse Gun Listings all over Utah</div>-->
-<!--            </q-card>-->
-<!--            temp changes-->
             <div class="flex flex-center mainCard">
               <div class="text-mb-xxl mainTitleFont" style="text-align: center;">Browse Gun Listings all over Utah</div>
             </div>
@@ -32,7 +28,7 @@
       <q-separator/>
       <div>
         <div class="readFont bg-primary text-white boxShadow" style="font-size: 2em;text-indent: 20px;height: 50px;">Recently Posted Listings</div>
-        <carousel :perPage="$q.screen.lt.md ? 1 : 3" :speed="30" paginationActiveColor="#011d80">
+        <carousel :perPage="$q.screen.lt.md ? 1 : $q.screen.gt.lg ? 5 : 4" :speed="30" paginationActiveColor="#011d80">
           <slide v-for="(listing,index) in latestListings" :key="index">
             <listing-card :listing="listing">
 

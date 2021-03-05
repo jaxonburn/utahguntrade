@@ -40,6 +40,10 @@ overflow-y: scroll;
                          color="primary" class="q-mr-md" floating>
                   <span class="text-weight-bolder">{{ chat.users.filter((chatUser) => chatUser.user === user._id)[0].unreadMessages.length }}</span>
                 </q-badge>
+                <div class="flex flex-center">
+                  <q-icon name="fiber_manual_record" :class="$lget(fUser, 'active', false) ? 'text-positive' : 'text-negative'"
+                          style="font-size: 1em;"></q-icon>
+                </div>
                 <q-item-section avatar
                                 v-for="users in chat._fastjoin.users.filter((userFilt) => {return userFilt._id !== user._id;})"
                                 :key="users._id" class="q-mr-none q-pa-none">

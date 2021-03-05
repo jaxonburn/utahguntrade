@@ -330,9 +330,11 @@
           this.$store.dispatch('users/patch', [this.user._id, {
             notifications: []
           }]);
-          console.log(res);
         }).catch(err => {
-          console.log(err);
+          this.$q.notify({
+            message: err.message,
+            color: 'negative'
+          })
         })
       },
       logOut() {

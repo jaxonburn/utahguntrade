@@ -12,8 +12,9 @@
       </div>
     </div>
     <div class="top">
-      <img
-        :src="$lget(listing.images[0], 'url', 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/No_image_3x4.svg/1200px-No_image_3x4.svg.png')">
+<!--      <img-->
+<!--        :src="$lget(listing.images[0], 'url', 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/No_image_3x4.svg/1200px-No_image_3x4.svg.png')">-->
+      <div class="img" :style="{backgroundImage: `url(${listing.images[0].url})`}" ></div>
     </div>
     <div class="bottom">
       <!--      category description listedBy-->
@@ -307,6 +308,11 @@
         margin-right: 20px;
         max-height: 300px;
         min-height: 300px;
+      }
+      .img {
+        height: 300px;
+        background-repeat: no-repeat;
+        background-size: cover;
       }
 
     }

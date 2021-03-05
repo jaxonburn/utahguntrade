@@ -13,7 +13,7 @@
 
     <div class="no-results" v-if="!isPending && listings.length === 0">
       <div>No results found</div>
-      <q-btn color="primary" label="Reset search" @click="$router.push('/listings');"/>
+      <q-btn color="primary" label="Reset search" @click="resetListings"/>
     </div>
 
     <div v-else>
@@ -60,15 +60,31 @@
     >
       <div class="drawer-wrapper">
         <div class="filter-row">
-          <span>Filter by price</span>
+          <div class="menu-name">Filter by price</div>
           <div class="price-filter">
-            <q-input v-model="filterOptions.minPrice" label="Min" type="number" />
-            <q-input v-model="filterOptions.maxPrice" label="Max" type="number" />
+            <q-input @click="filterOptions.minPrice = undefined" v-model="filterOptions.minPrice" label="Min" type="number" />
+            <q-input @click="filterOptions.maxPrice = undefined" v-model="filterOptions.maxPrice" label="Max" type="number" />
+          </div>
+        </div>
+        <div class="filter-row">
+          <div class="menu-name">Filter by category</div>
+          <div class="category-filter" style="height: 300px; overflow: scroll; margin: 20px 0;">
+            <div v-for="(cat, idx) of categories" :key="idx">
+              <q-checkbox @input="toggleCategory(cat)" keep-color :value="filterOptions.categories.includes(cat)" :label="cat" color="cyan" />
+            </div>
+          </div>
+        </div>
+        <div class="filter-row">
+          <div class="menu-name">Filter by condition</div>
+          <div class="condition-filter" style="height: 100px; overflow: scroll; margin: 20px 0;">
+            <div v-for="(con, idx) of conditions" :key="idx">
+              <q-checkbox @input="toggleCondition(con)" keep-color :value="filterOptions.conditions.includes(con)" :label="con" color="cyan" />
+            </div>
           </div>
         </div>
         <div class="buttons-wrapper">
-          <q-btn color="red" label="Reset" />
-          <q-btn @click="applyFilters" color="secondary" label="Apply filters" />
+          <q-btn @click="resetListings" color="red" label="Reset" />
+          <q-btn @click="apply" color="secondary" label="Apply filters" />
         </div>
       </div>
     </q-drawer>
@@ -101,9 +117,14 @@
         filterMenu: false,
         filterOptions: {
           minPrice: 0,
-          maxPrice: 0
+          maxPrice: 0,
+          categories: [],
+          conditions: []
         },
-        filtersApplied: false
+        applyFilters: false,
+        conditions: ['New', 'Like New', 'Used', 'Worn'],
+        categories: ['Knives', 'Rifle', 'AssaultRifle', 'Handgun', 'SubmachineGun', 'Hunting', 'Magazines', 'Scopes', 'Other', 'AssaultAmmo', 'HandgunAmmo.', 'RifleAmmo', 'ShotgunAmmo', 'SubmachineAmmo', 'Misc' ],
+
       }
     },
     computed: {
@@ -113,7 +134,7 @@
       sort() {
         return {
           price: this.priceSort === 'Price low to high' ? 1 : -1,
-          createdAt: this.dateSort === 'Date newest to oldest' ? 1 : -1
+          createdAt: this.dateSort === 'Date newest to oldest' ? -1 : 1
         }
       },
       listingQuery() {
@@ -121,23 +142,42 @@
           archived: false,
           sold: false,
           title: {$regex: `(?i).*${this.$lget(this.$route.query, 'search', '').length > 0 ? this.$route.query.search : ''}.*`},
-          category: {$regex: `(?i).*${this.$lget(this.$route.query, 'category', '').length > 0 ? this.$route.query.category : ''}.*`},
-          price: { $lte: this.filtersApplied && this.filterOptions.maxPrice > 0 ? this.filterOptions.maxPrice : 1000000, $gte: this.filtersApplied && this.filterOptions.minPrice > 0? this.filterOptions.minPrice : 0 },
+          category: {[this.filterOptions.categories.length > 0 ? '$in' : '$regex']: this.filterOptions.categories.length === 0 ? `(?i).*${this.$lget(this.$route.query, 'category', '').length > 0 ? this.$route.query.category : ''}.*` : this.filterOptions.categories},
+          price: { $lte: this.applyFilters && this.filterOptions.maxPrice > 0 ? this.filterOptions.maxPrice : 1000000, $gte: this.applyFilters && this.filterOptions.minPrice > 0? this.filterOptions.minPrice : 0 },
+          condition: { $in: this.filterOptions.conditions.length === 0 ? this.conditions : this.filterOptions.conditions },
           $sort: this.sort,
         };
-        console.log(query);
-        return query;
       }
     },
     methods: {
-      applyFilters(){
-        this.filtersApplied = true;
+      toggleCondition(con){
+        if(!this.filterOptions.conditions.includes(con)){
+          this.filterOptions.conditions.push(con);
+        } else {
+          this.filterOptions.conditions = this.filterOptions.conditions.filter(co => {
+            return co !== con;
+          })
+        }
+      },
+      toggleCategory(cat){
+        if(!this.filterOptions.categories.includes(cat)) {
+          this.filterOptions.categories.push(cat);
+        } else {
+          this.filterOptions.categories = this.filterOptions.categories.filter(ca => {
+            return ca !== cat;
+          })
+        }
+        console.log(this.filterOptions.categories);
+      },
+      apply(){
+        this.applyFilters = true;
       },
       showFilter(){
-        this.filterMenu = !this.filterMenu;
-        if(this.filterMenu) {
-          this.filtersApplied = false;
+        if(this.$lget(this.$route.query, 'search') || this.$lget(this.$route.query, 'category')){
+          this.$router.push({name: 'listings'})
         }
+        this.filterMenu = !this.filterMenu;
+
       },
       handlePagination(event) {
         this.listingsHandlePageChange(event);
@@ -147,6 +187,21 @@
           this.listingsHandlePageChange(this.listingsCurrentPage - 1);
         } else if (type === 'add') {
           this.listingsHandlePageChange(this.listingsCurrentPage + 1);
+        }
+      },
+      resetListings(){
+        this.filterMenu = false;
+        this.applyFilters = false;
+        this.filterOptions = {
+          minPrice: 0,
+          maxPrice: 0,
+          categories: [],
+          conditions: []
+        };
+        this.dateSort = '';
+        this.priceSort = '';
+        if(this.$lget(this.$route.query, 'search') || this.$lget(this.$route.query, 'category')){
+          this.$router.push({name: 'listings'})
         }
       }
     }
@@ -231,5 +286,24 @@
   .drawer-wrapper {
     height: 100%;
     border-right: 1px solid #343131;
+
+    .filter-row {
+      .menu-name {
+        font-size: 1.15em;
+        margin: 8px;
+        padding-top: 8px;
+      }
+
+      .price-filter {
+        display: flex;
+        padding: 0 5px;
+        justify-content: space-between;
+      }
+    }
+  }
+  .buttons-wrapper {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
   }
 </style>

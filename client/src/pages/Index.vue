@@ -12,22 +12,19 @@
               <div class="readFont">Trade | Connect | Educate</div>
             </div>
             <div style="text-align: center;">
-              <q-btn @click="$router.push('listings')" class="q-mt-md" style="text-align: center;" color="primary"
+              <q-btn @click="$router.push('listings')" class="q-mt-md bg-primaryGradient text-white"
                      label="Browse listings" size="lg"/>
             </div>
           </div>
         </div>
       </div>
-      <div class="flex flex-center q-mb-md"
-           style="border-bottom: 3px solid var(--q-color-primary); border-top: 3px solid var(--q-color-primary)">
-        <!--        <span class="text-weight-thin text-h4">Featured Listings</span>-->
-      </div>
+      <q-separator class="bg-primaryGradient" size="5px"/>
       <div style="width: 100%;" class="q-py-md">
         <near-you-map></near-you-map>
       </div>
       <q-separator/>
       <div>
-        <div class="readFont bg-primary text-white boxShadow" style="font-size: 2em;text-indent: 20px;height: 50px;">Recently Posted Listings</div>
+        <div class="readFont bg-primaryGradient text-white boxShadow" style="font-size: 2em;text-indent: 20px;height: 50px;">Recently Posted Listings</div>
         <carousel :perPage="$q.screen.lt.md ? 1 : $q.screen.gt.lg ? 5 : 4" :speed="30" paginationActiveColor="#011d80">
           <slide v-for="(listing,index) in latestListings" :key="index">
             <listing-card :listing="listing">
@@ -37,10 +34,7 @@
         </carousel>
       </div>
     </div>
-    <q-separator color="primary" size="5px"/>
-    <div style="height: 100px;width: 100%;background: white;">
-
-    </div>
+    <q-separator class="bg-secondaryGradient" size="5px"/>
   </q-page>
 </template>
 

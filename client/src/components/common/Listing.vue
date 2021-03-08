@@ -1,7 +1,7 @@
 <template>
   <q-card class="listing">
     <div class="hover-btn" v-if="!$q.platform.is.mobile">
-      <q-btn color="secondary" @click="$router.push(`listing-details/${listing._id}`)" label="View Details" />
+      <q-btn class="bg-secondaryGradient text-white" @click="$router.push(`listing-details/${listing._id}`)" label="View Details" />
       <div v-if="isMyListing && !listing.sold">
         <q-btn @click="markAsSolidDialog = true" size="sm" class="q-ml-sm sold-icon" icon="attach_money" color="green" rounded>
           <q-tooltip>Mark as sold</q-tooltip>
@@ -71,7 +71,7 @@
     </div>
 
     <div v-if="$q.platform.is.mobile" style="text-align: center; padding: 20px 0;">
-      <q-btn color="secondary" @click="$router.push(`listing-details/${listing._id}`)" label="View Details" />
+      <q-btn class="bg-secondaryGradient text-white" @click="$router.push(`listing-details/${listing._id}`)" label="View Details" />
     </div>
 
     <q-dialog v-model="editListingDialog" full-width>

@@ -16,7 +16,7 @@
             <div class="text-weight-bold text-sm text-mb-sm q-ml-sm flex items-end q-mb-lg">miles</div>
           </div>
           <div class="flex justify-end">
-            <q-btn label="Search" class="text-white bg-secondary" icon-right="search" @click="createRadius"></q-btn>
+            <q-btn label="Search" class="text-white bg-secondaryGradient" icon-right="search" @click="createRadius"></q-btn>
           </div>
         </q-card-section>
         </div>

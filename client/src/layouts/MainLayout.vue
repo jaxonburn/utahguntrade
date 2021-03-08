@@ -36,7 +36,7 @@
               </q-avatar>
             </q-btn>
 
-            <q-btn-dropdown color="secondary" class="q-ml-lg" v-if="user" dropdown-icon="notifications_active">
+            <q-btn-dropdown class="q-ml-lg text-white bg-secondaryGradient" v-if="user" dropdown-icon="notifications_active">
               <q-list>
                 <q-btn v-if="notifications" @click="clearAllNotifications" class="q-pa-md" label="Clear all notifications" color="blue" flat style="background-color: black;"/>
                 <q-btn v-else class="q-pa-md" label="No notifications" color="blue" flat style="background-color: black;"/>
@@ -73,123 +73,7 @@
           </div>
         </div>
         <div @mouseover="category.open = true;" class="flex flex-center" v-if="$route.path !== '/register'">
-          <q-btn-dropdown
-            v-model="category.open"
-            class="bg-white text-weight-regular q-mr-lg"
-            :class="category.open ? 'text-primary text-weight-bold' : 'text-black'"
-            :label="category.label"
-            flat
-            :ripple="false"
-            dropdown-icon="list"
-            size="lg"
-          >
-            <q-list>
-              <q-item clickable v-ripple @click="changeRoute('/')" class="cursor-pointer" v-if="$route.path !== '/'">
-                <q-item-section avatar>
-                  <q-icon color="primary" name="home"/>
-                </q-item-section>
-                <q-item-section class="side-menu-link">Home</q-item-section>
-              </q-item>
-              <q-separator/>
-              <q-item clickable v-ripple @click="changeRoute('/messages')" class="cursor-pointer"
-                      v-if="$route.path !== '/messages'">
-                <q-item-section avatar>
-                  <q-icon color="primary" name="message"/>
-                </q-item-section>
-                <q-item-section class="side-menu-link">Messages</q-item-section>
-              </q-item>
-              <q-separator/>
-              <q-item clickable v-ripple @click="changeRoute('/create-posting')"
-                      class="cursor-pointer side-menu-link double-side-menu">
-                <q-item-section avatar>
-                  <q-icon color="primary" name="add_box"/>
-                </q-item-section>
-                <q-item-section class="side-menu-link">Create Listing</q-item-section>
-              </q-item>
-              <q-separator/>
-              <q-item clickable v-ripple @click="changeRoute('/my-listings')"
-                      class="cursor-pointer side-menu-link double-side-menu">
-                <q-item-section avatar>
-                  <q-icon color="primary" name="grading"/>
-                </q-item-section>
-                <q-item-section class="side-menu-link">My listings</q-item-section>
-              </q-item>
-              <q-separator/>
-              <q-item clickable v-ripple @click="changeRoute('/my-watched')"
-                      class="cursor-pointer side-menu-link double-side-menu">
-                <q-item-section avatar>
-                  <q-icon color="primary" name="visibility"/>
-                </q-item-section>
-                <q-item-section class="side-menu-link">My watched</q-item-section>
-              </q-item>
-              <q-separator/>
-              <q-item clickable v-ripple @click="changeRoute('/listings')" class="cursor-pointer">
-                <q-item-section avatar>
-                  <q-icon color="primary" name="mdi-text-box-search"/>
-                </q-item-section>
-                <q-item-section class="side-menu-link">Browse Listings</q-item-section>
-              </q-item>
-              <q-separator/>
-              <div style="width: 100%;" v-if="user">
-                <q-btn-dropdown
-                  class="bg-white text-primary"
-                  style="width: 100%;"
-                  flat
-                >
-                  <template v-slot:label>
-                    <div style="display: flex; flex-direction: row; justify-content: space-between;width: 100%;">
-                      <q-avatar size="sm" style="border: 1px solid black;">
-                        <img :src="user.avatar" />
-                      </q-avatar>
-                      <div>
-                        Account
-                      </div>
-                    </div>
-                  </template>
-                  <div class="row q-pa-md">
-                    <div class="column flex justify-between">
-                      <div class="text-h6 q-mb-md text-center text-weight-thin" style="border-bottom: 1px solid black;">
-                        Notifications
-                      </div>
-                      <div>
-                        <q-btn outlined label="Messages" icon="chat" size="sm" color="secondary" @click="chat = !chat">
-                        </q-btn>
-                      </div>
-                    </div>
-
-                    <q-separator vertical inset class="q-mx-lg"/>
-
-                    <div class="column items-center">
-                      <q-avatar size="72px">
-                        <img :src="user.avatar">
-                      </q-avatar>
-
-                      <div class="text-subtitle1 q-mt-md q-mb-xs"></div>
-                      <q-btn
-                        color="primary"
-                        label="My Account"
-                        @click="$router.push('/account')"
-                        push
-                        size="sm"
-                        class="q-mb-md"
-                        v-close-popup
-                      >
-
-                      </q-btn>
-                      <q-btn
-                        color="primary"
-                        label="Logout"
-                        push
-                        size="sm"
-                        @click="logOut"
-                        v-close-popup
-                      />
-                    </div>
-                  </div>
-                </q-btn-dropdown>
-              </div>
-            </q-list>
-          </q-btn-dropdown>
+          <dropdown-links :user="user" :category="category"></dropdown-links>
         </div>
       </div>
       <category-drop-down v-if="!$q.platform.is.mobile && $route.path === '/'"></category-drop-down>
@@ -218,10 +102,12 @@
   import CategoryDropDown from 'components/Nav/CategoryDropDown';
   import ChatBox from 'components/Chat/chatBox';
   import {StripeCheckout} from '@vue-stripe/vue-stripe';
+  import DropdownLinks from 'components/Nav/DropdownLinks';
 
   export default {
     name: 'MainLayout',
     components: {
+      DropdownLinks,
       ChatBox,
       CategoryDropDown,
       StripeCheckout,
@@ -334,19 +220,6 @@
           this.$q.notify({
             message: err.message,
             color: 'negative'
-          })
-        })
-      },
-      logOut() {
-        this.$store.dispatch('auth/logout').then(() => {
-          this.$router.push('/');
-          this.$q.notify({
-            color: 'secondary',
-            textColor: 'white',
-            icon: 'check_circle',
-            message: `Logged out`,
-            position: 'top-right',
-            timeout: 3000,
           })
         })
       },

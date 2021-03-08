@@ -138,15 +138,17 @@
         }
       },
       listingQuery() {
-        return {
+        let q = {
           archived: false,
           sold: false,
-          title: {$regex: `(?i).*${this.$lget(this.$route.query, 'search', '').length > 0 ? this.$route.query.search : ''}.*`},
-          category: {[this.filterOptions.categories.length > 0 ? '$in' : '$regex']: this.filterOptions.categories.length === 0 ? `(?i).*${this.$lget(this.$route.query, 'category', '').length > 0 ? this.$route.query.category : ''}.*` : this.filterOptions.categories},
+          // title: {$regex: `(?i).*${this.$lget(this.$route.query, 'search', '').length > 0 ? this.$route.query.search : ''}.*`},
+          // category: {[this.filterOptions.categories.length > 0 ? '$in' : '$regex']: this.filterOptions.categories.length === 0 ? `(?i).*${this.$lget(this.$route.query, 'category', '').length > 0 ? this.$route.query.category : ''}.*` : this.filterOptions.categories},
           price: { $lte: this.applyFilters && this.filterOptions.maxPrice > 0 ? this.filterOptions.maxPrice : 1000000, $gte: this.applyFilters && this.filterOptions.minPrice > 0? this.filterOptions.minPrice : 0 },
           condition: { $in: this.filterOptions.conditions.length === 0 ? this.conditions : this.filterOptions.conditions },
           $sort: this.sort,
         };
+        console.log(q);
+        return q;
       }
     },
     methods: {

@@ -52,7 +52,7 @@
         <q-card style="width: 100%; height: 50%;display: flex;justify-content: center;flex-direction: column;" flat>
           <q-card-section class="avatarFont" style="display: flex; flex-direction: column;justify-content: center;align-items: center;">
             <span style="font-size: 1.5em;">Go to Utah Gun Hub Community</span>
-            <q-btn color="red" size="lg" class="q-mt-sm">
+            <q-btn size="lg" class="q-mt-sm text-white bg-primaryGradient">
               Community
             </q-btn>
           </q-card-section>

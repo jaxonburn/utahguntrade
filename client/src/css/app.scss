@@ -8,6 +8,16 @@
   flex-direction: column;
 }
 
+.bg-primaryGradient {
+  background: rgb(241,70,88);
+  background: linear-gradient(145deg, rgba(241,70,88,1) 36%, rgba(220,37,55,1) 74%);
+}
+
+.bg-secondaryGradient {
+  background: rgb(11,99,246);
+  background: linear-gradient(145deg, rgba(11,99,246,1) 36%, rgba(0,60,197,1) 74%);
+}
+
 .boxShadow {
   -webkit-box-shadow: 0px 0px 15px 3px rgba(0,0,0,0.37);
   box-shadow: 0px 0px 8px 3px rgba(0,0,0,0.2);

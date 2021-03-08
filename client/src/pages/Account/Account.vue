@@ -55,20 +55,20 @@
         </div>
       </div>
       <div class="column">
-        <q-btn @click="$router.push({name: 'my-listings'})" class="q-ma-md" outlined icon="receipt" label="My listings"
-               color="secondary"></q-btn>
+        <q-btn @click="$router.push({name: 'my-listings'})" class="q-ma-md bg-secondaryGradient text-white" outlined icon="receipt" label="My listings"
+               ></q-btn>
 <!--        <q-btn class="q-ma-md" outlined icon="receipt" label="Watched Listings" color="secondary" ></q-btn>-->
-        <q-btn class="q-ma-md" outlined icon="chat" label="Messages" color="secondary"></q-btn>
+        <q-btn class="q-ma-md bg-secondaryGradient text-white" outlined icon="chat" label="Messages"></q-btn>
 
-        <q-btn size="lg" style="background: linear-gradient(0deg, #2F80ED, #B2FFDA)" push  @click="$router.push({name: 'premium'})">
+        <q-btn size="md"  push  @click="$router.push({name: 'premium'})" class="text-white q-ma-sm bg-primaryGradient">
           Go Premium
         </q-btn>
         <q-space/>
-        <q-btn v-if="!editing" rounded outline label="Edit Profile" icon="create" color="primary" class="q-ma-sm"
+        <q-btn v-if="!editing" rounded label="Edit Profile" icon="create" class="q-ma-sm bg-primaryGradient text-white"
                @click="editing = true">
 
         </q-btn>
-        <q-btn v-if="editing" rounded outline label="Save" icon="save" color="primary" class="q-ma-sm"
+        <q-btn v-if="editing" rounded label="Save" icon="save" class="q-ma-sm bg-primaryGradient text-white"
                @click="saveAccount">
 
         </q-btn>

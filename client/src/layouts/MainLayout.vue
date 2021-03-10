@@ -124,7 +124,9 @@
     async mounted() {
       if(this.user) {
         Promise.all(this.user.notifications.map(async noti => {
-          let not = await this.$store.dispatch('notifications/remove', noti);
+          let not = await this.$store.dispatch('notifications/patch', [noti, {
+            displayed: true
+          }]);
           return not;
         })).then(res => {
           console.log(res);

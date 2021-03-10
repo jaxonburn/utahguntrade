@@ -91,7 +91,7 @@
         this.map.addControl(new tt.NavigationControl());
         res.data.map((listing) => {
           if (listing.address) {
-            this.createMarker([this.$lget(listing, 'address.position.lon', 0), this.$lget(listing, 'address.position.lat', 0)], '#FFFFFF', `${listing.title} $${listing.price}`);
+            this.createMarker([this.$lget(listing, 'address.position.lon', 0), this.$lget(listing, 'address.position.lat', 0)], '#FFFFFF', `<a href="listing-details/${listing._id}">${listing.title}</a> $${listing.price}`);
           }
         })
       });
@@ -182,7 +182,8 @@
           'url(https://guntrade.s3-us-west-1.amazonaws.com/STATICSAVE/isometriclocation.png)';
         markerContentElement.appendChild(iconElement);
 
-        var popup = new tt.Popup({offset: 30}).setText(popupText);
+        // var popup = new tt.Popup({offset: 30}).setText(popupText);
+        var popup = new tt.Popup({offset: 30}).setHTML(popupText);
         // add marker to map
         new tt.Marker({element: markerElement, anchor: 'bottom'})
           .setLngLat(position)

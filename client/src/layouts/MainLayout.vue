@@ -45,7 +45,7 @@
                        style="background-color: black;"/>
                 <transition-group name="list">
                   <q-item style="background-color: black; color: white;" clickable v-for="(noti, idx) of notifications"
-                          :key="idx" class="list-item">
+                          :key="noti._id" class="list-item">
                     <q-item-section>
                       <q-item-label>
                         <div style="display: flex;align-items: center;">

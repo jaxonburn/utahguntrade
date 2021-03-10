@@ -41,9 +41,29 @@
       </div>
       <div id="tomtom" class="flex flex-center tom-tom"></div>
     </div>
-    <div style="height: 200px;">
-      <div></div>
-      {{listingsNearYou}}
+    <div v-if="listingsNearYou.length > 0">
+      <div style="width: 100%;display: flex; justify-content: center; align-items: center;"
+           class="q-my-lg bg-primaryGradient text-white nameFont">We found
+        {{ listingsNearYou.length === 5 ? listingsNearYou.length + '+' : listingsNearYou.length }} listings in your
+        area.
+        <q-btn class="text-white bg-secondaryGradient q-ml-sm" flat>View more</q-btn>
+      </div>
+      <div style="width: 100%;display: flex; justify-content: center; align-items: center;">
+        <q-list bordered separator style="width: 80%;border-radius: 15px;" class="bg-white q-ma-md boxShadow">
+          <q-item clickable v-ripple v-for="(listing,idx) in listingsNearYou" :key="idx" @click="$router.push(`listing-details/${listing._id}`)">
+            <q-item-section thumbnail>
+              <img
+                :src="listing.images[0].url"
+                style="height: 150px; max-width: 300px;"
+              />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>{{ $lget(listing, 'title', '') }}</q-item-label>
+              <q-item-label caption>{{ $lget(listing, 'description', '') }}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </div>
     </div>
   </div>
 </template>
@@ -92,7 +112,6 @@
       }),
       setAddress(location) {
         this.address = location;
-        console.log(location.position.lat, location.position.lon)
       },
       createRadius() {
         if (this.address !== '') {
@@ -103,9 +122,11 @@
           let options = {steps: 30, units: 'miles', properties: {}};
           let circle = turf(center, radius, options);
           console.log('circle', circle);
+
           this.$store.dispatch('listings/find', {
             query:
               {
+                $limit: 5,
                 point:
                   {
                     $geoWithin: {
@@ -117,6 +138,7 @@
               }
           }).then((res) => {
             this.listingsNearYou = res.data;
+            console.log(this.listingsNearYou);
           }).catch((err) => {
             console.log(err);
           })
@@ -172,6 +194,12 @@
 </script>
 
 <style scoped>
+  .nameFont {
+    font-family: "KuchekMedium", Times, Serif;
+    line-height: 1em;
+    font-weight: 600;
+    font-size: 1.3em;
+  }
 
   .map-wrapper {
     display: grid;

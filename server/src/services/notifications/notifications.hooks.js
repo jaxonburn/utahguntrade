@@ -1,5 +1,5 @@
-const { authenticate } = require('@feathersjs/authentication').hooks;
-const { fJoinHook } = require('../../hooks/common/fastJoin');
+const {authenticate} = require('@feathersjs/authentication').hooks;
+const {fJoinHook} = require('../../hooks/common/fastJoin');
 
 const removeFromUser = async context => {
   // let patchObj = {
@@ -15,9 +15,16 @@ const removeFromUser = async context => {
   return context;
 }
 
+const setDeleted = async context => {
+  await context.app.service('notifications').patch(context.data._id, {deleted: true}).then(res => {
+    console.log(res);
+  })
+  return context;
+}
+
 module.exports = {
   before: {
-    all: [ authenticate('jwt') ],
+    all: [authenticate('jwt')],
     find: [],
     get: [],
     create: [],

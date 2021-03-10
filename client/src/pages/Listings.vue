@@ -138,7 +138,7 @@
         }
       },
       listingQuery() {
-        return {
+        let q = {
           archived: false,
           sold: false,
           // title: {$regex: `(?i).*${this.$lget(this.$route.query, 'search', '').length > 0 ? this.$route.query.search : ''}.*`},
@@ -147,6 +147,8 @@
           condition: { $in: this.filterOptions.conditions.length === 0 ? this.conditions : this.filterOptions.conditions },
           $sort: this.sort,
         };
+        console.log(q);
+        return q;
       }
     },
     methods: {

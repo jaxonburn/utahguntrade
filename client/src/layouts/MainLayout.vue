@@ -36,29 +36,38 @@
               </q-avatar>
             </q-btn>
 
-            <q-btn-dropdown class="q-ml-lg text-white bg-secondaryGradient" v-if="user" dropdown-icon="notifications_active">
+            <q-btn-dropdown class="q-ml-lg text-white bg-secondaryGradient" v-if="user"
+                            dropdown-icon="notifications_active">
               <q-list>
-                <q-btn v-if="notifications" @click="clearAllNotifications" class="q-pa-md" label="Clear all notifications" color="blue" flat style="background-color: black;"/>
-                <q-btn v-else class="q-pa-md" label="No notifications" color="blue" flat style="background-color: black;"/>
-                <q-item style="background-color: black; color: white;" clickable v-for="(noti, idx) of notifications" :key="idx">
-                  <q-item-section>
-                    <q-item-label>
-                      <div style="display: flex;align-items: center;">
-                        <q-avatar size="45px">
-                          <img :src="$lget(noti, '_fastjoin.messageObj.sentBy.avatar', '')">
-                        </q-avatar>
-                        <div class="details" style="display: flex;align-items: center;">
-                          <div class="q-mx-sm">{{ $lget(noti, '_fastjoin.messageObj.sentBy.username', '') }}: </div>
-                          <div class="q-mr-sm">{{ noti.text.length > 60 ? noti.text.substr(0, 60) + '...' : noti.text }}</div>
+                <q-btn v-if="notifications" @click="clearAllNotifications" class="q-pa-md"
+                       label="Clear all notifications" color="blue" flat style="background-color: black;"/>
+                <q-btn v-else class="q-pa-md" label="No notifications" color="blue" flat
+                       style="background-color: black;"/>
+                <transition-group name="list">
+                  <q-item style="background-color: black; color: white;" clickable v-for="(noti, idx) of notifications"
+                          :key="idx" class="list-item">
+                    <q-item-section>
+                      <q-item-label>
+                        <div style="display: flex;align-items: center;">
+                          <q-avatar size="45px">
+                            <img :src="$lget(noti, '_fastjoin.messageObj.sentBy.avatar', '')">
+                          </q-avatar>
+                          <div class="details" style="display: flex;align-items: center;">
+                            <div class="q-mx-sm">{{ $lget(noti, '_fastjoin.messageObj.sentBy.username', '') }}:</div>
+                            <div class="q-mr-sm">{{
+                                noti.text.length > 60 ? noti.text.substr(0, 60) + '...' : noti.text
+                              }}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                      <div class="actions">
-                        <q-btn @click="viewNotification(noti)" flat color="green" label="View" />
-                        <q-btn @click="dismissNotification(noti)" flat color="yellow" label="Dismiss" />
-                      </div>
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
+                        <div class="actions">
+                          <q-btn @click="viewNotification(noti)" flat color="green" label="View"/>
+                          <q-btn @click="dismissNotification(noti)" flat color="yellow" label="Dismiss"/>
+                        </div>
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </transition-group>
 
               </q-list>
             </q-btn-dropdown>
@@ -112,14 +121,26 @@
       CategoryDropDown,
       StripeCheckout,
     },
-    mounted() {
-      console.log(this.user);
+    async mounted() {
+      if(this.user) {
+        Promise.all(this.user.notifications.map(async noti => {
+          let not = await this.$store.dispatch('notifications/remove', noti);
+          return not;
+        })).then(res => {
+          console.log(res);
+        }).catch(err => {
+          this.$q.notify({
+            message: err.message,
+            color: 'negative'
+          })
+        })
+      }
       if (this.user && this.user.takeToListings && this.$route.path !== '/listings') {
         this.$router.push({name: 'listings'});
       }
-      if(this.$lget(this.user, 'notifications', false)) {
-        this.loadNotifications({ query: { $limit: 200, _id: {$in: this.user.notifications} } }).then(res => {
-          if(res.data.length === 0) return;
+      if (this.$lget(this.user, 'notifications', false)) {
+        this.loadNotifications({query: {$limit: 200, _id: {$in: this.user.notifications}}}).then(res => {
+          if (res.data.length === 0) return;
           let last = res.data[res.data.length - 1];
           this.lastNotification = last._id;
         })
@@ -135,30 +156,32 @@
           label: ''
         },
         lastNotification: '',
+        lastUserNotification: ''
       }
     },
     watch: {
       user: {
         deep: true,
-        async handler(newVal){
-          console.log(newVal.notifications, this.user.notifications);
-          if(this.$lget(newVal, 'notifications', []).length === 0) return;
-          if(this.lastNotification !== this.$lget(newVal.notifications[newVal.notifications.length - 1])) {
+        async handler(newVal, oldVal) {
+          console.log(newVal.notifications, oldVal.notifications, this.user.notifications);
+          if (this.$lget(newVal, 'notifications', []).length === 0) return;
+          if (this.lastNotification !== this.$lget(newVal.notifications[newVal.notifications.length - 1])) {
+            if (this.lastUserNotification === newVal.notifications[newVal.notifications.length - 1]) return;
             let noti = await this.getNotification(newVal.notifications[newVal.notifications.length - 1]);
-            if(!noti) return;
-            if(noti.type === 'Chat') {
+            if (!noti) return;
+            if (noti.type === 'Chat') {
               setTimeout(() => {
                 let box = document.getElementById(('chatBox'));
-                if(!box) return;
+                if (!box) return;
                 box.scrollTop = box.scrollHeight;
               }, 100)
-              if(noti.expired) return;
+              if (noti.displayed || noti.displayed) return;
               this.$q.notify({
                 message: `<div>${this.$lget(noti, '_fastjoin.messageObj.sentBy.username', '')} Said: ${noti.text.length > 35 ? noti.text.substr(0, 33) + '...' : noti.text}</div>`,
                 avatar: noti._fastjoin.messageObj.sentBy.avatar,
                 actions: [
-                  { label: 'View', color: 'green', handler: () => this.viewNotification(noti) },
-                  { label: 'Dismiss', color: 'yellow', handler: () => this.dismissNotification(noti) },
+                  {label: 'View', color: 'green', handler: () => this.viewNotification(noti)},
+                  {label: 'Dismiss', color: 'yellow', handler: () => this.dismissNotification(noti)},
                 ],
                 position: 'top-right',
                 html: true,
@@ -179,9 +202,9 @@
         getNotification: 'get',
         allNotifications: 'find'
       }),
-      notifications(){
-        if(!this.$lget(this.user, 'notifications', false)) return;
-        return this.allNotifications({ query: { $limit: 200, _id: {$in: this.user.notifications} } }).data;
+      notifications() {
+        if (!this.$lget(this.user, 'notifications', false)) return;
+        return this.allNotifications({query: {$limit: 200, _id: {$in: this.user.notifications}}}).data;
       }
     },
     methods: {
@@ -190,10 +213,13 @@
         deleteNotification: 'remove',
         patchNotification: 'patch'
       }),
-      expireNoti(noti) {
+      async expireNoti(noti) {
+        await this.patchNotification([noti._id, {
+          displayed: true
+        }]);
         setTimeout(async () => {
           let res = await this.getNotification(noti._id);
-          if(res == null) return;
+          if (res == null) return;
           this.patchNotification([noti._id, {
             expired: true
           }])
@@ -201,14 +227,22 @@
       },
       viewNotification(noti) {
         this.deleteNotification(noti._id).then(res => {
-          if(this.$route.path === '/messages') return;
-          this.$router.push({ name: 'messages', params: { chatId: String(noti.modelId), created: 'false' } });
+          if (this.user.notifications.length > 0) {
+            this.lastUserNotification = this.user.notifications[this.user.notifications.length - 1];
+          }
+          if (this.$route.path === '/messages') return;
+          this.$router.push({name: 'messages', params: {chatId: String(noti.modelId), created: 'false'}});
         })
       },
-      dismissNotification(noti){
-        this.deleteNotification(noti._id);
+      dismissNotification(noti) {
+        this.deleteNotification(noti._id).then((res) => {
+          console.log(res);
+          if (this.user.notifications.length > 0) {
+            this.lastUserNotification = this.user.notifications[this.user.notifications.length - 1];
+          }
+        })
       },
-      clearAllNotifications(){
+      clearAllNotifications() {
         Promise.all(this.notifications.map(async noti => {
           let not = await this.$store.dispatch('notifications/remove', noti._id);
           return not;
@@ -324,5 +358,18 @@
   .chatImage {
     width: 80px;
     height: 80px;
+  }
+
+  .list-enter-active, .list-leave-active {
+    transition: all 1s;
+  }
+
+  .list-enter, .list-leave-to {
+    opacity: 0;
+    transform: translateX(150px);
+  }
+  .list-item {
+    /*display: inline-block;*/
+    /*margin-right: 10px;*/
   }
 </style>

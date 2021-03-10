@@ -29,7 +29,7 @@ module.exports = function (app) {
       sentBy: {type: Schema.Types.ObjectId, ref: 'users', required: true},
       message: {type: String, required: true},
       upVote: [{type: Schema.Types.ObjectId, ref: 'users'}],
-      replies: [{sentBy: {type: Schema.Types.ObjectId, ref: 'users'}, message: {type: String, required: true}}],
+      replies: [{sentBy: {type: Schema.Types.ObjectId, ref: 'users'}, message: {type: String, required: true}, createdAt: {type: Date, default: new Date()}}],
       createdAt: {type: Date, default: new Date()}
     }, {
     })],

@@ -9,17 +9,14 @@ module.exports = function (app) {
   const schema = new Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
-    madeBy: {type: Schema.Types.ObjectId, required: true},
-    comments: [new Schema({
-      sentBy: {type: Schema.Types.ObjectId, ref: 'users', required: true},
-      message: {type: String, required: true},
-      upVote: [{type: Schema.Types.ObjectId, ref: 'users'}],
-      replies: [{sentBy: {type: Schema.Types.ObjectId, ref: 'users'}, message: {type: String, required: true}}],
-      createdAt: {type: Date, default: new Date()}
-    }, {
-    })],
-    upVotes: [{type: Schema.Types.ObjectId}],
-    downVotes: [{types: Schema.Types.ObjectId}],
+    images: [{
+      key: String,
+      url: String
+    }],
+    createdBy: {type: Schema.Types.ObjectId, ref: 'users',required: true},
+    comments: [{type: Schema.Types.ObjectId, ref: 'comments', required: true}],
+    upVotes: [{type: Schema.Types.ObjectId, ref: 'users'}],
+    downVotes: [{type: Schema.Types.ObjectId, ref: 'users'}],
   }, {
     timestamps: true
   });

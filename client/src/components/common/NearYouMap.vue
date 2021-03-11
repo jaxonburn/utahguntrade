@@ -137,7 +137,10 @@
                   }
               }
           }).then((res) => {
-            this.listingsNearYou = res.data;
+            setTimeout(() => {
+              this.locationLoading = false;
+              this.listingsNearYou = res.data;
+            }, 1500)
             console.log(this.listingsNearYou);
           }).catch((err) => {
             console.log(err);
@@ -156,9 +159,6 @@
               'fill-outline-color': 'black'
             }
           });
-          setTimeout(() => {
-            this.locationLoading = false;
-          }, 1500)
         } else {
           this.$q.notify({
             type: 'info',

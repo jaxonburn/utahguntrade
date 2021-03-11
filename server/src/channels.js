@@ -15,7 +15,7 @@ module.exports = function (app) {
     if (connection) {
       // Obtain the logged in user from the connection
       const user = connection.user;
-      let connect = app.service('users')._patch(connection.user._id, {active: true});
+      app.service('users')._patch(connection.user._id, {active: true});
 
       // The connection is no longer anonymous, remove it
       app.channel('anonymous').leave(connection);
@@ -38,7 +38,7 @@ module.exports = function (app) {
 
   app.on('disconnect', connection => {
     if(connection.user){
-      let disconnect = app.service('users')._patch(connection.user._id, {active: false});
+      app.service('users')._patch(connection.user._id, {active: false});
     }
   });
 

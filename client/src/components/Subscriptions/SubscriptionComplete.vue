@@ -17,7 +17,7 @@
       </div>
       <div>
         <q-btn label="Browse Listings" color="primary" class="q-mx-sm" @click="$router.push({name: 'listings'})"> </q-btn>
-        <q-btn label="Go to Utah Gun Community" color="primary" class="q-mx-sm" @click=""> </q-btn>
+<!--        <q-btn label="Go to Utah Gun Community" color="primary" class="q-mx-sm" @click=""> </q-btn>-->
       </div>
     </div>
 </template>

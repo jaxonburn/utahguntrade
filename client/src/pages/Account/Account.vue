@@ -60,9 +60,9 @@
 <!--        <q-btn class="q-ma-md" outlined icon="receipt" label="Watched Listings" color="secondary" ></q-btn>-->
         <q-btn class="q-ma-md bg-secondaryGradient text-white" outlined icon="chat" label="Messages"></q-btn>
 
-        <q-btn size="md"  push  @click="$router.push({name: 'premium'})" class="text-white q-ma-sm bg-primaryGradient">
-          Go Premium
-        </q-btn>
+<!--        <q-btn size="md"  push  @click="$router.push({name: 'premium'})" class="text-white q-ma-sm bg-primaryGradient">-->
+<!--          Go Premium-->
+<!--        </q-btn>-->
         <q-space/>
         <q-btn v-if="!editing" rounded label="Edit Profile" icon="create" class="q-ma-sm bg-primaryGradient text-white"
                @click="editing = true">

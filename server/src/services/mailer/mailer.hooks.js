@@ -1,14 +1,9 @@
-
-// Application hooks that run for every service
-const {paramsFromClient} = require('feathers-hooks-common');
-
-const removeFastJoin = require('./hooks/common/remove-fastjoin');
+const { disallow } = require('feathers-hooks-common');
 
 module.exports = {
   before: {
     all: [
-      paramsFromClient('$options', '$regex'),
-      removeFastJoin(),
+      disallow('external')
     ],
     find: [],
     get: [],

@@ -1,15 +1,8 @@
-
-// Application hooks that run for every service
-const {paramsFromClient} = require('feathers-hooks-common');
-
-const removeFastJoin = require('./hooks/common/remove-fastjoin');
+const { authenticate } = require('@feathersjs/authentication').hooks;
 
 module.exports = {
   before: {
-    all: [
-      paramsFromClient('$options', '$regex'),
-      removeFastJoin(),
-    ],
+    all: [ authenticate('jwt') ],
     find: [],
     get: [],
     create: [],

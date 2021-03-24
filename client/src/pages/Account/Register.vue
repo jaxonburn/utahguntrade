@@ -22,7 +22,7 @@
   export default {
     name: 'Register',
     mounted(){
-      this.register = true;
+      this.register = false;
     },
     components: {
       LoginForm,

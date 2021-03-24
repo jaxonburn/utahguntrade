@@ -100,7 +100,7 @@
     </q-page-container>
     <div style="height: 20px;width: 100%;"
          class="bg-blue-grey-6 text-center row flex justify-start">
-      <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline;">Report a bug?</p>
+      <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline; cursor: pointer;" @click="$router.push({name: 'report-bug'})">Report a bug?</p>
       <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline;">Contact Owners</p>
     </div>
   </q-layout>

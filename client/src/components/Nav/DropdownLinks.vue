@@ -166,6 +166,7 @@
         this.$router.push(route);
       },
       logOut() {
+        let userId = this.user._id;
         this.$store.dispatch('auth/logout').then(() => {
           this.$router.push('/');
           this.$q.notify({
@@ -176,7 +177,10 @@
             position: 'top-right',
             timeout: 3000,
           })
-        })
+        });
+        this.$store.dispatch('users/patch', [userId, {
+          active: false
+        }]);
       },
     }
   };

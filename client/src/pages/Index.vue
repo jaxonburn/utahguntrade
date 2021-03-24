@@ -54,6 +54,7 @@
       Slide
     },
     mounted(){
+      this.createAnalytic({reqFrom: 'layout'});
       this.findListings({query: {$limit: 6,$sort: {createdAt: -1},sold: false,archived: false}}).then((res) => {
         console.log(res);
         this.latestListings = res.data;
@@ -87,6 +88,9 @@
       }
     },
     methods: {
+      ...mapActions('analytics', {
+        createAnalytic: 'create'
+      }),
       ...mapActions('listings', {
         findListings: 'find'
       })

@@ -46,6 +46,7 @@
     "@feathersjs/feathers": "^4.5.11",
     "@feathersjs/socketio": "^4.5.11",
     "@feathersjs/transport-commons": "^4.5.11",
+    "apexcharts": "^3.25.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "feathers-hooks-common": "^5.0.4",
@@ -54,9 +55,10 @@
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
     "mongodb-core": "^3.2.7",
-    "mongoose": "^5.11.14",
+    "mongoose": "^5.12.0",
     "serve-favicon": "^2.5.0",
     "stripe": "^8.137.0",
+    "vue-apexcharts": "^1.6.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {

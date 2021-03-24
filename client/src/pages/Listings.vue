@@ -127,6 +127,9 @@
 
       }
     },
+    mounted(){
+      this.createAnalytic({reqFrom: 'listings'});
+    },
     computed: {
       ...mapState('listings', {
         isPending: 'isFindPending'
@@ -134,7 +137,7 @@
       sort() {
         return {
           price: this.priceSort === 'Price low to high' ? 1 : -1,
-          createdAt: this.dateSort === 'Date newest to oldest' ? -1 : 1
+          createdAt: this.dateSort === 'Date newest to oldest' ? 'desc' : 'asc'
         }
       },
       listingQuery() {
@@ -151,6 +154,9 @@
       }
     },
     methods: {
+      ...mapActions('analytics', {
+        createAnalytic: 'create'
+      }),
       toggleCondition(con){
         if(!this.filterOptions.conditions.includes(con)){
           this.filterOptions.conditions.push(con);

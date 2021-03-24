@@ -29,7 +29,9 @@ module.exports = {
   },
 
   error: {
-    all: [],
+    all: [ctx => {
+      ctx.app.service('app-errors').create({type: ctx.error.type, className: ctx.error.className, code: ctx.error.code});
+    }],
     find: [],
     get: [],
     create: [],

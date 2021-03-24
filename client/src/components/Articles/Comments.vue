@@ -71,6 +71,7 @@
 
 <script>
   import {mapState} from 'vuex';
+  import { mapActions } from 'vuex';
   import dateUtils from '../../helpers/dateUtils';
 
 

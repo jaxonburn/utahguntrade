@@ -7,16 +7,19 @@
     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
       <q-card v-for="(article,index) in articles" :key="index" class="q-ma-lg">
         <q-card-section>
-          <img :src="article.mainImage.url" style="height: 200px" width="100%"/>
+          <div class="bg-image" :style="{backgroundImage: `url(${article.mainImage.url})`}">
+
+          </div>
         </q-card-section>
         <q-card-section class="text-black row flex justify-between">
-          <div>{{ article.mainTitle }}</div>
+          <div style="font-size: 1.3em;">{{ article.mainTitle }}</div>
           <div class="flex justify-evenly">
-            <q-icon name="fas fa-pen-alt" color="black" size="sm" class="cursor-pointer"
+            <q-icon name="fas fa-pen-alt" color="black" size="xs" class="cursor-pointer q-mr-sm"
                     @click="publishArticle(article)"/>
-            <q-icon name="visibility" color="black" size="sm" class="cursor-pointer"
+            <q-icon name="visibility" color="black" size="xs" class="cursor-pointer q-mr-sm"
                     @click="$router.push('articles/' + article._id)"/>
-            <q-icon name="delete" color="red" size="sm" class="cursor-pointer" @click="article.remove()"/>
+<!--            <q-icon name="delete" color="red" size="xs" class="cursor-pointer" @click="article.remove()"/>-->
+            <q-icon name="delete" color="red" size="xs" class="cursor-pointer" @click="deleteArticle(article._id)" />
           </div>
         </q-card-section>
       </q-card>
@@ -24,12 +27,22 @@
     <q-dialog v-model="createArticle" maximized>
       <article-form @close="createArticle = false"></article-form>
     </q-dialog>
+    <q-dialog v-model="deleteDio">
+      <q-card>
+        <q-card-section class="text-h5">Are you sure you wish to delete this article?</q-card-section>
+        <q-card-actions align="right">
+          <q-btn label="Cancel" v-close-popup/>
+          <q-btn @click="confirmDeleteArticle" label="Delete" color="red" v-close-popup/>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
 <script>
   import ArticleForm from 'components/Forms/ArticleForms/ArticleForm';
   import {makeFindMixin} from 'feathers-vuex';
+  import { mapActions } from 'vuex';
 
   export default {
     name: 'Articles',
@@ -44,6 +57,8 @@
     data() {
       return {
         createArticle: false,
+        deleteDio: false,
+        deleteId: ''
       }
     },
     computed: {
@@ -52,6 +67,21 @@
       }
     },
     methods: {
+      ...mapActions('articles', {
+        removeArticle: 'remove'
+      }),
+      deleteArticle(id){
+        this.deleteDio = true;
+        this.deleteId = id;
+      },
+      confirmDeleteArticle(){
+        this.removeArticle(this.deleteId).then(() => {
+          this.$q.notify({
+            message: 'Article deleted, it can no longer be viewed'
+          });
+          this.deleteId = '';
+        })
+      },
       publishArticle(article) {
         if (article.published) {
           this.$q.dialog({
@@ -90,5 +120,10 @@
 </script>
 
 <style scoped>
-
+  .bg-image {
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 300px;
+  }
 </style>

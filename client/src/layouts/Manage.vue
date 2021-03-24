@@ -48,6 +48,8 @@ box-shadow: 0 5px 10px 2px rgba(0,0,0,0.5);">
 <script>
   import news from '../assets/newIcon.png';
   import reports from '../assets/icons/ReportIcon.png';
+  import bug from '../assets/bug.png';
+  import notification from '../assets/notification.png';
 
   export default {
     name: 'Manage',
@@ -71,6 +73,18 @@ box-shadow: 0 5px 10px 2px rgba(0,0,0,0.5);">
             separator: true,
             path: '/manage/reports',
           },
+          {
+            img: bug,
+            label: 'Bugs',
+            separator: true,
+            path: '/manage/bugs'
+          },
+          {
+            img: notification,
+            label: 'Send Notification',
+            separator: true,
+            path: '/manage/notifications'
+          }
         ]
       }
     }

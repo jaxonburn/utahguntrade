@@ -17,17 +17,21 @@ export default function({ store }) {
         { path: 'messages', name: 'messages', component: () => import('pages/Chats'), meta: { requiresAuth: true } },
         { path: 'articles', name: 'articleSearch', component: () => import('pages/BrowseArticles'), },
         { path: 'articles/:id', name: 'article', component: () => import('pages/Manage/ArticleView'),},
-        { path: 'premium', name: 'premium', component: () => import('pages/Subscriptions/Premium'),  meta: { requiresAuth: true }}
+        { path: 'premium', name: 'premium', component: () => import('pages/Subscriptions/Premium'),  meta: { requiresAuth: true } },
+        { path: 'report-bug', name: 'report-bug', component: () => import('pages/ReportBug'), meta: { requiresAuth: true } }
       ],
     },
     {
       path: '/manage',
       component: () => import('layouts/Manage'),
       children: [
-        {path: '', component: () => import('pages/Manage/Manage.vue'), meta: {requiresAuth: true}},
+        // {path: '', component: () => import('pages/Manage/Manage.vue'), meta: {requiresAuth: true}},
+        {path: '', redirect: 'reports', meta: {requiresAuth: true}},
         {path: 'reports', component: () => import('pages/Manage/Reports'), meta: {requiresAuth: true}},
         {path: 'articles', component: () => import('pages/Manage/Articles'), meta: {requiresAuth: true}},
         {path: 'articles/:id', component: () => import('pages/Manage/ArticleView'), meta: {requiresAuth: true}},
+        {path: 'bugs', component: () => import('pages/Manage/Bugs'), meta: { requiresAuth: true }},
+        {path: 'notifications', component: () => import('pages/Manage/Notifications'), meta: { requiresAuth: true }}
       ]
     },
 

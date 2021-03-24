@@ -14,7 +14,7 @@
     <div class="top">
 <!--      <img-->
 <!--        :src="$lget(listing.images[0], 'url', 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/No_image_3x4.svg/1200px-No_image_3x4.svg.png')">-->
-      <div class="img" :style="{backgroundImage: `url(${listing.images[0].url})`}" ></div>
+      <div class="img" :style="{backgroundImage: `url(${$lget(listing, 'images[0].url', 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/No_image_3x4.svg/1200px-No_image_3x4.svg.png')})`}" ></div>
     </div>
     <div class="bottom">
       <!--      category description listedBy-->

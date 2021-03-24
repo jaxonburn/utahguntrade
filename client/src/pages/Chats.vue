@@ -100,6 +100,7 @@
     name: "Messages",
     components: {AddFriendForm, EmojiPicker},
     mounted(){
+      this.createAnalytic({reqFrom: 'messages'});
       this.loadChats({query: {_id: {$in: this.user.chats}}}).then(res => {
         if(!this.$route.params.chatId) {
           if(res.data.length === 0) return;
@@ -192,6 +193,9 @@
       }
     },
     methods: {
+      ...mapActions('analytics', {
+        createAnalytic: 'create'
+      }),
       ...mapActions('chats', {
         loadChats: 'find',
       }),

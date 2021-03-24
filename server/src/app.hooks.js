@@ -8,7 +8,7 @@ module.exports = {
   before: {
     all: [
       paramsFromClient('$options', '$regex'),
-      removeFastJoin()
+      removeFastJoin(),
     ],
     find: [],
     get: [],

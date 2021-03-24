@@ -1,6 +1,11 @@
 const {authenticate} = require('@feathersjs/authentication').hooks;
 const lget = require('lodash.get');
-const { checkContext } = require('feathers-hooks-common');
+// eslint-disable-next-line no-unused-vars
+const {checkContext} = require('feathers-hooks-common');
+
+const verifyHooks = require('feathers-authentication-management').hooks;
+const accountService = require('../authmanagement/notifier');
+const {disallow, iff, isProvider, preventChanges} = require('feathers-hooks-common');
 
 const {
   hashPassword, protect
@@ -23,14 +28,14 @@ const initialChat = async context => {
 const modifyWatched = async context => {
   let params = lget(context.arguments[1], 'params.name', '');
   let id = lget(context.arguments[1], 'params.id', '');
-  if(params === 'watchedAdd') {
+  if (params === 'watchedAdd') {
     let patchObj = {
       $push: {
         watchedBy: context.result._id
       }
-    }
+    };
     context.app.service('listings').patch(id, patchObj);
-  } else if(params === 'watchedRemove') {
+  } else if (params === 'watchedRemove') {
     let patchObj = {
       $pull: {
         watchedBy: context.result._id
@@ -43,14 +48,43 @@ const modifyWatched = async context => {
 module.exports = {
   before: {
     all: [],
-    find: [],
-    get: [],
+    find: [
+      authenticate('jwt')
+    ],
+    get: [
+      authenticate('jwt')
+    ],
     create: [
       hashPassword('password'),
+      verifyHooks.addVerification(),
     ],
-    update: [authenticate('jwt')],
-    patch: [authenticate('jwt')],
-    remove: [authenticate('jwt')]
+    update: [
+      disallow('external'),
+      authenticate('jwt')
+    ],
+    patch: [
+      iff(
+        isProvider('external'),
+        preventChanges(
+          true,
+          'email',
+          'isVerified',
+          'verifyToken',
+          'verifyShortToken',
+          'verifyExpires',
+          'verifyChanges',
+          'resetToken',
+          'resetShortToken',
+          'resetExpires'
+        ),
+        hashPassword('password'),
+        authenticate('jwt')
+      )
+    ],
+    remove: [
+      disallow('external'),
+      authenticate('jwt')
+    ]
   },
 
   after: {
@@ -63,6 +97,10 @@ module.exports = {
     get: [],
     create: [
       initialChat,
+      context => {
+        accountService(context.app).notifier('resendVerifySignup', context.result);
+      },
+      verifyHooks.removeVerification()
     ],
     update: [],
     patch: [modifyWatched,],

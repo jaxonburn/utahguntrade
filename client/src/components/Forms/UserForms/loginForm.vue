@@ -38,6 +38,11 @@
         <div>
           <span class="text-weight-bold text-primary cursor-pointer" @click="$emit('register')" v-if="!mini">Don't have an account?</span>
           <div class="flex justify-end">
+            <a href="http://localhost:3030/oauth/google">
+              <img alt="Google Logo" height="50"
+                   src="https://images.theconversation.com/files/93616/original/image-20150902-6700-t2axrz.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1000&fit=clip"
+                   class="cursor-pointer q-mr-md" style="border-radius: 15px;"/>
+            </a>
             <q-btn rounded type="submit" color="primary">
               Log in
             </q-btn>
@@ -50,6 +55,8 @@
 
 <script>
   import {mapActions} from 'vuex';
+  import { feathersClient } from '../../../feathers-client';
+
   export default {
     name: 'loginForm',
     props: {
@@ -63,6 +70,11 @@
           password: '',
 
         }
+      }
+    },
+    mounted(){
+      if(this.$route.query.code){
+        console.log('the code',this.$route.query.code);
       }
     },
     computed: {
@@ -87,9 +99,9 @@
             position: 'top-right',
             timeout: 3000,
           })
-          if(!this.mini){
+          if (!this.mini) {
             this.$router.push('/');
-          }else {
+          } else {
             this.$emit('close');
           }
 

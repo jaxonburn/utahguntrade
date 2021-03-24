@@ -52,9 +52,16 @@
         <q-card style="width: 100%; height: 50%;display: flex;justify-content: center;flex-direction: column;" flat>
           <q-card-section class="avatarFont" style="display: flex; flex-direction: column;justify-content: center;align-items: center;">
             <span style="font-size: 1.5em;">Go to Utah Gun Hub Community</span>
+            <div>
             <q-btn size="lg" class="q-mt-sm text-white bg-primaryGradient">
               Community
             </q-btn>
+            <q-icon @click="communityDialog = !communityDialog" name="fas fa-question-circle"  size="xs" class="q-ml-sm bg-secondaryGradient q-pa-xs cursor-pointer" color="white" style="border-radius: 15px;">
+              <q-tooltip>
+                What's Utah Gun Hub Community?
+              </q-tooltip>
+            </q-icon>
+            </div>
           </q-card-section>
           <q-separator/>
           <q-card-section class="aboutFont" style="font-size: 1.7em;display: flex; justify-content: center;border-bottom: 1px solid var(--q-color-primary);">
@@ -71,6 +78,9 @@
     <q-separator/>
     <div style="width: 100%;font-size: 1.5em;display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;">
     </div>
+    <q-dialog v-model="communityDialog">
+      <community-dialog></community-dialog>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -79,10 +89,16 @@
   import dateUtils from 'src/helpers/dateUtils';
   import instagramLogo from '../assets/Logos/instagramLogo.jpg';
   import SocialLinks from 'components/common/SocialLinks';
+  import CommunityDialog from 'components/Community/communityDialog';
 
   export default {
     name: 'BrowseArticles',
-    components: {SocialLinks},
+    components: {CommunityDialog, SocialLinks},
+    data(){
+      return {
+        communityDialog: false,
+      }
+    },
     filters: {
       format(date) {
         let newDate = new Date(date);

@@ -2,30 +2,28 @@ const { AuthenticationService, JWTStrategy } = require('@feathersjs/authenticati
 const { LocalStrategy } = require('@feathersjs/authentication-local');
 const { expressOauth, OAuthStrategy } = require('@feathersjs/authentication-oauth');
 
-module.exports = app => {
+class GoogleStrategy extends OAuthStrategy {
+  async getEntityData(profile) {
 
-  class GitHubStrategy extends OAuthStrategy {
-    async getEntityData(profile) {
-      const baseData = await super.getEntityData(profile);
+    // this will set 'googleId'
+    const baseData = await super.getEntityData(profile);
 
-      return {
-        ...baseData,
-        // You can also set the display name to profile.name
-        username: profile.login,
-        // The GitHub profile image
-        avatar: profile.avatar_url,
-        // The user email address (if available)
-        email: profile.email
-      };
-
-    }
+    // this will grab the picture and email address of the Google profile
+    return {
+      ...baseData,
+      avatar: profile.picture,
+      email: profile.email
+    };
   }
+}
 
+
+module.exports = app => {
   const authentication = new AuthenticationService(app);
 
   authentication.register('jwt', new JWTStrategy());
   authentication.register('local', new LocalStrategy());
-  authentication.register('github', new GitHubStrategy());
+  authentication.register('google', new GoogleStrategy());
 
   app.use('/authentication', authentication);
   app.configure(expressOauth());

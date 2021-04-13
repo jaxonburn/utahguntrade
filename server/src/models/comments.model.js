@@ -11,7 +11,7 @@ module.exports = function (app) {
     message: {type: String, required: true},
     upVote: [{type: Schema.Types.ObjectId, ref: 'users'}],
     replies: [{sentBy: {type: Schema.Types.ObjectId, ref: 'users'}, message: {type: String, required: true}, createdAt: {type: Date, default: new Date()}}],
-    createdAt: {type: Date, default: new Date()}
+    createdAt: {type: Date, default: new Date()},
   }, {
     timestamps: true
   });

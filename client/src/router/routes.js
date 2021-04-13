@@ -7,7 +7,8 @@ export default function({ store }) {
       component: () => import('layouts/MainLayout.vue'),
       children: [
         { path: '', component: () => import('pages/Index.vue') },
-        { path: 'register', name: 'register', component: () => import('pages/Account/Register.vue'),meta: { requiresAuth: false },},
+        { path: 'register', name: 'register', component: () => import('pages/Account/OAuthRegistration/OAuthRegisterForm/OAuthRegisterForm'),meta: { requiresAuth: false },},
+        { path: 'login', name: 'logIn', component: () => import('pages/Account/OAuthRegistration/OAuthLoginForm/OAuthLoginForm'),meta: { requiresAuth: false },},
         { path: 'account', component: () => import('pages/Account/Account.vue'),meta: { requiresAuth: true },},
         { path: 'create-posting', name: 'create-posting', component: () => import('pages/Listings/CreatePosting'), meta: { requiresAuth: true } },
         { path: 'listings', name: 'listings', component: () => import('pages/Listings') },

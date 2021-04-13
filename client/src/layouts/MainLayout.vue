@@ -1,19 +1,19 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <q-header class="bg-white" elevated style="display: flex;flex-direction: column"
-              :style="$route.path === '/register' || $q.platform.is.mobile ? 'height: 90px;' : 'height: 130px'">
+              :style="$route.path === '/register' || $q.platform.is.mobile || $route.path === '/login' ? 'height: 90px;' : 'height: 130px'">
       <div class="row" style="height: 90px;width: 100%;display: grid; grid-template-columns: 0.3fr 2fr 0.3fr 0.3fr;"
-           :style="!user ? 'grid-template-columns: 0.2fr 1.5fr 0.5fr 0.2fr;' : 'grid-template-columns: 0.2fr 1.5fr 0.3fr 0.3fr;'">
+           :style="$q.screen.lt.md ? 'grid-template-columns: 1fr 1fr;' : 'grid-template-columns: 0.2fr 1.5fr 0.3fr 0.3fr;'">
         <div>
           <img @click="$router.push('/')"
-               height="80%"
+               height="100%"
                width="100"
-               src="../assets/utahgunhub.png"
+               src="../assets/Logos/utahgunhublogo.png"
                class="q-ml-lg cursor-pointer"
                alt="MainLogo"
           />
         </div>
-        <div class="q-ma-md flex justify-center" v-if="$route.path !== '/register'">
+        <div class="q-ma-md flex justify-center" v-if="$route.path !== '/register' && !$q.screen.lt.md && $route.path !== '/login'">
           <q-input
             v-model="searchAll"
             filled
@@ -28,7 +28,7 @@
         </div>
         <div class="text-primary" style="display: flex;align-items: center;"
              :style="!user ? 'justify-content: space-between;' : 'justify-content: center'"
-             v-if="$route.path !== '/register'">
+             v-if="$route.path !== '/register' && !$q.screen.lt.md && $route.path !== '/login'" >
           <div class="flex flex-center cursor-pointer">
             <q-btn @click="$router.push({name: 'articleSearch'})" flat>
               <q-avatar size="60px">
@@ -75,13 +75,13 @@
           </div>
           <div class="row" v-if="!user">
             <div>
-              <router-link to="/register" style="text-decoration: none;">
+              <router-link to="/login" style="text-decoration: none;">
                 <q-btn outlined color="primary" label="log in"></q-btn>
               </router-link>
             </div>
           </div>
         </div>
-        <div @mouseover="category.open = true;" class="flex flex-center" v-if="$route.path !== '/register'">
+        <div @mouseover="category.open = true;" class="flex justify-end" v-if="$route.path !== '/register' && $route.path !== '/login'">
           <dropdown-links :user="user" :category="category"></dropdown-links>
         </div>
       </div>
@@ -373,5 +373,15 @@
   .list-item {
     /*display: inline-block;*/
     /*margin-right: 10px;*/
+  }
+
+  .secondaryFont {
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .centerCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 </style>

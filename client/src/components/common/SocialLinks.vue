@@ -39,7 +39,7 @@ name: 'SocialLinks',
           picture: instagramLogo,
           icon: '',
           color: '',
-          link: 'www.instagram.com'
+          link: 'www.instagram.com/gunhubutah/'
         },
         {
           name: 'Twitter',

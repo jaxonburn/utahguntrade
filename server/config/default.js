@@ -12,7 +12,8 @@ module.exports = {
     'secret': '6bgFXk+fw3ggkmvxZpiGlWUkiZw=',
     'authStrategies': [
       'jwt',
-      'local'
+      'local',
+      'google'
     ],
     'jwtOptions': {
       'header': {
@@ -28,13 +29,13 @@ module.exports = {
       'passwordField': 'password'
     },
     'oauth': {
+      'redirect': 'http://localhost:8080',
       'google': {
         'key': '172168111874-50a715risg1a7jlbl0s6vhji46k9n8m1.apps.googleusercontent.com',
         'secret': 'T1Ybk4QNmtpM3wU6OHSxu45S',
         'scope': ['openid', 'email'],
         'nonce': true,
-        'callback': '/oauth/google/authenticate',
-        'redirect_uri': 'http://localhost:8080/register',
+        'redirect_uri': process.env.OAUTH_GOOGLE_REDIRECT_URI || 'http://localhost:3030/oauth/google/callback',
       }
     }
   },

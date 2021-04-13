@@ -39,7 +39,7 @@
           </transition>
         </q-card>
       </div>
-      <div id="tomtom" class="flex flex-center tom-tom"></div>
+      <div id="tomtom" class="flex flex-center" :style="$q.screen.lt.md ? 'width: 100vw;' : 'width: 50vw;' "></div>
     </div>
     <div v-if="listingsNearYou.length > 0">
       <div style="width: 100%;display: flex; justify-content: center; align-items: center;"
@@ -210,8 +210,5 @@
     width: 100%;
   }
 
-  .tom-tom {
-    width: 600px;
-  }
 
 </style>

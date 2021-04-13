@@ -1,0 +1,179 @@
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .mainCard {
+    width: 90vw;
+    height: 75vh;
+  }
+}
+/* For Puny Iphone SE */
+@media (max-height: 575px) and (max-width: 600px){
+  .mainCard {
+    width: 90vw;
+    height: 85vh;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .mainCard {
+    width: 60vw;
+    height: 65vh;
+  }
+}
+@media (max-height: 700px) and (min-width: 600px){
+  .mainCard {
+    width: 60vw;
+    height: 80vh;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .mainCard {
+    width: 60vw;
+    height: 65vh;
+  }
+}
+@media (max-height: 700px) and (min-width: 768px){
+  .mainCard {
+    width: 60vw;
+    height: 80vh;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .mainCard {
+    width: 55vw;
+    height: 65vh;
+  }
+}
+
+@media (max-height: 700px) and (min-width: 768px){
+  .mainCard {
+    width: 60vw;
+    height: 80vh;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .mainCard {
+    height: 65vh;
+    width: 40vw;
+  }
+}
+
+@media (max-height: 700px) and (min-width: 1200px){
+  .mainCard {
+    width: 60vw;
+    height: 70vh;
+  }
+}
+
+.shake {
+  animation: shake 0.8s linear;
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+
+.centerCenter {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.logInButton {
+  border: none;
+  color: white;
+  width: 90%;
+  height: 47px;
+  background: var(--q-color-primary);
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 1.15em;
+}
+
+input:focus, textarea:focus, select:focus {
+  transform: scale(1.02);
+}
+
+input {
+  height: 40px;
+  border: 1px solid rgba(220, 220, 220, 1);
+  transition: 0.4s;
+  border-radius: 5px;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+  align-items: center;
+}
+
+
+.floatingIcon {
+  position: absolute;
+  top: -8%;
+  left: 43%;
+  z-index: 2;
+  border-radius: 50px;
+}
+
+.mainFont {
+  font-family: 'Roboto', sans-serif;
+}
+
+.inputFont {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.85em;
+  font-weight: 900;
+  color: rgba(150, 150, 150, 1);
+}
+
+.headerSectionLight {
+  height: 20%;
+  border-bottom: 1px solid rgba(240, 240, 240, 1);
+  background: rgb(250, 251, 253);
+}
+
+.headerSectionDark {
+  height: 20%;
+  background: #969696;
+}
+
+
+.passwordIcon {
+  position: absolute;
+  right: 2.5%;
+  top: 55%;
+  font-size: 1.65em;
+  color: rgba(150, 150, 150, 1);
+  z-index: 3;
+}

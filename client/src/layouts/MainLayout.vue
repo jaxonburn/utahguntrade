@@ -98,11 +98,13 @@
       </transition>
       <chat-box v-if="chat" @close="chat = !chat" :user="user"></chat-box>
     </q-page-container>
+    <q-footer>
     <div style="height: 20px;width: 100%;"
          class="bg-blue-grey-6 text-center row flex justify-start">
       <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline; cursor: pointer;" @click="$router.push({name: 'report-bug'})">Report a bug?</p>
       <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline;">Contact Owners</p>
     </div>
+    </q-footer>
   </q-layout>
 </template>
 
@@ -322,6 +324,7 @@
   }
 
   .slide-fadeBack-leave-active {
+    position: absolute;
     transition: all 0s cubic-bezier(1.0, 0.5, 0.8, 1.0);
   }
 

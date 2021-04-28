@@ -1,5 +1,5 @@
 <template>
-  <q-card class="listing">
+  <q-card class="listing" flat>
     <div class="hover-btn" v-if="!$q.platform.is.mobile">
       <q-btn class="bg-secondaryGradient text-white" @click="$router.push(`listing-details/${listing._id}`)" label="View Details" />
       <div v-if="isMyListing && !listing.sold">

@@ -24,7 +24,7 @@
       </div>
       <q-separator/>
       <div>
-        <div class="readFont bg-primaryGradient text-white boxShadow" style="font-size: 2em;text-indent: 20px;height: 50px;">Recently Posted Listings</div>
+        <div class="mainTitleFont bg-primaryGradient text-white boxShadow" style="font-size: 2em;text-indent: 20px;height: 50px;">Recently Posted Listings</div>
         <carousel :perPage="$q.screen.lt.md ? 1 : $q.screen.gt.lg ? 5 : 4" :speed="30" paginationActiveColor="#011d80" easing="ease">
           <slide v-for="(listing,index) in latestListings" :key="index">
             <listing-card :listing="listing">
@@ -34,7 +34,6 @@
         </carousel>
       </div>
     </div>
-    <q-separator class="bg-secondaryGradient" size="5px"/>
   </q-page>
 </template>
 

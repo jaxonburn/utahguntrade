@@ -5,8 +5,7 @@
          :style="$q.screen.lt.md ? 'grid-template-rows: 1fr 1fr;' : 'grid-template-columns: 1fr 1fr;'">
       <div class="flex flex-center">
         <q-card :style="$q.screen.lt.md ? 'width: 350px;' : 'width: 700px'">
-          <transition name="slide-fadeBack" appear>
-            <div v-if="!this.locationLoading">
+            <div>
               <q-card-section class="text-lg text-mb-lg text-weight-medium flex justify-center">
                 See Gun Listings Near You
               </q-card-section>
@@ -24,19 +23,9 @@
                 </div>
               </q-card-section>
             </div>
-          </transition>
-          <transition name="slide-fadeBack" appear>
-            <div v-if="locationLoading" class="flex flex-center" style="display: flex; flex-direction: column;">
-              <vLottiePlayer
-                name="LocationAnimation"
-                loop
-                :animationData="require('../../assets/LottieAnimations/LocationLoading.json')"
-                width="300px"
-                height="300px"
-              />
-              <div class="text-sm text-mb-sm text-weight-light text-center">Loading Listings...</div>
-            </div>
-          </transition>
+          <q-inner-loading :showing="locationLoading">
+            <q-spinner size="50px" color="primary" />
+          </q-inner-loading>
         </q-card>
       </div>
       <div id="tomtom" class="flex flex-center" :style="$q.screen.lt.md ? 'width: 100vw;' : 'width: 50vw;' "></div>
@@ -71,13 +60,12 @@
 <script>
   import tt from '@tomtom-international/web-sdk-maps';
   import LocationForm from 'components/Forms/LocationForm/LocationForm';
-  import VueLottiePlayer from "vue-lottie-player";
   import {mapActions} from 'vuex';
   import turf from '@turf/circle'
 
   export default {
     name: 'NearYouMap',
-    components: {LocationForm, vLottiePlayer: VueLottiePlayer},
+    components: {LocationForm},
     mounted() {
       this.loadListings({$limit: 50, sort: {createdAt: -1}}).then((res) => {
         tt.setProductInfo('UtahGunTrade', '1.0');

@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div style="display: flex; flex-direction: column;">
-      <div style="height: 600px;display: flex; justify-content: center; align-items: center;">
+      <div style="height: 70vh;display: flex; justify-content: center; align-items: center;">
         <div
           class="mainBackground">
           <div class="mainBackGroundText q-pa-md" data-aos="fade-up" data-aos-duration="800">
@@ -18,7 +18,7 @@
           </div>
         </div>
       </div>
-      <div style="width: 100%;" class="q-py-md" data-aos="fade-left" data-aos-duration="800">
+      <div style="width: 100%;" class="q-py-md" data-aos="fade-left" data-aos-duration="600">
         <near-you-map></near-you-map>
       </div>
 <!--      <div>-->

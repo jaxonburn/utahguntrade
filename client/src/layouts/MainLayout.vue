@@ -1,93 +1,38 @@
 <template>
-  <q-layout view="hHh lpR fFf">
-    <q-header class="bg-white" elevated style="display: flex;flex-direction: column"
-              :style="$route.path === '/register' || $q.platform.is.mobile || $route.path === '/login' ? 'height: 90px;' : 'height: 130px'">
-      <div class="row" style="height: 90px;width: 100%;display: grid; grid-template-columns: 0.3fr 2fr 0.3fr 0.3fr;"
-           :style="$q.screen.lt.md ? 'grid-template-columns: 1fr 1fr;' : 'grid-template-columns: 0.2fr 1.5fr 0.3fr 0.3fr;'">
-        <div>
-          <img @click="$router.push('/')"
-               height="100%"
-               width="100"
-               src="../assets/Logos/utahgunhublogo.png"
-               class="q-ml-lg cursor-pointer"
-               alt="MainLogo"
-          />
-        </div>
-        <div class="q-ma-md flex justify-center" v-if="$route.path !== '/register' && !$q.screen.lt.md && $route.path !== '/login'">
-          <q-input
-            v-model="searchAll"
-            filled
-            placeholder="Search Marketplace..."
-            style="width: 100%;"
-            @keyup.enter="searchMarketPlace"
-          >
-            <template v-slot:append>
-              <q-icon @click="searchMarketPlace" name="search" color="primary"/>
-            </template>
-          </q-input>
-        </div>
-        <div class="text-primary" style="display: flex;align-items: center;"
-             :style="!user ? 'justify-content: space-between;' : 'justify-content: center'"
-             v-if="$route.path !== '/register' && !$q.screen.lt.md && $route.path !== '/login'" >
-          <div class="flex flex-center cursor-pointer">
-            <q-btn @click="$router.push({name: 'articleSearch'})" flat>
-              <q-avatar size="60px">
-                <img src="../assets/newIcon.png" alt="NewsPaper" width="50" height="50"/>
-              </q-avatar>
-            </q-btn>
-
-            <q-btn-dropdown class="q-ml-lg text-white bg-secondaryGradient" v-if="user"
-                            dropdown-icon="notifications_active">
-              <q-list>
-                <q-btn v-if="notifications" @click="clearAllNotifications" class="q-pa-md"
-                       label="Clear all notifications" color="blue" flat style="background-color: black;"/>
-                <q-btn v-else class="q-pa-md" label="No notifications" color="blue" flat
-                       style="background-color: black;"/>
-                <transition-group name="list">
-                  <q-item style="background-color: black; color: white;" clickable v-for="(noti, idx) of notifications"
-                          :key="noti._id" class="list-item">
-                    <q-item-section>
-                      <q-item-label>
-                        <div style="display: flex;align-items: center;">
-                          <q-avatar size="45px">
-                            <img :src="$lget(noti, '_fastjoin.messageObj.sentBy.avatar', '')">
-                          </q-avatar>
-                          <div class="details" style="display: flex;align-items: center;">
-                            <div class="q-mx-sm">{{ $lget(noti, '_fastjoin.messageObj.sentBy.username', '') }}:</div>
-                            <div class="q-mr-sm">{{
-                                noti.text.length > 60 ? noti.text.substr(0, 60) + '...' : noti.text
-                              }}
-                            </div>
-                          </div>
-                        </div>
-                        <div class="actions">
-                          <q-btn @click="viewNotification(noti)" flat color="green" label="View"/>
-                          <q-btn @click="dismissNotification(noti)" flat color="yellow" label="Dismiss"/>
-                        </div>
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </transition-group>
-
-              </q-list>
-            </q-btn-dropdown>
-
+  <q-layout view="hHh lpR fff">
+    <q-header elevated>
+      <q-toolbar class="bg-white" style="display: flex; flex-direction: column;width: 100%;">
+        <div style="width: 100%;display: grid; grid-template-columns: 0.4fr 3fr 0.5fr;">
+          <div class="flex flex-center">
+            <img src="../assets/Logos/utahgunhublogo.png" style="height: 100px;width: 125px;" @click="$router.push('/')"
+                 class="cursor-pointer">
           </div>
-          <div class="row" v-if="!user">
-            <div>
-              <router-link to="/login" style="text-decoration: none;">
-                <q-btn outlined color="primary" label="log in"></q-btn>
-              </router-link>
+          <div class="q-ma-md flex justify-center"
+               v-if="$route.path !== '/register' && !$q.screen.lt.md && $route.path !== '/login'">
+            <q-input
+              v-model="searchAll"
+              filled
+              placeholder="Search Marketplace..."
+              style="width: 100%;"
+              @keyup.enter="searchMarketPlace"
+            >
+              <template v-slot:append>
+                <q-icon @click="searchMarketPlace" name="search" color="primary"/>
+              </template>
+            </q-input>
+          </div>
+          <div class="flex items-center" v-if="$route.path !== '/login' && $route.path !== '/register'" :class="user ? 'justify-end' : 'justify-center'">
+            <router-link to="/login" style="text-decoration: none;" v-if="!user && $route.path !== '/login'">
+              <q-btn outlined color="dark" label="log in" flat></q-btn>
+            </router-link>
+            <div @mouseover="category.open = true;" class="flex justify-end" v-else>
+              <dropdown-links :user="user" :category="category"></dropdown-links>
             </div>
           </div>
         </div>
-        <div @mouseover="category.open = true;" class="flex justify-end" v-if="$route.path !== '/register' && $route.path !== '/login'">
-          <dropdown-links :user="user" :category="category"></dropdown-links>
-        </div>
-      </div>
-      <category-drop-down v-if="!$q.platform.is.mobile && $route.path === '/'"></category-drop-down>
+        <category-drop-down v-if="!$q.platform.is.mobile && $route.path === '/'"></category-drop-down>
+      </q-toolbar>
     </q-header>
-
     <q-page-container style="height: 100%;">
       <router-view/>
       <transition name="lide-fade" appear>
@@ -98,13 +43,7 @@
       </transition>
       <chat-box v-if="chat" @close="chat = !chat" :user="user"></chat-box>
     </q-page-container>
-    <q-footer>
-    <div style="height: 20px;width: 100%;"
-         class="bg-blue-grey-6 text-center row flex justify-start">
-      <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline; cursor: pointer;" @click="$router.push({name: 'report-bug'})">Report a bug?</p>
-      <p class="text-white text-xxs text-mb-xxs q-mx-sm" style="text-decoration: underline;">Contact Owners</p>
-    </div>
-    </q-footer>
+    <!--    <main-footer></main-footer>-->
   </q-layout>
 </template>
 
@@ -114,17 +53,19 @@
   import ChatBox from 'components/Chat/chatBox';
   import {StripeCheckout} from '@vue-stripe/vue-stripe';
   import DropdownLinks from 'components/Nav/DropdownLinks';
+  import MainFooter from 'components/Nav/MainFooter';
 
   export default {
     name: 'MainLayout',
     components: {
+      MainFooter,
       DropdownLinks,
       ChatBox,
       CategoryDropDown,
       StripeCheckout,
     },
     async mounted() {
-      if(this.user) {
+      if (this.user) {
         Promise.all(this.user.notifications.map(async noti => {
           let not = await this.$store.dispatch('notifications/patch', [noti, {
             displayed: true
@@ -152,6 +93,7 @@
     },
     data() {
       return {
+        isScrolled: false,
         loading: false,
         searchAll: '',
         chat: false,
@@ -373,6 +315,7 @@
     opacity: 0;
     transform: translateX(150px);
   }
+
   .list-item {
     /*display: inline-block;*/
     /*margin-right: 10px;*/

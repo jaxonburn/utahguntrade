@@ -5,10 +5,10 @@ const attachToListing = context => {
   if(context.result.listing) {
     let patchObj = {
       document: context.result
-    }
+    };
     context.app.service('listings').patch(context.result.listing, patchObj);
   }
-}
+};
 
 module.exports = {
   before: {

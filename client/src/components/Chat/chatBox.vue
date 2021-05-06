@@ -5,14 +5,13 @@
   bottom: 10px;
   right: 15px;
   z-index: 5;
-  -webkit-box-shadow: 0px 0px 8px 4px rgba(0,0,0,0.39);
-box-shadow: 0px 0px 8px 4px rgba(0,0,0,0.39);
+  -webkit-box-shadow: 0 0 6px 1px rgba(0,0,0,0.35);
+box-shadow: 0 0 6px 1px rgba(0,0,0,0.35);
 overflow-y: scroll;
 " >
       <q-inner-loading :showing="loadingChats">
         <q-spinner-comment size="75px" color="primary"/>
       </q-inner-loading>
-      <transition name="slide-fade">
         <div v-if="!inChat">
           <div class="row items-center" style="border-bottom: .5px solid var(--q-color-secondary)">
             <q-input
@@ -65,8 +64,6 @@ overflow-y: scroll;
             </div>
           </div>
         </div>
-      </transition>
-      <transition name="slide-fade">
         <div v-if="inChat" style="display: flex; flex-direction: column; justify-content: center;">
           <div class="bg-grey-3 q-pa-sm row">
             <q-btn icon="arrow_back" size="md" push @click.stop="inChat = null" flat/>
@@ -109,7 +106,6 @@ overflow-y: scroll;
             </q-input>
           </div>
         </div>
-      </transition>
     </div>
     <q-dialog v-model="addChat">
       <add-friend-form @close="addChat = !addChat"></add-friend-form>

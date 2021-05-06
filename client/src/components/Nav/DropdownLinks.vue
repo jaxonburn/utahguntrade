@@ -19,64 +19,6 @@
       </q-item>
       <q-separator/>
     </q-list>
-<!--    <div style="width: 100%;" v-if="user">-->
-<!--      <q-btn-dropdown-->
-<!--        class="bg-secondaryGradient text-white"-->
-<!--        style="width: 100%;"-->
-<!--        flat-->
-<!--      >-->
-<!--        <template v-slot:label>-->
-<!--          <div style="display: flex; flex-direction: row; justify-content: space-between;width: 100%;">-->
-<!--            <q-avatar size="sm" style="border: 1px solid black;">-->
-<!--              <img :src="user.avatar"/>-->
-<!--            </q-avatar>-->
-<!--            <div>-->
-<!--              Account-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </template>-->
-<!--        <div class="row q-pa-md">-->
-<!--          <div class="column flex justify-between">-->
-<!--            <div class="text-h6 q-mb-md text-center text-weight-thin" style="border-bottom: 1px solid black;">-->
-<!--              Notifications-->
-<!--            </div>-->
-<!--            <div>-->
-<!--              <q-btn outlined label="Messages" icon="chat" size="sm" class="bg-secondaryGradient text-white"-->
-<!--                     @click="chat = !chat">-->
-<!--              </q-btn>-->
-<!--            </div>-->
-<!--          </div>-->
-
-<!--          <q-separator vertical inset class="q-mx-lg"/>-->
-
-<!--          <div class="column items-center">-->
-<!--            <q-avatar size="72px">-->
-<!--              <img :src="user.avatar">-->
-<!--            </q-avatar>-->
-
-<!--            <div class="text-subtitle1 q-mt-md q-mb-xs"></div>-->
-<!--            <q-btn-->
-<!--              label="My Account"-->
-<!--              @click="$router.push('/account')"-->
-<!--              push-->
-<!--              size="sm"-->
-<!--              class="q-mb-md bg-primaryGradient text-white"-->
-<!--              v-close-popup-->
-<!--            >-->
-
-<!--            </q-btn>-->
-<!--            <q-btn-->
-<!--              class="bg-primaryGradient text-white"-->
-<!--              label="Logout"-->
-<!--              push-->
-<!--              size="sm"-->
-<!--              @click="logOut"-->
-<!--              v-close-popup-->
-<!--            />-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </q-btn-dropdown>-->
-<!--    </div>-->
   </q-btn-dropdown>
 </template>
 
@@ -144,7 +86,7 @@
             if: this.$route.path !== '/account',
             label: 'Account',
             icon: 'far fa-user-circle',
-            class: 'bg-secondaryGradient q-pa-xs',
+            class: 'bg-primaryGradient q-pa-xs',
             handler: () => {
               this.changeRoute('/account');
             }
@@ -152,7 +94,7 @@
           {
             label: 'Log Out',
             icon: 'fas fa-sign-out-alt',
-            class: 'bg-secondaryGradient q-pa-xs',
+            class: 'bg-primaryGradient q-pa-xs',
             handler: () => {
               this.logOut();
             }

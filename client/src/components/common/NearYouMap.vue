@@ -1,10 +1,9 @@
 <template>
-  <!--  :style="$q.screen.lt.md ? 'height: 400px;display: flex; flex-direction: column;' : 'height: 400px;display: flex; flex-direction: row;'"-->
   <div>
     <div class="map-wrapper"
          :style="$q.screen.lt.md ? 'grid-template-rows: 1fr 1fr;' : 'grid-template-columns: 1fr 1fr;'">
       <div class="flex flex-center">
-        <q-card :style="$q.screen.lt.md ? 'width: 350px;' : 'width: 700px'">
+        <q-card :style="$q.screen.lt.md ? 'width: 350px;' : 'width: 700px'" class="cardContainer">
             <div>
               <q-card-section class="text-lg text-mb-lg text-weight-medium flex justify-center">
                 See Gun Listings Near You
@@ -18,7 +17,7 @@
                   <div class="text-weight-bold text-sm text-mb-sm q-ml-sm flex items-end q-mb-lg">miles</div>
                 </div>
                 <div class="flex justify-end">
-                  <q-btn label="Search" class="text-white bg-secondaryGradient" icon-right="search"
+                  <q-btn label="Search" class="text-white bg-primaryGradient" icon-right="search"
                          @click="createRadius"></q-btn>
                 </div>
               </q-card-section>
@@ -28,28 +27,17 @@
           </q-inner-loading>
         </q-card>
       </div>
-      <div id="tomtom" class="flex flex-center" :style="$q.screen.lt.md ? 'width: 100vw;' : 'width: 50vw;' "></div>
+      <div id="tomtom" class="flex flex-center" :style="$q.screen.lt.md ? 'width: 100vw;' : 'width: 40vw;' "></div>
     </div>
     <div v-if="listingsNearYou.length > 0">
-      <div style="width: 100%;display: flex; justify-content: center; align-items: center;"
-           class="q-my-lg bg-primaryGradient text-white nameFont">We found
+      <div style="width: 100%;display: flex; justify-content: center; align-items: center;height: 50px;"
+           class="q-my-lg bg-accent text-white nameFont">We found
         {{ listingsNearYou.length === 5 ? listingsNearYou.length + '+' : listingsNearYou.length }} listings in your
         area.
-        <q-btn class="text-white bg-secondaryGradient q-ml-sm" flat>View more</q-btn>
       </div>
       <div style="width: 100%;display: flex; justify-content: center; align-items: center;">
         <q-list bordered separator style="width: 80%;border-radius: 15px;" class="bg-white q-ma-md boxShadow">
           <q-item clickable v-ripple v-for="(listing,idx) in listingsNearYou" :key="idx" @click="$router.push(`listing-details/${listing._id}`)">
-            <q-item-section thumbnail>
-              <img
-                :src="listing.images[0].url"
-                style="height: 150px; max-width: 300px;"
-              />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>{{ $lget(listing, 'title', '') }}</q-item-label>
-              <q-item-label caption>{{ $lget(listing, 'description', '') }}</q-item-label>
-            </q-item-section>
           </q-item>
         </q-list>
       </div>
@@ -67,7 +55,7 @@
     name: 'NearYouMap',
     components: {LocationForm},
     mounted() {
-      this.loadListings({$limit: 50, sort: {createdAt: -1}}).then((res) => {
+      this.loadListings({$limit: 100, sort: {createdAt: -1}}).then((res) => {
         tt.setProductInfo('UtahGunTrade', '1.0');
         this.map = tt.map({
           key: 'GMC0kbMxjXm2blWcDoTtsg8WGhicEIaJ',
@@ -114,7 +102,7 @@
           this.$store.dispatch('listings/find', {
             query:
               {
-                $limit: 5,
+                $limit: 8,
                 point:
                   {
                     $geoWithin: {
@@ -187,16 +175,22 @@
     font-family: "KuchekMedium", Times, Serif;
     line-height: 1em;
     font-weight: 600;
-    font-size: 1.3em;
+    font-size: 1.4em;
   }
 
   .map-wrapper {
     display: grid;
     justify-items: stretch;
     align-content: space-evenly;
-    grid-column-gap: 60px;
+    grid-column-gap: 80px;
     width: 100%;
   }
 
+  .cardContainer {
+    height: 450px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
 </style>

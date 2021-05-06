@@ -1,10 +1,10 @@
 <template>
-  <q-page style="width: 100%;">
+  <q-page>
     <div style="display: flex; flex-direction: column;">
       <div style="height: 600px;display: flex; justify-content: center; align-items: center;">
         <div
           class="mainBackground">
-          <div>
+          <div class="mainBackGroundText q-pa-md" data-aos="fade-up" data-aos-duration="800">
             <div class="flex flex-center mainCard">
               <div class="text-mb-xxl mainTitleFont" style="text-align: center;">Browse Gun Listings all over Utah</div>
             </div>
@@ -18,21 +18,19 @@
           </div>
         </div>
       </div>
-      <q-separator class="bg-primaryGradient" size="5px"/>
-      <div style="width: 100%;" class="q-py-md">
+      <div style="width: 100%;" class="q-py-md" data-aos="fade-left" data-aos-duration="800">
         <near-you-map></near-you-map>
       </div>
-      <q-separator/>
-      <div>
-        <div class="mainTitleFont bg-primaryGradient text-white boxShadow" style="font-size: 2em;text-indent: 20px;height: 50px;">Recently Posted Listings</div>
-        <carousel :perPage="$q.screen.lt.md ? 1 : $q.screen.gt.lg ? 5 : 4" :speed="30" paginationActiveColor="#011d80" easing="ease">
-          <slide v-for="(listing,index) in latestListings" :key="index">
-            <listing-card :listing="listing">
+<!--      <div>-->
+<!--        <div class="mainTitleFont bg-primaryGradient text-white boxShadow" style="font-size: 2em;text-indent: 20px;height: 50px;">Recently Posted Listings</div>-->
+<!--        <carousel :perPage="$q.screen.lt.md ? 1 : $q.screen.gt.lg ? 5 : 4" :speed="30" paginationActiveColor="#011d80" easing="ease">-->
+<!--          <slide v-for="(listing,index) in latestListings" :key="index">-->
+<!--            <listing-card :listing="listing">-->
 
-            </listing-card>
-          </slide>
-        </carousel>
-      </div>
+<!--            </listing-card>-->
+<!--          </slide>-->
+<!--        </carousel>-->
+<!--      </div>-->
     </div>
   </q-page>
 </template>
@@ -43,6 +41,8 @@
   import { Carousel, Slide } from 'vue-carousel';
   import Listing from 'components/common/Listing';
   import {mapActions} from 'vuex';
+  import AOS from 'aos'
+  import 'aos/dist/aos.css'
 
   export default {
     name: 'PageIndex',
@@ -51,6 +51,9 @@
       NearYouMap,
       Carousel,
       Slide
+    },
+    created () {
+      AOS.init()
     },
     mounted(){
       this.createAnalytic({reqFrom: 'layout'});
@@ -101,7 +104,7 @@
 <style lang="scss" scoped>
 
   .mainBackground {
-    background-image: url('../assets/mainPagePhoto.jpeg');
+    background-image: url('https://images.unsplash.com/photo-1591123720164-de1348028a82?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1525&q=80');
     background-size: contain;
     background-repeat: no-repeat;
     height: 90%; width: 90%;
@@ -115,6 +118,10 @@
     width: 100vw;
     height: 100%;
     background-size: cover;
+  }
+  .mainBackGroundText {
+    background: rgba(225, 225, 225, 0.3);
+    border-radius: 15px;
   }
 
   .mainCard {
@@ -141,8 +148,8 @@
   .readFont {
     font-family: "KuchekLight", Times, Serif;
     line-height: 1.6em;
-    font-size: 1.3em;
-    font-weight: 100;
+    font-size: 1.4em;
+    font-weight: 300;
   }
 </style>
 

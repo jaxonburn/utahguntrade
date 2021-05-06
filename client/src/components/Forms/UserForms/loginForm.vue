@@ -29,7 +29,7 @@
               <div class="cursor-pointer" @click="showPassword = !showPassword">
 
                 <q-icon :name="showPassword ? 'visibility' : 'visibility_off'"/>
-                <span class="text-weight-regular text-xs">Show</span>
+                <span class="text-weight-regular text-xs text-mb-sm">Show</span>
               </div>
             </template>
 

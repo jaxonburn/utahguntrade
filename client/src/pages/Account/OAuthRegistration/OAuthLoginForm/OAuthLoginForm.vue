@@ -33,7 +33,7 @@
             </div>
           </transition>
           <div class="flex justify-center" style="width: 100%;">
-            <button class="logInButton q-mt-xs cursor-pointer" @click="signIn" id="loginButton"><span>Sign Into The Dashboard</span>
+            <button class="logInButton q-mt-xs cursor-pointer" @click="signIn" id="loginButton"><span>Sign In</span>
               <q-inner-loading :showing="loading">
                 <q-spinner
                   color="primary"

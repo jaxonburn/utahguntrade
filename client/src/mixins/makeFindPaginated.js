@@ -1,10 +1,8 @@
 import {makeFindMixin} from 'feathers-vuex';
-
 const $lcamelCase = require('lodash.camelcase');
 const $lupperFirst = require('lodash.upperfirst');
 const $lomitBy = require('lodash.omitby');
 const $lisNil = require('lodash.isnil');
-
 export default function makeFindPaginateMixin(
   {
     limit = 10,
@@ -21,7 +19,6 @@ export default function makeFindPaginateMixin(
   if (typeof service === 'function' && !name) name = 'service';
   const prefix = $lcamelCase(name || service);
   const capitalized = $lupperFirst($lcamelCase(name || service));
-
   makeFindMixinOptions = $lomitBy({
     service: service,
     name: name,
@@ -29,7 +26,6 @@ export default function makeFindPaginateMixin(
     watch: watch,
     ...makeFindMixinOptions,
   }, $lisNil);
-
   let mixin = {
     mixins: [makeFindMixin(makeFindMixinOptions)],
     data() {
@@ -74,10 +70,14 @@ export default function makeFindPaginateMixin(
             apiQuery = this.$lget(this[`${prefix}PaginationData`], [prefixQid, mostRecent.queryId, 'queryParams'], {});
             delete apiQuery['$client'];
           }
-          let sort = this.$lget(this, `${prefix}QueryCust.$sort`)
+          let sort = this.$lget(this, `${prefix}QueryCust.$sort`);
           if (sort) {
             apiQuery.$sort = sort;
           }
+        } else {
+          apiQuery =  {
+            ...this[`${prefix}QueryCust`],
+          };
         }
         return {
           query: apiQuery
@@ -93,11 +93,11 @@ export default function makeFindPaginateMixin(
           ...this[`${prefix}QueryParamsCust`]
         };
       },
-      [`${prefix}Total`]() {
+      [`${prefix}Total`](){
         let prefixQid = this[`${prefix}Qid`];
         return this.$lget(this[`${prefix}PaginationData`], [prefixQid, 'mostRecent', 'total'], 0);
       },
-      [`${prefix}Prefix`]() {
+      [`${prefix}Prefix`](){
         return prefix;
       }
     },
@@ -119,9 +119,7 @@ export default function makeFindPaginateMixin(
       },
     }
   };
-
   mixin.computed[`${prefix}QueryCust`] = typeof query === 'function' ? query : () => query;
   mixin.computed[`${prefix}QueryParamsCust`] = typeof params === 'function' ? params : () => params;
-
   return mixin;
 }

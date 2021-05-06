@@ -21,7 +21,9 @@ class Listings extends BaseModel {
       tags: [],
       sold: false,
       viewed: [],
-      archived: false
+      archived: false,
+      contactMethods: ['Email', 'Phone', 'In app chat'],
+      openToTrades: false
     }
   }
 }

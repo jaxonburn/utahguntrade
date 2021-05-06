@@ -310,9 +310,11 @@
         min-height: 300px;
       }
       .img {
-        height: 300px;
+        height: 250px;
         background-repeat: no-repeat;
-        background-size: cover;
+        //background-size: 100% 100%;
+        BACKGROUND-SIZE: COVER;
+        background-position: center;
       }
 
     }

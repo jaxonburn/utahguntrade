@@ -47,7 +47,12 @@ module.exports = function (/* ctx */) {
     build: {
       vueRouterMode: 'history', // available values: 'hash', 'history'
       env: {
-        TOMTOM_API_KEY: JSON.stringify(process.env.TOMTOM_API_KEY)
+        TOMTOM_API_KEY: 'GMC0kbMxjXm2blWcDoTtsg8WGhicEIaJ',
+        // ACCESS_KEY_ID: JSON.stringify(process.env.ACCESS_KEY_ID),
+        // SECRET_ACCESS_KEY: JSON.stringify(process.env.SECRET_ACCESS_KEY),
+        ACCESS_KEY_ID: 'AKIAJA7CT4DCZHE5MNUQ',
+        SECRET_ACCESS_KEY: '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',
+        SERVER_URL: 'http://localhost:3030'
       },
       // transpile: false,
         transpileDependencies: ['feathers-vuex'],

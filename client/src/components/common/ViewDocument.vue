@@ -1,10 +1,13 @@
 <template>
   <div class="right" v-if="displayDocument">
-    <img v-if="displayDocument.document" :src="displayDocument.document.url" />
+<!--    <img v-if="displayDocument.document" :src="displayDocument.fullImage" />-->
+<!--    <div v-if="displayDocument.document" class="doc-image" v-html="displayDocument.fullImage">-->
+    <div v-if="displayDocument.document" class="doc-image" :style="{backgroundImage: `url(${displayDocument.fullImage})`}">
+    </div>
     <div class="note-display">{{ displayDocument.notes }}</div>
     <div class="signature-wrapper">
       <div>{{ displayDocument.signature }}</div>
-      <div v-if="displayDocument.dateSigned">Todays date: {{ displayDocument.dateSigned }}</div>
+      <div v-if="displayDocument.dateSigned">Signed date: {{ displayDocument.dateSigned }}</div>
     </div>
   </div>
 </template>
@@ -47,6 +50,11 @@
 </script>
 
 <style scoped lang="scss">
+  .doc-image {
+    height: 60vh;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
   .right {
     width: 40vw;
     overflow: scroll;
@@ -54,13 +62,6 @@
     background-color: #dadfea;
     border-radius: 5px;
     position: relative;
-
-    img {
-      width: 90%;
-      max-height: 60vh;
-      margin: 0 auto;
-      margin-left: 15px;
-    }
 
     .note-display {
       font-size: 1.1em;

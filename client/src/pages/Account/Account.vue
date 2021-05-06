@@ -87,8 +87,8 @@
 
 
   AWS.config.update({
-    accessKeyId: 'AKIAJA7CT4DCZHE5MNUQ',
-    secretAccessKey: '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',
+    accessKeyId: process.env.ACCESS_KEY_ID,
+    secretAccessKey: process.env.SECRET_ACCESS_KEY,
     region: 'us-west-1',
   });
 

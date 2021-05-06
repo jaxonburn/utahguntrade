@@ -5,28 +5,35 @@
 
       <div class="left">
 
-        <VueAgile class="agile-comp" :initial-slide="0" :dots="false" :fade="true" :nav-buttons="true">
+        <VueAgile class="agile-comp" :initial-slide="0" :dots="false" :fade="true" :nav-buttons="listing.images.length ? true : false">
 <!--          <img class="slide" v-for="(image, idx) of listing.images" :src="image.url" :key="idx"/>-->
-          <div class="slide-img" v-for="(image, idx) of listing.images" :key="idx" :style="{backgroundImage: `url(${image.url})`}"></div>
-          <template slot="prevButton">
-            <q-icon size="md" name="chevron_left"/>
-          </template>
-          <template slot="nextButton">
-            <q-icon size="md" name="chevron_right"/>
-          </template>
-          <template slot="caption">
-            <div class="text-center q-my-md text-h6">Swipe to view images</div>
-          </template>
+
+          <div v-if="listing.images.length">
+            <div class="slide-img" v-for="(image, idx) of listing.images" :key="idx" :style="{backgroundImage: `url(${image.url})`}"></div>
+            <template slot="prevButton">
+              <q-icon size="md" name="chevron_left"/>
+            </template>
+            <template slot="nextButton">
+              <q-icon size="md" name="chevron_right"/>
+            </template>
+            <template slot="caption">
+              <div class="text-center q-my-md text-h6">Swipe to view images</div>
+            </template>
+          </div>
+          <div class="agile-comp" v-else :style="{backgroundImage: `url(${defaultImage})`, height: '45vh', backgroundSize: 'contain', backgroundRepeat: 'no-repeat'}">
+
+          </div>
         </VueAgile>
 
         <div v-if="!$q.platform.is.mobile" class="footer q-pb-xl">
-          <div class="q-mt-lg right-footer">
+          <div class="q-mt-xl right-footer">
             <div class="text-h4">Contact seller</div>
-            <div class="q-my-sm" v-if="listing._fastjoin.listedBy.email">Email: {{
+            <div class="q-my-sm" v-if="listing._fastjoin.listedBy.email && listing.contactMethods.includes('Email')">
+              Email: {{
                 listing._fastjoin.listedBy.email
               }}
             </div>
-            <div v-if="listing._fastjoin.listedBy.phone">Phone: {{ listing._fastjoin.listedBy.phone }}</div>
+            <div v-if="listing._fastjoin.listedBy.phone && listing.contactMethods.includes('Phone')">Phone: {{ listing._fastjoin.listedBy.phone }}</div>
           </div>
           <div class="left-footer">
             <q-chip class="q-mr-md" :key="tag" square v-for="tag of listing.tags">
@@ -47,11 +54,12 @@
         <div v-if="$q.platform.is.mobile" class="footer">
           <div class="q-mt-lg right-footer">
             <div class="text-h4">Contact seller</div>
-            <div class="q-my-sm" v-if="listing._fastjoin.listedBy.email">Email: {{
+            <div class="q-my-sm" v-if="listing._fastjoin.listedBy.email && listing.contactMethods.includes('Email')">
+              Email: {{
                 listing._fastjoin.listedBy.email
               }}
             </div>
-            <div v-if="listing._fastjoin.listedBy.phone">Phone: {{ listing._fastjoin.listedBy.phone }}</div>
+            <div v-if="listing._fastjoin.listedBy.phone && listing.contactMethods.includes('Phone')">Phone: {{ listing._fastjoin.listedBy.phone }}</div>
           </div>
           <div class="left-footer">
             <q-chip class="q-mr-md" :key="tag" square v-for="tag of listing.tags">
@@ -73,6 +81,12 @@
           Address: <span>{{ $lget(listing.address, 'address.freeformAddress', 'No address') }}</span>
           <q-icon name="location_on" class="q-ml-sm q-mb-xs" size="sm"/>
         </div>
+        <div class="q-my-lg text-h6" v-if="listing.openToTrades">
+          <q-icon name="check" class="q-mr-sm" size="sm" color="green" /> Open to trades
+        </div>
+<!--        <div class="q-my-lg text-h6">-->
+<!--          Methods of contact: <span class="q-mr-sm text-secondary" v-for="(method, idx) of listing.contactMethods" :key="idx">{{ method }}</span>-->
+<!--        </div>-->
         <div class="description q-my-lg text-h6" style="width: 100%;">
           Description: {{ listing.description ? listing.description : 'No description' }}
         </div>
@@ -91,13 +105,19 @@
   import {mapActions, mapGetters} from "vuex";
   import {models} from 'feathers-vuex';
   import {VueAgile} from "vue-agile";
+  import NoImage from 'assets/no_image.png'
 
   export default {
     name: "ListingDetails",
     components: {Loading, VueAgile},
+    data(){
+      return {
+        defaultImage: NoImage
+      }
+    },
     mounted() {
       this.loadListing(this.$route.params.id).then((res) => {
-        this.slide = res.images[0].url;
+        this.slide = res.images[0] ? res.images[0].url : NoImage;
         if (!res.viewed.includes(this.$lget(this.user, '_id'))) {
           this.patchListing([this.listing._id, {
             $push: {

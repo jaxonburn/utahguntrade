@@ -24,6 +24,8 @@ module.exports = function (app) {
         type: [Number],
       }
     },
+    contactMethods: [{type: String, enum: ['Phone', 'Email', 'In app chat']}],
+    openToTrades: {type: Boolean, default: false},
     title: {type: String, required: true},
     description: {type: String},
     watchedBy: [{type: Schema.Types.ObjectId, ref: 'users'}],

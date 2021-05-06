@@ -23,8 +23,8 @@
 
 
   AWS.config.update({
-    accessKeyId: 'AKIAJA7CT4DCZHE5MNUQ',
-    secretAccessKey: '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',
+    accessKeyId: process.env.ACCESS_KEY_ID,
+    secretAccessKey: process.env.SECRET_ACCESS_KEY,
     region: 'us-west-1',
   });
 
@@ -36,6 +36,24 @@
     data(){
       return {
         images: [],
+      }
+    },
+    props: {
+      folderPath: {
+        type: String,
+        default: 'profile'
+      },
+      isPrivate: {
+        type: Boolean,
+        default: false
+      },
+      imageType: {
+        type: String,
+        default: 'guntrade_'
+      },
+      user: {
+        type: Object,
+        default: () => {}
       }
     },
     methods: {
@@ -51,9 +69,10 @@
         if (fileList.length > 0) {
           fileList.forEach((image) => {
             let stream = image.path;
+            this.$emit('encoded', image.path);
             let uniqueName = {
-              path: `profile/${today.getFullYear().toString()}${today.getMonth().toString().padStart(2, "0")}/`,
-              file: `guntrade_${image.name.replace(/[^a-zA-Z0-9.]/g, "")}`
+              path: `${this.folderPath}/${today.getFullYear().toString()}${today.getMonth().toString().padStart(2, "0")}/`,
+              file: `${Object.keys(this.user).length ? this.user._id : this.imageType}${image.name.replace(/[^a-zA-Z0-9.]/g, "")}`
             };
             let params = {
               Bucket: 'guntrade',
@@ -61,7 +80,7 @@
               Body: image.file,
               ContentEncoding: 'base64',
               ContentType: image.type,
-              ACL: 'public-read'
+              ACL: this.isPrivate ? 'private' : 'public-read'
             };
             s3.upload(params, options, function (err, data) {
               if (err) {
@@ -74,7 +93,6 @@
                 data['details']['type'] = image.type;
                 data['details']['lastModifiedDate'] = image.lastModifiedDate;
                 this.$q.loading.hide();
-                console.log(this.images);
                 this.$emit('image', {url: data.Location,key: data.key})
               }
             }.bind(this));

@@ -114,7 +114,7 @@
       return {
         dateSort: '',
         priceSort: '',
-        filterMenu: false,
+        filterMenu: true,
         filterOptions: {
           minPrice: 0,
           maxPrice: 0,
@@ -137,7 +137,7 @@
       sort() {
         return {
           price: this.priceSort === 'Price low to high' ? 1 : -1,
-          createdAt: this.dateSort === 'Date newest to oldest' ? 'desc' : 'asc'
+          createdAt: this.dateSort === 'Date newest to oldest' ? -1 : 1
         }
       },
       listingQuery() {
@@ -240,6 +240,8 @@
     flex-direction: column;
     justify-content: space-between;
     padding-bottom: 40px;
+    width: 75vw;
+    margin: 0 auto;
   }
 
   .listings-wrapper {
@@ -247,6 +249,8 @@
     grid-template-columns: 1fr 1fr 1fr 1fr;
     justify-items: center;
     grid-gap: 40px;
+    //width: 95%;
+    margin: 0 auto;
     padding: 50px 20px;
   }
 

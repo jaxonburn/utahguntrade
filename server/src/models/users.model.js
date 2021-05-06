@@ -21,7 +21,6 @@ module.exports = function (app) {
 
     googleId: { type: String },
 
-
     facebookId: { type: String },
     stripeId: {type: String},
     takeToListings: { type: Boolean, default: false },

@@ -40,6 +40,10 @@
           input-debounce="0"
           new-value-mode="add-unique"
         />
+        <div class="row justify-between q-my-lg">
+          <q-checkbox v-model="listingForm.openToTrades" class="col-3" label="Open To Trades" />
+          <q-select class="col-4" :options="['Email', 'Phone', 'In app chat']" label="Methods Of Contact" filled v-model="listingForm.contactMethods" use-chips multiple new-value-mode="add-unique"></q-select>
+        </div>
         <q-input v-model="listingForm.description" class="q-my-lg" type="textarea" label="Description"/>
         <q-space></q-space>
         <div style="text-align: right;" v-if="!isEditing">
@@ -94,6 +98,10 @@
           input-debounce="0"
           new-value-mode="add-unique"
         />
+        <div class="row justify-between q-my-lg">
+          <q-checkbox v-model="listingForm.openToTrades" class="col-3" label="Open To Trades" />
+          <q-select label="Methods Of Contact" filled v-model="listingForm.contactMethods" use-input use-chips multiple new-value-mode="add-unique"></q-select>
+        </div>
         <q-input v-model="listingForm.description" class="q-my-lg" type="textarea" label="Description"/>
         <q-space></q-space>
         <div style="text-align: right;" v-if="!isEditing">
@@ -113,10 +121,11 @@
   import AWS from 'aws-sdk';
   import {mapActions, mapState} from 'vuex';
   import LocationForm from "components/Forms/LocationForm/LocationForm";
+  import { models } from 'feathers-vuex';
 
   AWS.config.update({
-    accessKeyId: 'AKIAJA7CT4DCZHE5MNUQ',
-    secretAccessKey: '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',
+    accessKeyId: process.env.ACCESS_KEY_ID,
+    secretAccessKey: process.env.SECRET_ACCESS_KEY,
     region: 'us-west-1',
   });
 
@@ -131,19 +140,7 @@
         categories: ['Knives', 'Rifle', 'AssaultRifle', 'Handgun', 'SubmachineGun', 'Hunting', 'Magazines', 'Scopes', 'Other', 'AssaultAmmo', 'HandgunAmmo.', 'RifleAmmo', 'ShotgunAmmo', 'SubmachineAmmo', 'Misc' ],
         images: [],
         formData: {},
-        listingForm: {
-          title: '',
-          price: null,
-          condition: '',
-          address: {},
-          category: 'Other',
-          tags: [],
-          description: '',
-          images: [],
-          sold: false,
-          archived: false,
-          point: {}
-        }
+        listingForm: new models.api.Listings().clone()
       }
     },
     mounted() {
@@ -205,6 +202,14 @@
       },
       async savePosting() {
         this.$q.loading.show();
+        console.log(this.listingForm);
+        if(!this.listingForm.category || !this.listingForm.condition) {
+          this.$q.notify({
+            message: 'Must have a category and condition selected'
+          })
+          this.$q.loading.hide();
+          return;
+        };
         if (this.images.length === 0 && !this.isEditing) {
           this.publish();
           return;
@@ -255,7 +260,9 @@
       },
       publish() {
         this.listingForm.listedBy = this.user;
-        this.listingForm.point = {type: 'Point', coordinates: [this.listingForm.address.position.lon,  this.listingForm.address.position.lat]};
+        if(Object.keys(this.listingForm.address).length) {
+          this.listingForm.point = {type: 'Point', coordinates: [this.listingForm.address.position.lon,  this.listingForm.address.position.lat]};
+        }
         this.$q.loading.show();
         this.createListing({...this.listingForm}).then(res => {
           this.$q.loading.hide();

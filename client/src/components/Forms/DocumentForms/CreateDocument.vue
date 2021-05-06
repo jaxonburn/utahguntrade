@@ -2,7 +2,7 @@
   <q-card class="document-wrapper">
     <q-icon v-close-popup class="close-icon" name="close" size="sm"/>
     <div class="left">
-      <SingleImageUpload @image="document.document = $event">
+      <SingleImageUpload @encoded="saveImageEncoded" :folder-path="'documents'" :user="user" :isPrivate="true" image-type="gunhub_document_" @image="document.document = $event">
 
       </SingleImageUpload>
       <div class="signature">
@@ -31,7 +31,7 @@
 <script>
 
   import SingleImageUpload from "components/common/SingleImageUpload";
-  import { mapActions } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
   import ViewDocument from "components/common/ViewDocument";
 
   export default {
@@ -44,7 +44,8 @@
           signature: '',
           notes: '',
           dateSigned: '',
-          listing: this.listing._id
+          listing: this.listing._id,
+          img: '',
         }
       }
     },
@@ -54,15 +55,24 @@
         required: true
       }
     },
+    computed: {
+      ...mapGetters('auth', {
+        user: 'user'
+      })
+    },
     methods: {
       ...mapActions('documents', {
         createDocument: 'create'
       }),
+      saveImageEncoded(encoded) {
+        this.document.fullImage = encoded;
+      },
       saveDocument(){
         console.log(this.document);
+        delete this.document.fullImage;
         if(!this.document.signature || !this.document.dateSigned) {
           this.$q.notify({
-            message: 'Must add signature and todays date',
+            message: 'Must add signature and today\'s date',
             color: 'negative'
           });
           return;
@@ -73,12 +83,12 @@
           this.$q.notify({
             message: 'Document added successfully',
             color: 'positive'
-          }).catch(err => {
-            this.$q.loading.hide();
-            this.$q.notify({
-              message: err.message,
-              color: 'negative'
-            })
+          })
+        }).catch(err => {
+          this.$q.loading.hide();
+          this.$q.notify({
+            message: err.message,
+            color: 'negative'
           })
         })
       }

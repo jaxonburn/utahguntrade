@@ -70,7 +70,7 @@
       this.loadListings({$limit: 50, sort: {createdAt: -1}}).then((res) => {
         tt.setProductInfo('UtahGunTrade', '1.0');
         this.map = tt.map({
-          key: 'GMC0kbMxjXm2blWcDoTtsg8WGhicEIaJ',
+          key: process.env.TOMTOM_API_KEY,
           container: 'tomtom',
           center: [-112.0937, 40],
           zoom: 6.2,

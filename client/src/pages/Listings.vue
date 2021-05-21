@@ -62,8 +62,16 @@
         <div class="filter-row">
           <div class="menu-name">Filter by price</div>
           <div class="price-filter">
-            <q-input @click="filterOptions.minPrice = undefined" v-model="filterOptions.minPrice" label="Min" type="number" />
-            <q-input @click="filterOptions.maxPrice = undefined" v-model="filterOptions.maxPrice" label="Max" type="number" />
+            <q-input @click="filterOptions.minPrice = undefined" v-model="filterOptions.minPrice" label="Min" type="number">
+              <template v-slot:prepend>
+                <div style="font-size: .8em;">$</div>
+              </template>
+            </q-input>
+            <q-input @click="filterOptions.maxPrice = undefined" v-model="filterOptions.maxPrice" label="Max" type="number">
+              <template v-slot:prepend>
+                <div style="font-size: .8em;">$</div>
+              </template>
+            </q-input>
           </div>
         </div>
         <div class="filter-row">
@@ -241,6 +249,7 @@
     justify-content: space-between;
     padding-bottom: 40px;
     width: 75vw;
+    overflow-x: hidden;
     margin: 0 auto;
   }
 
@@ -249,7 +258,6 @@
     grid-template-columns: 1fr 1fr 1fr 1fr;
     justify-items: center;
     grid-gap: 40px;
-    //width: 95%;
     margin: 0 auto;
     padding: 50px 20px;
   }
@@ -282,6 +290,9 @@
   @media screen and (max-width: 500px) {
     .listings-wrapper {
       grid-template-columns: 1fr;
+    }
+    .listings-page {
+      width: 100vw;
     }
     .limit-selector {
       left: 10px;

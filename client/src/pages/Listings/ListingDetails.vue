@@ -8,7 +8,9 @@
         <VueAgile class="agile-comp" :initial-slide="0" :dots="false" :fade="true" :nav-buttons="listing.images.length ? true : false">
 <!--          <img class="slide" v-for="(image, idx) of listing.images" :src="image.url" :key="idx"/>-->
 
-          <div v-if="listing.images.length">
+<!--          <div v-if="listing.images.length">-->
+          <div class="agile-comp" v-if="listing.images.length === 0" :style="{backgroundImage: `url(${defaultImage})`, height: '45vh', backgroundSize: 'contain', backgroundRepeat: 'no-repeat'}"></div>
+
             <div class="slide-img" v-for="(image, idx) of listing.images" :key="idx" :style="{backgroundImage: `url(${image.url})`}"></div>
             <template slot="prevButton">
               <q-icon size="md" name="chevron_left"/>
@@ -19,10 +21,10 @@
             <template slot="caption">
               <div class="text-center q-my-md text-h6">Swipe to view images</div>
             </template>
-          </div>
-          <div class="agile-comp" v-else :style="{backgroundImage: `url(${defaultImage})`, height: '45vh', backgroundSize: 'contain', backgroundRepeat: 'no-repeat'}">
-
-          </div>
+<!--          </div>-->
+<!--          <div class="agile-comp" v-else :style="{backgroundImage: `url(${defaultImage})`, height: '45vh', backgroundSize: 'contain', backgroundRepeat: 'no-repeat'}">-->
+<!---->
+<!--          </div>-->
         </VueAgile>
 
         <div v-if="!$q.platform.is.mobile" class="footer q-pb-xl">
@@ -179,13 +181,17 @@
 <style scoped lang="scss">
   .listing {
     padding: 50px;
+    width: 80vw;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
 
     .left {
-      flex: 0.5;
+      //flex: 0.55;
+      width: 40vw;
       position: relative;
       height: 70vh;
+      left: 0;
 
       .footer {
         display: flex;
@@ -207,7 +213,7 @@
     }
 
     .right {
-      flex: 0.42;
+      flex: 0.65;
 
       .text-h6 {
         font-weight: 400 !important;

@@ -12,41 +12,150 @@
       </div>
     </div>
     <slide-up-down :active="tabOpen" :duration="800">
-      <div style="height: 250px;width: 100%;display: grid; grid-template-columns: 2fr 1fr 1fr;" class="text-black">
+      <div class="text-black tabContainer">
         <div style="height: 100%;">
           <div style="height: 100%;">
-            <div class="titleFont text-sm text-mb-sm" style="border-bottom: 1px solid black;width: 100%;">
-              <span>Firearms</span>
+            <div class="titleFont text-sm text-mb-sm" style="border-bottom: 1px solid black;width: 80%;">
+              <span>Marketplace</span>
             </div>
-            <div class="q-mt-md">
-              <q-breadcrumbs class="text-black text-xs text-mb-xs" active-color="black" separator="-">
-                <q-breadcrumbs-el label="Rifles" class="breadCrumbHover"/>
-                <q-breadcrumbs-el label="Bolt Action" class="breadCrumbHover"/>
-                <q-breadcrumbs-el label="Lever Action" class="breadCrumbHover"/>
-                <q-breadcrumbs-el label="Muzzleloader" class="breadCrumbHover"/>
-                <q-breadcrumbs-el label="Pump Action" class="breadCrumbHover"/>
-                <q-breadcrumbs-el label="Semi-Auto" class="breadCrumbHover"/>
-                <q-breadcrumbs-el label="Airsoft" class="breadCrumbHover"/>
-                <q-breadcrumbs-el label="Pellet Gun" class="breadCrumbHover"/>
-              </q-breadcrumbs>
-              <q-breadcrumbs class="text-black text-xs text-mb-xs" active-color="black" separator="-">
-                <q-breadcrumbs-el label="Handguns" class="breadCrumbHover"/>
-                <q-breadcrumbs-el label="Revolver" class="breadCrumbHover"/>
-                <q-breadcrumbs-el label="Semi-Auto" class="breadCrumbHover"/>
-              </q-breadcrumbs>
-              <q-breadcrumbs class="text-black text-xs text-mb-xs" active-color="black" separator="-">
-                <q-breadcrumbs-el label="Shotguns" class="breadCrumbHover"/>
-              </q-breadcrumbs>
+            <div class="q-mt-md" style="display: grid; grid-template-rows: 1fr 1fr;height: 70%;grid-row-gap: 8px;">
+              <div style="display: flex; flex-direction: row;" >
+                <q-card style="width: 40%;background: rgba(225, 225, 225, 0.8);height: 100%;" class="q-mr-sm">
+                  <q-card-section>
+                    Rifles
+                  </q-card-section>
+                </q-card>
+                <q-card style="width: 40%;background: rgba(225, 225, 225, 0.8);height: 100%;">
+                  <q-card-section>
+                    Rifles
+                  </q-card-section>
+                </q-card>
+              </div>
+
+
+              <div style="display: flex; flex-direction: row;">
+                <q-card style="width: 40%;background: rgba(225, 225, 225, 0.8);height: 100%;" class="q-mr-sm">
+                  <q-card-section>
+                    Rifles
+                  </q-card-section>
+                </q-card>
+                <q-card style="width: 40%;background: rgba(225, 225, 225, 0.8);height: 100%;">
+                  <q-card-section>
+                    Rifles
+                  </q-card-section>
+                </q-card>
+              </div>
+
+
             </div>
           </div>
         </div>
 
-        <div>
-
+        <div style="height: 100%;">
+          <div style="height: 100%;">
+            <div class="titleFont text-sm text-mb-sm" style="border-bottom: 1px solid black;width: 80%;">
+              <span>Social</span>
+            </div>
+            <div class="q-mt-sm">
+              <q-list bordered style="width: 80%;" separator class="text-weight-medium">
+                <q-item clickable v-ripple>
+                  <q-item-section class="text-xs text-mb-xs">Messages</q-item-section>
+                  <q-item-section avatar>
+                    <q-avatar rounded>
+                      <q-img src="../../assets/isometricchat.png"/>
+                    </q-avatar>
+                  </q-item-section>
+                </q-item>
+                <q-item clickable v-ripple>
+                  <q-item-section class="text-xs text-mb-xs">Notifications</q-item-section>
+                  <q-item-section avatar>
+                    <q-avatar rounded>
+                      <q-icon name="fas fa-bell" color="accent" size="md"/>
+                    </q-avatar>
+                  </q-item-section>
+                </q-item>
+                <q-item clickable v-ripple v-if="user" @click="$router.push('/account')">
+                  <q-item-section class="text-xs text-mb-xs">Profile</q-item-section>
+                  <q-item-section avatar>
+                    <q-avatar rounded>
+                      <q-img :src="$lget(user, 'avatar', '')"/>
+                    </q-avatar>
+                  </q-item-section>
+                </q-item>
+                <q-item clickable v-ripple v-else @click="$router.push('/register')">
+                  <q-item-section class="text-xs text-mb-xs">Create Account</q-item-section>
+                  <q-item-section avatar>
+                    <q-avatar rounded>
+                      <q-icon color="accent" size="md" name="fas fa-user-circle"></q-icon>
+                    </q-avatar>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </div>
+          </div>
         </div>
 
-        <div>
-
+        <div style="width: 100%;">
+          <div style="height: 100%;">
+            <div class="titleFont text-sm text-mb-sm" style="border-bottom: 1px solid black;width: 100%;">
+              <span>Resources</span>
+            </div>
+            <div class="q-mt-sm" style="display: flex; flex-direction: row;width: 100%;">
+              <div style="display: flex; flex-direction: column;">
+                <q-badge class="titleFont text-sm text-mb-sm" style="text-indent: 0;width: 100%;" color="grey">
+                  The Hub News
+                </q-badge>
+                <div>
+                  Newest Article
+                  <div>
+                    {{ $lget(articles, '[0].mainTitle', 'Gun Hub') }}
+                  </div>
+                </div>
+<!--                <q-card class="text-black cursor-pointer" style="width: 100%;" @click="$router.push('/articles')">-->
+<!--                  <q-card-section horizontal>-->
+<!--                    <q-img :src="$lget(articles, '[0].mainImage.url', '')"-->
+<!--                           style="height: 100px;max-width: 100px;"></q-img>-->
+<!--                    <q-separator vertical/>-->
+<!--                    <div style="display: flex; flex-direction: column;">-->
+<!--                      <div class="readFont">-->
+<!--                        {{ $lget(articles, '[0].mainTitle', 'Gun Hub') }}-->
+<!--                      </div>-->
+<!--                      <div class="aboutFont q-mb-md">-->
+<!--                        <div>-->
+<!--                          Published {{ $lget(articles, '[0].publishedAt', '')| format }} ago-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                      <div class="flex flex-center">-->
+<!--                        <q-icon style="font-size: 1em;" name="fas fa-heart" color="red"></q-icon>-->
+<!--                        <span style="font-size: 1em; margin-left: 5px;">{{-->
+<!--                            $lget(articles, '[0].favorites.length', 0)-->
+<!--                          }}</span>-->
+<!--                        <q-icon style="font-size: 1em;" name="fas fa-comments" color="light-blue" class="q-ml-md"/>-->
+<!--                        <span class="q-ml-xs" style="font-size: 1em; margin-left: 5px;">{{-->
+<!--                            $lget(articles, '[0].comments.length', 0)-->
+<!--                          }}</span>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </q-card-section>-->
+<!--                </q-card>-->
+              </div>
+              <q-separator vertical class="q-ml-sm"/>
+              <div style="display: grid; grid-template-columns: 1fr 0.1fr 1fr;width: 50%;justify-items: center;align-items: center;">
+                <div class="text-weight-medium">
+                  <router-link to="/bill-of-sale"><div class="q-my-xs cursor-pointer hoverText">Bill Of Sale</div></router-link>
+                  <div class="q-my-xs cursor-pointer hoverText">Gun Stores in Utah</div>
+                  <div class="q-my-xs cursor-pointer hoverText">Firearm Classes</div>
+                  <div class="q-my-xs cursor-pointer hoverText">Prevent Fraud</div>
+                </div>
+                <q-separator vertical />
+                <div class="text-weight-medium">
+                  <div class="q-my-xs cursor-pointer hoverText">Our Team</div>
+                  <div class="q-my-xs cursor-pointer hoverText">Terms and Conditions</div>
+                  <div class="q-my-xs cursor-pointer hoverText">Privacy Policy</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -56,15 +165,57 @@
 
 <script>
   import SlideUpDown from 'vue-slide-up-down'
+  import {mapGetters} from 'vuex';
+  import {makeFindMixin} from 'feathers-vuex';
+  import dateUtils from 'src/helpers/dateUtils';
 
   export default {
     name: 'CategoryDropDown',
     components: {
       SlideUpDown
     },
+    filters: {
+      format(date) {
+        let newDate = new Date(date);
+        return dateUtils(newDate);
+      }
+    },
     data() {
       return {
-        tabOpen: true,
+        tabOpen: false,
+        rifleOptions: [
+          'All Rifles',
+          'Bolt Action',
+          'Lever Action',
+          'Muzzleloader',
+          'Pump Action',
+          'Semi-Auto',
+        ],
+        pistolOptions: [
+          'Handguns',
+          'Revolver',
+          'Semi-Auto'
+        ],
+        ammoOptions: [
+          '5.56',
+          '.223',
+          '9mm',
+        ]
+      }
+    },
+    mixins: [
+      makeFindMixin({
+        name: 'articles',
+        service: 'articles',
+        qid: 'articles'
+      })
+    ],
+    computed: {
+      ...mapGetters('auth', {
+        user: 'user'
+      }),
+      articlesParams() {
+        return {query: {published: true}}
       }
     }
   };
@@ -86,19 +237,50 @@
   }
 
   .titleFont {
-    font-family: "Kuchek", Times, Serif;
+    font-family: "KuchekLight", Times, Serif;
     line-height: 1.6em;
     font-weight: 100;
     text-indent: 30px;
   }
 
-  .breadCrumbHover {
-    transition: 0.2s linear;
-    cursor: pointer;
+  .boldFont {
+    font-family: "KuchekMedium", Times, Serif;
+    line-height: 1.6em;
+    font-weight: 100;
   }
 
-  .breadCrumbHover:hover {
-    transform: scale(1.03);
+  .tabContainer {
+    height: 230px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 0.7fr 0.5fr 1fr;
+  }
+
+  .readFont {
+    font-family: "Kuchek", Times, Serif;
+    line-height: 1.6em;
+    font-size: 1.3em;
+    font-weight: 100;
+    text-align: center;
+  }
+
+
+  .aboutFont {
+    font-family: "KuchekThin", Times, Serif;
+    line-height: 1em;
+    font-weight: 600;
+    font-size: 1em;
+    text-align: center;
+  }
+  .hoverText {
+    transition: 0.3s all;
+    border-radius: 15px;
+  }
+
+  .hoverText:hover {
+    padding: 2px 2px;
+    background: rgba(225, 225, 225, 0.8);
     color: var(--q-color-primary);
+    transform: scale(1.02);
   }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page style="width: 100vw;overflow: hidden;">
     <div style="display: flex; flex-direction: column;">
       <div style="height: 70vh;display: flex; justify-content: center; align-items: center;">
         <div

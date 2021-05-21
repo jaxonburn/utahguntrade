@@ -2,6 +2,7 @@
 //
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
+const encrypt = require('mongoose-encryption');
 module.exports = function (app) {
   const modelName = 'documents';
   const mongooseClient = app.get('mongooseClient');
@@ -21,6 +22,12 @@ module.exports = function (app) {
   if (mongooseClient.modelNames().includes(modelName)) {
     mongooseClient.deleteModel(modelName);
   }
+
+  const encKey = app.get('encryption').ENCRYPT_32BYTE_STRING;
+  const sigKey = app.get('encryption').ENCRYPT_64BYTE_STRING;
+
+  schema.plugin(encrypt, { encryptionKey: encKey, signingKey: sigKey });
+
   return mongooseClient.model(modelName, schema);
 
 };

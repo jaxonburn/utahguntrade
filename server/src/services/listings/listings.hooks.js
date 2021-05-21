@@ -1,8 +1,8 @@
-const { authenticate } = require('@feathersjs/authentication').hooks;
-const { fJoinHook } = require('../../hooks/common/fastJoin');
+const {authenticate} = require('@feathersjs/authentication').hooks;
+const {fJoinHook} = require('../../hooks/common/fastJoin');
 
 const addToUser = context => {
-  if(context.result.listedBy) {
+  if (context.result.listedBy) {
     let patchObj = {
       $push: {
         listings: context.result._id
@@ -24,7 +24,9 @@ module.exports = {
   },
 
   after: {
-    all: [fJoinHook('listedBy', 'users')],
+    all: [
+      fJoinHook('listedBy', 'users'),
+    ],
     find: [],
     get: [],
     create: [addToUser],

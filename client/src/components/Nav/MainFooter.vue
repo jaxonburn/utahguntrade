@@ -1,16 +1,13 @@
 <template>
-  <div style="height: 200px;width: 100%;display: flex;flex-direction: column;border-top: 1px solid rgba(225, 225, 225, 1);">
+  <div style="height: 200px;width: 100%;display: flex;flex-direction: column;background: rgba(40, 40, 40, 1);">
   <div style=" display: grid; grid-template-columns: 3fr 1fr;">
-    <div class="mainFooterFont" style="display: grid; grid-template-columns: 1fr 1fr; justify-items: center;">
-      <div>
-        Contact
-      </div>
-    </div>
-    <div class="flex justify-end q-mr-sm items-center">
-      <img src="../../assets/Logos/utahgunhublogo.png" style="height: 150px;" @click="$router.push('/')" class="cursor-pointer">
+    <div class="mainFooterFont items-center" style="display: grid; grid-template-columns: 1fr 1fr;">
+      <q-avatar size="150px">
+        <q-img src="../../assets/Logos/utahgunhublogo.png" @click="$router.push('/')" class="cursor-pointer"/>
+      </q-avatar>
     </div>
   </div>
-    <div>
+    <div class="text-white">
       ©GunHubUtah 2021
     </div>
   </div>

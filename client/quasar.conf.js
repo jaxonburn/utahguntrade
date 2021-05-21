@@ -71,8 +71,16 @@ module.exports = function (/* ctx */) {
       // extractCSS: false,
 
       // https://quasar.dev/quasar-cli/handling-webpack
-      extendWebpack (cfg) {
-      },
+      extendWebpack (cfg, { isServer, isClient }) {
+        cfg.module.rules.push(
+          {
+            test: /\.(pdf)$/,
+            loader: 'file-loader',
+            options: {
+              name: `files/[name].[ext]`
+            }
+          })
+      }
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer

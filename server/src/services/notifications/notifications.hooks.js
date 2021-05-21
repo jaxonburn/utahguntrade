@@ -18,9 +18,9 @@ const removeFromUser = async context => {
 const setDeleted = async context => {
   await context.app.service('notifications').patch(context.data._id, {deleted: true}).then(res => {
     console.log(res);
-  })
+  });
   return context;
-}
+};
 
 module.exports = {
   before: {

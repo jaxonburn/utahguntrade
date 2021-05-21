@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page style="width: 100vw;overflow: hidden;">
     <div style="display: flex; flex-direction: column;">
       <div style="height: 70vh;display: flex; justify-content: center; align-items: center;">
         <div
@@ -18,7 +18,7 @@
           </div>
         </div>
       </div>
-      <div style="width: 100%;" class="q-py-md" data-aos="fade-left" data-aos-duration="800">
+      <div style="width: 100%;" class="q-py-md" data-aos="fade-left" data-aos-duration="600">
         <near-you-map></near-you-map>
       </div>
 <!--      <div>-->

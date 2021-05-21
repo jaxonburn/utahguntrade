@@ -4,7 +4,7 @@
     <q-card-section style="display: flex; align-items: center;justify-content: space-between; flex-direction: column;">
       <h5>Main</h5>
         <q-btn @click="show.mainImage = !show.mainImage">upload</q-btn>
-        <single-image-upload @image="form.mainImage = $event" v-if="show.mainImage"></single-image-upload>
+        <single-image-upload @image="form.mainImage = $event" v-if="show.mainImage" :user="user"></single-image-upload>
       <div style="width: 350px;">
       <q-input outlined label="ArticleTitle" v-model="form.mainTitle" class="q-mt-md" style="width: 100%;"></q-input>
       </div>
@@ -13,7 +13,7 @@
       <h5>Section {{index + 1}}</h5>
       <q-separator/>
       <q-btn @click="show[`section${index}`] = !show[`section${index}`]">upload</q-btn>
-      <single-image-upload @image="section.image = $event,show[`section${index}`] = false " v-if="show[`section${index}`]"></single-image-upload>
+      <single-image-upload :user="user" @image="section.image = $event,show[`section${index}`] = false " v-if="show[`section${index}`]"></single-image-upload>
       <div style="width: 400px;">
       <q-input label="title" v-model="section.title"/>
         <q-editor v-model="section.body" min-height="8rem" />
@@ -26,7 +26,7 @@
     <q-card-section class="flex justify-end items-center">
       <div>
         <q-btn @click="show.avatar = !show.avatar">upload avatar</q-btn>
-        <single-image-upload @image="form.avatar = $event" v-if="show.avatar"></single-image-upload>
+        <single-image-upload :user="user" @image="form.avatar = $event" v-if="show.avatar"></single-image-upload>
       </div>
       <div>
         <q-input outlined v-model="form.createdBy" label="Written By" style="width: 300px;" class="q-mr-md" hint=""/>

@@ -6,6 +6,10 @@ module.exports = {
     'default': 50,
     'max': 500
   },
+  'encryption': {
+    'ENCRYPT_32BYTE_STRING': '/KCzwyzSjrxEx7C4jc10T3lLSDhUovhRrS7YBCUezeM=',
+    'ENCRYPT_64BYTE_STRING': 'oGTlOBe7rQhySGt589912d2XpV3d0Ejxu5m2Un6C2AjENKn7GfK4yXvZyoGRpCd/DRJnwnSxtpocbH1N/4hazw==',
+  },
   'authentication': {
     'entity': 'user',
     'service': 'users',

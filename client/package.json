@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.0.1",
   "description": "Browse classifieds, connect with other firearm owners, get latest local firearms news.",
-  "productName": "Utah Gun Trade | Gun Marketplace",
+  "productName": "Gun Hub Utah | FireArm Listing MarketPlace",
   "author": "jaxonburningham <jaxon@ionrev.com>",
   "private": true,
   "scripts": {

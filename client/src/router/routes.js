@@ -11,6 +11,7 @@ export default function({ store }) {
         { path: 'login', name: 'logIn', component: () => import('pages/Account/OAuthRegistration/OAuthLoginForm/OAuthLoginForm'),meta: { requiresAuth: false },},
         { path: 'account', component: () => import('pages/Account/Account.vue'),meta: { requiresAuth: true },},
         { path: 'create-posting', name: 'create-posting', component: () => import('pages/Listings/CreatePosting'), meta: { requiresAuth: true } },
+        { path: 'bill-of-sale', name: 'billOfSale', component: () => import('pages/Resources/billOfSale') },
         { path: 'listings', name: 'listings', component: () => import('pages/Listings') },
         { path: 'my-watched', name: 'my-watched', component: () => import('pages/Listings/MyWatched'), meta: { requiresAuth: true } },
         { path: 'my-listings', name: 'my-listings', component: () => import('pages/Listings/MyListings'), meta: { requiresAuth: true } },

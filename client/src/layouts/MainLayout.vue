@@ -22,6 +22,41 @@
             </q-input>
           </div>
           <div class="flex items-center" v-if="$route.path !== '/login' && $route.path !== '/register'" :class="user ? 'justify-end' : 'justify-center'">
+            <q-btn-dropdown style="width: 60px; height: 40px;" class="q-mr-lg text-white bg-secondaryGradient" v-if="user"
+                            dropdown-icon="notifications_active">
+              <q-list>
+                <q-btn  v-if="notifications" @click="clearAllNotifications" class="q-pa-md"
+                        label="Clear all notifications" color="blue" flat style="background-color: black; width: 100%"/>
+                <q-btn v-else class="q-pa-md" label="No notifications" color="blue" flat
+                       style="background-color: black;"/>
+                <transition-group name="list">
+                  <q-item style="background-color: black; color: white;" clickable v-for="(noti, idx) of notifications"
+                          :key="noti._id" class="list-item">
+                    <q-item-section>
+                      <q-item-label>
+                        <div style="display: flex;align-items: center;">
+                          <q-avatar size="45px">
+                            <img :src="$lget(noti, '_fastjoin.messageObj.sentBy.avatar', '')">
+                          </q-avatar>
+                          <div class="details" style="display: flex;align-items: center;">
+                            <div class="q-mx-sm">{{ $lget(noti, '_fastjoin.messageObj.sentBy.username', '') }}:</div>
+                            <div class="q-mr-sm">{{
+                                noti.text.length > 60 ? noti.text.substr(0, 60) + '...' : noti.text
+                              }}
+                            </div>
+                          </div>
+                        </div>
+                        <div class="actions">
+                          <q-btn @click="viewNotification(noti)" flat color="green" label="View"/>
+                          <q-btn @click="dismissNotification(noti)" flat color="yellow" label="Dismiss"/>
+                        </div>
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </transition-group>
+
+              </q-list>
+            </q-btn-dropdown>
             <router-link to="/login" style="text-decoration: none;" v-if="!user && $route.path !== '/login'">
               <q-btn outlined color="dark" label="log in" flat></q-btn>
             </router-link>

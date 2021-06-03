@@ -10,7 +10,7 @@ module.exports = function (app) {
     users: [
       {
         user: {type: Schema.Types.ObjectId, ref: 'users'},
-        unreadMessages: [{type: Schema.Types.ObjectId, ref: 'messages'}]
+        unreadMessages: [{type: Schema.Types.ObjectId, ref: 'chats'}]
       }
     ],
     messages: [new Schema({

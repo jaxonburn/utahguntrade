@@ -1,5 +1,5 @@
 <template>
-  <div class="listings-page">
+  <div class="listings-page" style="min-height: 65vh;">
 
     <div v-if="isPending" style="z-index: 5">
       <Loading/>
@@ -58,7 +58,7 @@
       :width="300"
       :breakpoint="500"
     >
-      <div class="drawer-wrapper">
+      <div class="drawer-wrapper" >
         <div class="filter-row">
           <div class="menu-name">Filter by price</div>
           <div class="price-filter">
@@ -84,7 +84,7 @@
         </div>
         <div class="filter-row">
           <div class="menu-name">Filter by condition</div>
-          <div class="condition-filter" style="height: 100px; overflow: scroll; margin: 20px 0;">
+          <div class="condition-filter" style="height: 170px; overflow: scroll; margin: 20px 0;">
             <div v-for="(con, idx) of conditions" :key="idx">
               <q-checkbox @input="toggleCondition(con)" keep-color :value="filterOptions.conditions.includes(con)" :label="con" color="cyan" />
             </div>
@@ -227,11 +227,18 @@
   .filter-menu {
     margin-top: 10px;
   }
+  .drawer-wrapper {
+    height: fit-content;
+  }
+  .drawer-wrapper::-webkit-scrollbar {
+    display: none;
+  }
 
   .pagination-wrapper {
     display: flex;
     align-items: center;
-    width: 100vw;
+    width: 70vw;
+    margin: 0 auto;
     justify-content: center;
     position: relative;
   }
@@ -268,13 +275,13 @@
     margin-top: 150px;
   }
 
-  @media screen and (max-width: 1050px) {
+  @media screen and (max-width: 1250px) {
     .listings-wrapper {
       grid-template-columns: 1fr 1fr 1fr;
     }
   }
 
-  @media screen and (max-width: 700px) {
+  @media screen and (max-width: 900px) {
     .listings-wrapper {
       grid-template-columns: 1fr;
     }

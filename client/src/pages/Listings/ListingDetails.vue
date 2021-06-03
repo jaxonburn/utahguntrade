@@ -326,6 +326,7 @@
   @media screen and (max-width: 1050px) {
     .listing {
       flex-direction: column;
+      padding: 0;
     }
 
     .title {
@@ -337,7 +338,7 @@
     }
 
     .agile-comp {
-      width: 90vw;
+      width: 80vw;
     }
 
     .right {

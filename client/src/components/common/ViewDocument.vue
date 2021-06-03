@@ -2,7 +2,7 @@
   <div class="right" v-if="displayDocument">
 <!--    <img v-if="displayDocument.document" :src="displayDocument.fullImage" />-->
 <!--    <div v-if="displayDocument.document" class="doc-image" v-html="displayDocument.fullImage">-->
-    <div v-if="displayDocument.document" class="doc-image" :style="{backgroundImage: `url(${displayDocument.fullImage})`}">
+    <div v-if="displayDocument.document" class="doc-image" :style="{backgroundImage: `url(${displayDocument.document})`}">
     </div>
     <div class="note-display">{{ displayDocument.notes }}</div>
     <div class="signature-wrapper">

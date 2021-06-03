@@ -58,7 +58,7 @@
             </div>
             <div class="q-mt-sm">
               <q-list bordered style="width: 80%;" separator class="text-weight-medium">
-                <q-item clickable v-ripple>
+                <q-item @click="navTo('/messages')" clickable v-ripple>
                   <q-item-section class="text-xs text-mb-xs">Messages</q-item-section>
                   <q-item-section avatar>
                     <q-avatar rounded>
@@ -66,15 +66,15 @@
                     </q-avatar>
                   </q-item-section>
                 </q-item>
-                <q-item clickable v-ripple>
-                  <q-item-section class="text-xs text-mb-xs">Notifications</q-item-section>
-                  <q-item-section avatar>
-                    <q-avatar rounded>
-                      <q-icon name="fas fa-bell" color="accent" size="md"/>
-                    </q-avatar>
-                  </q-item-section>
-                </q-item>
-                <q-item clickable v-ripple v-if="user" @click="$router.push('/account')">
+<!--                <q-item clickable v-ripple>-->
+<!--                  <q-item-section class="text-xs text-mb-xs">Notifications</q-item-section>-->
+<!--                  <q-item-section avatar>-->
+<!--                    <q-avatar rounded>-->
+<!--                      <q-icon name="fas fa-bell" color="accent" size="md"/>-->
+<!--                    </q-avatar>-->
+<!--                  </q-item-section>-->
+<!--                </q-item>-->
+                <q-item clickable v-ripple v-if="user" @click="navTo('/account')">
                   <q-item-section class="text-xs text-mb-xs">Profile</q-item-section>
                   <q-item-section avatar>
                     <q-avatar rounded>
@@ -216,6 +216,12 @@
       }),
       articlesParams() {
         return {query: {published: true}}
+      }
+    },
+    methods: {
+      navTo(path) {
+        if(this.$route.path === path) return;
+        this.$router.push(path);
       }
     }
   };

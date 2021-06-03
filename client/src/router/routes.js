@@ -26,14 +26,15 @@ export default function({ store }) {
     {
       path: '/manage',
       component: () => import('layouts/Manage'),
+      meta: {requiresAuth: true, role: 'Admin'},
       children: [
         // {path: '', component: () => import('pages/Manage/Manage.vue'), meta: {requiresAuth: true}},
-        {path: '', redirect: 'reports', meta: {requiresAuth: true}},
-        {path: 'reports', component: () => import('pages/Manage/Reports'), meta: {requiresAuth: true}},
-        {path: 'articles', component: () => import('pages/Manage/Articles'), meta: {requiresAuth: true}},
-        {path: 'articles/:id', component: () => import('pages/Manage/ArticleView'), meta: {requiresAuth: true}},
-        {path: 'bugs', component: () => import('pages/Manage/Bugs'), meta: { requiresAuth: true }},
-        {path: 'notifications', component: () => import('pages/Manage/Notifications'), meta: { requiresAuth: true }}
+        {path: '', redirect: 'reports', meta: {requiresAuth: true, role: 'Admin'}},
+        {path: 'reports', component: () => import('pages/Manage/Reports'), meta: {requiresAuth: true, role: 'Admin'}},
+        {path: 'articles', component: () => import('pages/Manage/Articles'), meta: {requiresAuth: true, role: 'Admin'}},
+        {path: 'articles/:id', component: () => import('pages/Manage/ArticleView'), meta: {requiresAuth: true, role: 'Admin'}},
+        {path: 'bugs', component: () => import('pages/Manage/Bugs'), meta: { requiresAuth: true, role: 'Admin' }},
+        {path: 'notifications', component: () => import('pages/Manage/Notifications'), meta: { requiresAuth: true, role: 'Admin' }}
       ]
     },
 

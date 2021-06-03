@@ -122,13 +122,13 @@
             icon: 'mdi-google',
             img: 'https://rayraysolarstatic.s3-us-west-1.amazonaws.com/Google__G__Logo.svg.png',
             color: 'red',
-            link: `${process.env.VUE_APP_FEATHERS_URL}/oauth/google`
+            link: `${process.env.VUE_APP_FEATHERS_URL || 'http://localhost:3030'}/oauth/google`
           },
           {
             name: 'Facebook',
             icon: 'mdi-facebook',
             color: '#2090E1',
-            link: `${process.env.VUE_APP_FEATHERS_URL}/oauth/facebook`
+            link: `${process.env.VUE_APP_FEATHERS_URL || 'http://localhost:3030'}/oauth/facebook`
           },
         ]
       }

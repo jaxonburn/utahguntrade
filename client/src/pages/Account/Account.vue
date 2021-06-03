@@ -58,7 +58,7 @@
         <q-btn @click="$router.push({name: 'my-listings'})" class="q-ma-md bg-secondaryGradient text-white" outlined icon="receipt" label="My listings"
                ></q-btn>
 <!--        <q-btn class="q-ma-md" outlined icon="receipt" label="Watched Listings" color="secondary" ></q-btn>-->
-        <q-btn class="q-ma-md bg-secondaryGradient text-white" outlined icon="chat" label="Messages"></q-btn>
+        <q-btn @click="$router.push('/messages');" class="q-ma-md bg-secondaryGradient text-white" outlined icon="chat" label="Messages"></q-btn>
 
 <!--        <q-btn size="md"  push  @click="$router.push({name: 'premium'})" class="text-white q-ma-sm bg-primaryGradient">-->
 <!--          Go Premium-->
@@ -156,6 +156,7 @@
             // eslint-disable-next-line no-console
             s3.upload(params, options, function (err, data) {
               if (err) {
+                console.log(err);
               } else {
                 if (data['details'] === undefined) {
                   data['details'] = {};

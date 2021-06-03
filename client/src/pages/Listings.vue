@@ -1,5 +1,5 @@
 <template>
-  <q-page class="listings-page">
+  <div class="listings-page" style="min-height: 65vh;">
 
     <div v-if="isPending" style="z-index: 5">
       <Loading/>
@@ -59,12 +59,20 @@
       :breakpoint="500"
       content-class="bg-grey-2"
     >
-      <div class="drawer-wrapper">
+      <div class="drawer-wrapper" >
         <div class="filter-row">
           <div class="menu-name">Filter by price</div>
           <div class="price-filter">
-            <q-input @click="filterOptions.minPrice = undefined" v-model="filterOptions.minPrice" label="Min" type="number" />
-            <q-input @click="filterOptions.maxPrice = undefined" v-model="filterOptions.maxPrice" label="Max" type="number" />
+            <q-input @click="filterOptions.minPrice = undefined" v-model="filterOptions.minPrice" label="Min" type="number">
+              <template v-slot:prepend>
+                <div style="font-size: .8em;">$</div>
+              </template>
+            </q-input>
+            <q-input @click="filterOptions.maxPrice = undefined" v-model="filterOptions.maxPrice" label="Max" type="number">
+              <template v-slot:prepend>
+                <div style="font-size: .8em;">$</div>
+              </template>
+            </q-input>
           </div>
         </div>
         <div class="filter-row">
@@ -81,7 +89,7 @@
         </div>
         <div class="filter-row">
           <div class="menu-name">Filter by condition</div>
-          <div class="condition-filter" style="height: 100px; overflow: scroll; margin: 20px 0;">
+          <div class="condition-filter" style="height: 170px; overflow: scroll; margin: 20px 0;">
             <div v-for="(con, idx) of conditions" :key="idx">
               <q-checkbox @input="toggleCondition(con)" keep-color :value="filterOptions.conditions.includes(con)" :label="con" color="cyan" />
             </div>
@@ -93,7 +101,7 @@
         </div>
       </div>
     </q-drawer>
-  </q-page>
+  </div>
 </template>
 
 <script>
@@ -224,11 +232,18 @@
   .filter-menu {
     margin-top: 10px;
   }
+  .drawer-wrapper {
+    height: fit-content;
+  }
+  .drawer-wrapper::-webkit-scrollbar {
+    display: none;
+  }
 
   .pagination-wrapper {
     display: flex;
     align-items: center;
-    width: 100vw;
+    width: 70vw;
+    margin: 0 auto;
     justify-content: center;
     position: relative;
   }
@@ -246,6 +261,7 @@
     justify-content: space-between;
     padding-bottom: 40px;
     width: 75vw;
+    overflow-x: hidden;
     margin: 0 auto;
   }
 
@@ -254,7 +270,6 @@
     grid-template-columns: 1fr 1fr 1fr 1fr;
     justify-items: center;
     grid-gap: 40px;
-    //width: 95%;
     margin: 0 auto;
     padding: 50px 20px;
   }
@@ -265,13 +280,13 @@
     margin-top: 150px;
   }
 
-  @media screen and (max-width: 1050px) {
+  @media screen and (max-width: 1250px) {
     .listings-wrapper {
       grid-template-columns: 1fr 1fr 1fr;
     }
   }
 
-  @media screen and (max-width: 700px) {
+  @media screen and (max-width: 900px) {
     .listings-wrapper {
       grid-template-columns: 1fr;
     }
@@ -287,6 +302,9 @@
   @media screen and (max-width: 500px) {
     .listings-wrapper {
       grid-template-columns: 1fr;
+    }
+    .listings-page {
+      width: 100vw;
     }
     .limit-selector {
       left: 10px;

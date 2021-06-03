@@ -35,13 +35,23 @@ export default function (/* { store, ssrContext } */{ store}) {
   });
 
 
-  Router.beforeEach((to, from, next) => {
+  Router.beforeEach( (to, from, next) => {
     if (!store.getters['auth/isAuthenticated']) {
       store.dispatch('auth/authenticate')
-        .then(() => {
+        .then(async () => {
           // console.log('authenticated');
           // console.log('getters user', store.getters['auth/user']);
           if (to.meta.requiresAuth) {
+            if(to.meta.role === 'Admin') {
+              let user = await store.getters['auth/user'];
+              let role = user.role;
+              if(role === 'Admin') {
+                next();
+              } else {
+                next('/');
+              }
+            }
+
             if (store.getters['auth/isAuthenticated']) {
               // console.log('pass');
               next();

@@ -202,7 +202,13 @@
       },
       async savePosting() {
         this.$q.loading.show();
-        console.log(this.listingForm);
+        if(this.listingForm.contactMethods.length === 0) {
+          this.$q.notify({
+            message: 'Must have at least one contact method selected'
+          });
+          this.$q.loading.hide();
+          return;
+        }
         if(!this.listingForm.category || !this.listingForm.condition) {
           this.$q.notify({
             message: 'Must have a category and condition selected'
@@ -210,6 +216,13 @@
           this.$q.loading.hide();
           return;
         };
+        if(!this.listingForm.title) {
+          this.$q.notify({
+            message: 'Listing must have a title'
+          });
+          this.$q.loading.hide();
+          return;
+        }
         if (this.images.length === 0 && !this.isEditing) {
           this.publish();
           return;

@@ -40,7 +40,8 @@ const getAWSImage = async context => {
     await getImage(context.result.document.key).then((img)=>{
       // let image = "<img class='img' src='data:image/jpeg;base64," + encode(img.Body) + "'" + "/>";
       let image = 'data:image/jpeg;base64,' + encode(img.Body);
-      context.result.fullImage = image;
+      context.result.document = String(image);
+      console.log(context.result);
     }).catch((e)=>{
       console.log(e);
     });

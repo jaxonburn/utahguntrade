@@ -144,7 +144,6 @@
       user: {
         deep: true,
         async handler(newVal, oldVal) {
-          console.log(newVal.notifications, oldVal.notifications, this.user.notifications);
           if (this.$lget(newVal, 'notifications', []).length === 0) return;
           if (this.lastNotification !== this.$lget(newVal.notifications[newVal.notifications.length - 1])) {
             if (this.lastUserNotification === newVal.notifications[newVal.notifications.length - 1]) return;

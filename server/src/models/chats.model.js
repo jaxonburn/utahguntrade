@@ -13,12 +13,11 @@ module.exports = function (app) {
         unreadMessages: [{type: Schema.Types.ObjectId, ref: 'messages'}]
       }
     ],
-    messages: [new Schema({
+    messages: [{
       sentBy: {type: Schema.Types.ObjectId, ref: 'users', required: true},
       message: {type: String, required: true},
-    }, {
-      timestamps: true
-    })],
+      createdAt: {type: Date}
+    }],
 
   }, {
     timestamps: true

@@ -21,7 +21,7 @@
       <div class="form">
         <div class="row justify-between q-my-lg">
           <q-input v-model="listingForm.title" class="col-4" style="width: 30%" label="Title"/>
-          <q-input v-model="listingForm.price" class="col-3" type="number" label="Price"/>
+          <q-input v-model="listingForm.price" class="col-3" type="number" label="Price" prefix="$"/>
           <q-select v-model="listingForm.condition" class="col-4" :options="['New', 'Like New', 'Used', 'Worn']"
                     label="Condition"/>
         </div>

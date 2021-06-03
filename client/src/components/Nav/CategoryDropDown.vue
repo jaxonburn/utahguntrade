@@ -106,38 +106,38 @@
                   The Hub News
                 </q-badge>
                 <div>
-                  Newest Article
-                  <div>
-                    {{ $lget(articles, '[0].mainTitle', 'Gun Hub') }}
-                  </div>
+<!--                  Newest Article-->
+<!--                  <div>-->
+<!--                    {{ $lget(articles, '[0].mainTitle', 'Gun Hub') }}-->
+<!--                  </div>-->
                 </div>
-<!--                <q-card class="text-black cursor-pointer" style="width: 100%;" @click="$router.push('/articles')">-->
-<!--                  <q-card-section horizontal>-->
-<!--                    <q-img :src="$lget(articles, '[0].mainImage.url', '')"-->
-<!--                           style="height: 100px;max-width: 100px;"></q-img>-->
-<!--                    <q-separator vertical/>-->
-<!--                    <div style="display: flex; flex-direction: column;">-->
-<!--                      <div class="readFont">-->
-<!--                        {{ $lget(articles, '[0].mainTitle', 'Gun Hub') }}-->
-<!--                      </div>-->
-<!--                      <div class="aboutFont q-mb-md">-->
-<!--                        <div>-->
-<!--                          Published {{ $lget(articles, '[0].publishedAt', '')| format }} ago-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div class="flex flex-center">-->
-<!--                        <q-icon style="font-size: 1em;" name="fas fa-heart" color="red"></q-icon>-->
-<!--                        <span style="font-size: 1em; margin-left: 5px;">{{-->
-<!--                            $lget(articles, '[0].favorites.length', 0)-->
-<!--                          }}</span>-->
-<!--                        <q-icon style="font-size: 1em;" name="fas fa-comments" color="light-blue" class="q-ml-md"/>-->
-<!--                        <span class="q-ml-xs" style="font-size: 1em; margin-left: 5px;">{{-->
-<!--                            $lget(articles, '[0].comments.length', 0)-->
-<!--                          }}</span>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </q-card-section>-->
-<!--                </q-card>-->
+                <q-card class="text-black cursor-pointer" style="width: 100%;" @click="$router.push('/articles')">
+                  <q-card-section horizontal>
+                    <q-img :src="$lget(articles, '[0].mainImage.url', '')"
+                           style="height: 100px;max-width: 100px;"></q-img>
+                    <q-separator vertical/>
+                    <div style="display: flex; flex-direction: column;">
+                      <div class="readFont">
+                        {{ $lget(articles, '[0].mainTitle', 'Gun Hub') }}
+                      </div>
+                      <div class="aboutFont q-mb-md">
+                        <div>
+                          Published {{ $lget(articles, '[0].publishedAt', '')| format }} ago
+                        </div>
+                      </div>
+                      <div class="flex flex-center">
+                        <q-icon style="font-size: 1em;" name="fas fa-heart" color="red"></q-icon>
+                        <span style="font-size: 1em; margin-left: 5px;">{{
+                            $lget(articles, '[0].favorites.length', 0)
+                          }}</span>
+                        <q-icon style="font-size: 1em;" name="fas fa-comments" color="light-blue" class="q-ml-md"/>
+                        <span class="q-ml-xs" style="font-size: 1em; margin-left: 5px;">{{
+                            $lget(articles, '[0].comments.length', 0)
+                          }}</span>
+                      </div>
+                    </div>
+                  </q-card-section>
+                </q-card>
               </div>
               <q-separator vertical class="q-ml-sm"/>
               <div style="display: grid; grid-template-columns: 1fr 0.1fr 1fr;width: 50%;justify-items: center;align-items: center;">

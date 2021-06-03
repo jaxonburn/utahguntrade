@@ -35,11 +35,14 @@
         {{ listingsNearYou.length === 5 ? listingsNearYou.length + '+' : listingsNearYou.length }} listings in your
         area.
       </div>
-      <div style="width: 100%;display: flex; justify-content: center; align-items: center;">
-        <q-list bordered separator style="width: 80%;border-radius: 15px;" class="bg-white q-ma-md boxShadow">
-          <q-item clickable v-ripple v-for="(listing,idx) in listingsNearYou" :key="idx" @click="$router.push(`listing-details/${listing._id}`)">
-          </q-item>
-        </q-list>
+      <div class="listings-wrapper">
+          <listing v-for="(listing,idx) in listingsNearYou" :key="idx" :listing="listing">
+
+          </listing>
+<!--        <q-list bordered separator style="width: 80%;border-radius: 15px;" class="bg-white q-ma-md boxShadow">-->
+<!--          <q-item clickable v-ripple  @click="$router.push(`listing-details/${listing._id}`)">-->
+<!--          </q-item>-->
+<!--        </q-list>-->
       </div>
     </div>
   </div>
@@ -50,12 +53,13 @@
   import LocationForm from 'components/Forms/LocationForm/LocationForm';
   import {mapActions} from 'vuex';
   import turf from '@turf/circle'
+  import Listing from 'components/common/Listing';
 
   export default {
     name: 'NearYouMap',
-    components: {LocationForm},
+    components: {Listing, LocationForm},
     mounted() {
-      this.loadListings({$limit: 100, sort: {createdAt: -1}}).then((res) => {
+      this.loadListings({$limit: 100, sort: {createdAt: -1}, query: {sold: false, archived: false}}).then((res) => {
         tt.setProductInfo('UtahGunTrade', '1.0');
         this.map = tt.map({
           key: process.env.TOMTOM_API_KEY,
@@ -193,4 +197,31 @@
     align-items: center;
   }
 
+
+  .listings-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    justify-items: center;
+    grid-gap: 40px;
+    margin: 0 auto;
+    padding: 50px 20px;
+  }
+
+  @media screen and (max-width: 1050px) {
+    .listings-wrapper {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+
+  @media screen and (max-width: 700px) {
+    .listings-wrapper {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    .listings-wrapper {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>

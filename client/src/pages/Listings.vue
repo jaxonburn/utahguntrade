@@ -1,5 +1,5 @@
 <template>
-  <div class="listings-page">
+  <q-page class="listings-page">
 
     <div v-if="isPending" style="z-index: 5">
       <Loading/>
@@ -57,6 +57,7 @@
       v-model="filterMenu"
       :width="300"
       :breakpoint="500"
+      content-class="bg-grey-2"
     >
       <div class="drawer-wrapper">
         <div class="filter-row">
@@ -65,6 +66,10 @@
             <q-input @click="filterOptions.minPrice = undefined" v-model="filterOptions.minPrice" label="Min" type="number" />
             <q-input @click="filterOptions.maxPrice = undefined" v-model="filterOptions.maxPrice" label="Max" type="number" />
           </div>
+        </div>
+        <div class="filter-row">
+          <div class="menu-name">Search By Location</div>
+
         </div>
         <div class="filter-row">
           <div class="menu-name">Filter by category</div>
@@ -88,7 +93,7 @@
         </div>
       </div>
     </q-drawer>
-  </div>
+  </q-page>
 </template>
 
 <script>

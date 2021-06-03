@@ -89,7 +89,7 @@ overflow-y: scroll;
               :name="$lget(message, 'sentBy', '') === user._id ? user.username : $lget(notUser, 'username', '')"
               :avatar="$lget(message, 'sentBy', '') === user._id ? user.avatar : $lget(notUser, 'avatar', '')"
               :text="[message.message]"
-              :stamp="date.formatDate($lget(message, 'createdAt', new Date()), 'MMM D, h:mm:a')"
+              :stamp="formatDate(message.createdAt, 'h:mm a MMM DD, YYYY')"
               :sent="$lget(message, 'sentBy', '') === user._id"
               :bg-color="$lget(message, 'sentBy', '') === user._id ? 'primary' : 'secondary'"
               text-color="white"
@@ -116,6 +116,7 @@ overflow-y: scroll;
 <script>
   import {mapActions, mapGetters, mapState} from 'vuex';
   import {date} from 'quasar';
+  const {formatDate} = date;
   import AddFriendForm from 'components/Forms/ChatForm/addFriendForm';
   import EmojiPicker from 'vue-emoji-picker'
 
@@ -127,6 +128,7 @@ overflow-y: scroll;
     },
     data() {
       return {
+        formatDate,
         loadingChats: true,
         search: '',
         addChat: false,
@@ -227,7 +229,8 @@ overflow-y: scroll;
           this.chatLoading = false;
           let box = document.getElementById(('chatBox'));
           box.scrollTop = box.scrollHeight;
-        }).catch(() => {
+        }).catch((err) => {
+          console.error(err);
           this.chatLoading = false;
           this.$q.notify({
             type: 'error',

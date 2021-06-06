@@ -120,7 +120,7 @@
     background-size: cover;
   }
   .mainBackGroundText {
-    background: rgba(225, 225, 225, 0.3);
+    background: rgba(225, 225, 225, 0.45);
     border-radius: 15px;
   }
 

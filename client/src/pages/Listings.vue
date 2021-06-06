@@ -76,10 +76,6 @@
           </div>
         </div>
         <div class="filter-row">
-          <div class="menu-name">Search By Location</div>
-
-        </div>
-        <div class="filter-row">
           <div class="menu-name">Filter by category</div>
           <div class="category-filter" style="height: 300px; overflow: scroll; margin: 20px 0;">
             <div v-for="(cat, idx) of categories" :key="idx">
@@ -115,7 +111,7 @@
     name: "Listings",
     components: {ListingCard: Listing, Loading},
     mixins: [makeFindPaginateMixin({
-      limit: 10,
+      limit: 20,
       service: 'listings',
       name: 'listings',
       qid: 'listings',

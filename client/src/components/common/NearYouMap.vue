@@ -106,7 +106,9 @@
           this.$store.dispatch('listings/find', {
             query:
               {
-                $limit: 8,
+                sold: false,
+                archived: false,
+                $limit: 10,
                 point:
                   {
                     $geoWithin: {

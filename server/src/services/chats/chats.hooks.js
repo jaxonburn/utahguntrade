@@ -40,7 +40,6 @@ const addChatToUser = (ctx) => {
 };
 
 const checkIfChatExists = async (ctx) => {
-  // await ctx.app.service('chats').find({query: {'users.user': {$all: [ctx.data.users[0].user, ctx.data.users[1].user]}}}).then((res) => {
   await ctx.app.service('chats').find({
     query: {
       $and: [

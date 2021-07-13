@@ -191,7 +191,7 @@
       },
       register() {
         if (!this.emitValues) {
-        let userToCreate = new models.api.User({...this.user});
+        let userToCreate = new models.api.Users({...this.user});
         this.loading = true;
         setTimeout(() => {
           userToCreate.create().then((res) => {
@@ -203,6 +203,7 @@
               })
             })
           }).catch((err) => {
+            console.error(err);
             this.loading = false;
             this.errorText = 'Email is already in use.';
             this.error = true;

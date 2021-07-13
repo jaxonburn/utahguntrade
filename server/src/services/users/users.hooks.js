@@ -8,7 +8,7 @@ const accountService = require('../authmanagement/notifier');
 const {disallow, iff, isProvider, preventChanges} = require('feathers-hooks-common');
 
 const {
-  hashPassword, protect
+  hashPassword, protect,
 } = require('@feathersjs/authentication-local').hooks;
 
 const initialChat = async context => {
@@ -17,8 +17,8 @@ const initialChat = async context => {
     users: [{user: userId, unreadMessages: []}, {user: '603aaafb1fcbe60d5424bb5a', unreadMessages: []}],
     messages: [{
       sentBy: '603aaafb1fcbe60d5424bb5a',
-      message: `Hi ${context.result.username}, welcome to Utah Gun Trade! Here you can send messages to others and negotiate on trades,offers, or other firearm related business. If you have any issues or questions don't hesitate to contact support@utahgunhub.com.`
-    }]
+      message: `Hi ${context.result.username}, welcome to Utah Gun Trade! Here you can send messages to others and negotiate on trades,offers, or other firearm related business. If you have any issues or questions don't hesitate to contact support@utahgunhub.com.`,
+    }],
   }).then((res) => {
     context.app.service('users').patch(userId, {chats: [res._id]});
   });
@@ -31,15 +31,15 @@ const modifyWatched = async context => {
   if (params === 'watchedAdd') {
     let patchObj = {
       $push: {
-        watchedBy: context.result._id
-      }
+        watchedBy: context.result._id,
+      },
     };
     context.app.service('listings').patch(id, patchObj);
   } else if (params === 'watchedRemove') {
     let patchObj = {
       $pull: {
-        watchedBy: context.result._id
-      }
+        watchedBy: context.result._id,
+      },
     };
     context.app.service('listings').patch(id, patchObj).then(res => console.log(res)).catch(err => console.log(err));
   }
@@ -49,63 +49,40 @@ module.exports = {
   before: {
     all: [],
     find: [
-      authenticate('jwt')
+      authenticate('jwt'),
     ],
     get: [
-      authenticate('jwt')
+      authenticate('jwt'),
     ],
     create: [
       hashPassword('password'),
-      verifyHooks.addVerification(),
     ],
     update: [
-      disallow('external'),
-      authenticate('jwt')
+      authenticate('jwt'),
     ],
     patch: [
-      iff(
-        isProvider('external'),
-        //TODO wont let patch user
-        preventChanges(
-          true,
-          'email',
-          'isVerified',
-          'verifyToken',
-          'verifyShortToken',
-          'verifyExpires',
-          'verifyChanges',
-          'resetToken',
-          'resetShortToken',
-          'resetExpires'
-        ),
-        hashPassword('password'),
-        authenticate('jwt')
-      )
+      hashPassword('password'),
+      authenticate('jwt'),
     ],
     remove: [
-      disallow('external'),
-      authenticate('jwt')
-    ]
+      authenticate('jwt'),
+    ],
   },
 
   after: {
     all: [
       // Make sure the password field is never sent to the client
       // Always must be the last hook
-      protect('password')
+      protect('password'),
     ],
     find: [],
     get: [],
     create: [
       initialChat,
-      context => {
-        accountService(context.app).notifier('resendVerifySignup', context.result);
-      },
-      verifyHooks.removeVerification()
     ],
     update: [],
-    patch: [modifyWatched,],
-    remove: []
+    patch: [modifyWatched],
+    remove: [],
   },
 
   error: {
@@ -115,6 +92,6 @@ module.exports = {
     create: [],
     update: [],
     patch: [],
-    remove: []
-  }
+    remove: [],
+  },
 };

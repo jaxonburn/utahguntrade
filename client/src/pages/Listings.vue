@@ -1,9 +1,6 @@
 <template>
   <div class="listings-page" style="min-height: 65vh;">
-
-    <div v-if="isPending" style="z-index: 5">
-      <Loading/>
-    </div>
+    <Loading style="z-index: 5;" v-if="isPending"/>
 
     <div class="text-h5 q-mt-xl q-ml-xl">
       Showing Most relevant results <span>{{

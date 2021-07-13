@@ -1,3 +1,4 @@
+const feathers = require('@feathersjs/feathers');
 const socket = io();
 
 // Initialize our Feathers client application through Socket.io

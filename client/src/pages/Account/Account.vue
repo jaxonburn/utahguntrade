@@ -4,7 +4,8 @@
       <div class="row">
         <div class="q-ma-lg">
           <q-avatar size="300px" v-if="!editing">
-            <img :src="user.avatar" style="border: 2px solid var(--q-color-primary)"/>
+<!--            <div style="wid"></div>-->
+            <img :src="user.avatar" style="border: 2px solid var(--q-color-primary); object-fit: cover;"/>
           </q-avatar>
           <multi-image-upload
             v-else

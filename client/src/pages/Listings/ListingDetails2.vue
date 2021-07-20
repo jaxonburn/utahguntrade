@@ -48,7 +48,7 @@
             <q-icon name="remove_done" />
             <q-tooltip>Remove from watch list</q-tooltip>
           </div>
-          <div class="action-btn">
+          <div class="action-btn" @click="reportDio = true">
             <q-icon name="more_horiz" />
 
           </div>
@@ -91,6 +91,21 @@
         </span>
       </div>
     </div>
+
+    <q-dialog v-model="reportDio">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Report Listing</div>
+        </q-card-section>
+        <q-card-section>
+          Would you like to report this listing? We appreciate community feedback and it helps keep our site clean and secure.
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" v-close-popup color="red"/>
+          <q-btn @click="reportListing" label="Report Listing" v-close-popup color="red" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -104,6 +119,11 @@
     name: 'ListingDetails2',
     components: {
       VueAgile
+    },
+    data() {
+      return {
+        reportDio: false
+      }
     },
     mounted() {
       this.loadListing(this.$route.params.id).then((res) => {
@@ -130,6 +150,25 @@
       ...mapActions('users', {
         patchUser: 'patch'
       }),
+      ...mapActions('reports', {
+        createReport: 'create'
+      }),
+      reportListing() {
+        this.createReport({
+          service: 'listings',
+          dataId: this.listing._id
+        }).then(() => {
+          this.$q.notify({
+            message: 'We appreciate the feedback, we will look into this soon.',
+            color: 'positive'
+          })
+        }).catch((er) => {
+          this.$q.notify({
+            message: er.message,
+            color: 'negative'
+          })
+        })
+      },
       startChat() {
         this.$q.loading.show();
         let newChat = new models.api.Chats({

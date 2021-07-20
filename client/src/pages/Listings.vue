@@ -60,12 +60,12 @@
         <div class="filter-row">
           <div class="menu-name">Filter by price</div>
           <div class="price-filter">
-            <q-input @click="filterOptions.minPrice = undefined" v-model="filterOptions.minPrice" label="Min" type="number">
+            <q-input debounce="200" @click="filterOptions.minPrice = undefined" v-model="filterOptions.minPrice" label="Min" type="number">
               <template v-slot:prepend>
                 <div style="font-size: .8em;">$</div>
               </template>
             </q-input>
-            <q-input @click="filterOptions.maxPrice = undefined" v-model="filterOptions.maxPrice" label="Max" type="number">
+            <q-input debounce="200" @click="filterOptions.maxPrice = undefined" v-model="filterOptions.maxPrice" label="Max" type="number">
               <template v-slot:prepend>
                 <div style="font-size: .8em;">$</div>
               </template>
@@ -152,7 +152,7 @@
           sold: false,
           title: {$regex: `(?i).*${this.$lget(this.$route.query, 'search', '').length > 0 ? this.$route.query.search : ''}.*`},
           category: {[this.filterOptions.categories.length > 0 ? '$in' : '$regex']: this.filterOptions.categories.length === 0 ? `(?i).*${this.$lget(this.$route.query, 'category', '').length > 0 ? this.$route.query.category : ''}.*` : this.filterOptions.categories},
-          price: { $lte: this.applyFilters && this.filterOptions.maxPrice > 0 ? this.filterOptions.maxPrice : 1000000, $gte: this.applyFilters && this.filterOptions.minPrice > 0? this.filterOptions.minPrice : 0 },
+          price: { $lte: this.filterOptions.maxPrice > 0 ? this.filterOptions.maxPrice : 1000000, $gte: this.filterOptions.minPrice > 0 ? this.filterOptions.minPrice : 0 },
           condition: { $in: this.filterOptions.conditions.length === 0 ? this.conditions : this.filterOptions.conditions },
           $sort: this.sort,
         };

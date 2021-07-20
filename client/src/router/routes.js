@@ -34,7 +34,8 @@ export default function({ store }) {
         {path: 'articles', component: () => import('pages/Manage/Articles'), meta: {requiresAuth: true, role: 'Admin'}},
         {path: 'articles/:id', component: () => import('pages/Manage/ArticleView'), meta: {requiresAuth: true, role: 'Admin'}},
         {path: 'bugs', component: () => import('pages/Manage/Bugs'), meta: { requiresAuth: true, role: 'Admin' }},
-        {path: 'notifications', component: () => import('pages/Manage/Notifications'), meta: { requiresAuth: true, role: 'Admin' }}
+        {path: 'notifications', component: () => import('pages/Manage/Notifications'), meta: { requiresAuth: true, role: 'Admin' }},
+        {path: 'gun-stores', name: 'gun-stores', component: () => import('pages/Manage/GunStores'), meta: {requiresAuth: true, role: 'Admin'}}
       ]
     },
 

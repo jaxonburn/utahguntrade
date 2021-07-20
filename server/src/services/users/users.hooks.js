@@ -62,19 +62,6 @@ module.exports = {
     patch: [
       iff(
         isProvider('external'),
-        // TODO wont let patch user
-        preventChanges(
-          true,
-          'email',
-          'isVerified',
-          'verifyToken',
-          'verifyShortToken',
-          'verifyExpires',
-          'verifyChanges',
-          'resetToken',
-          'resetShortToken',
-          'resetExpires'
-        ),
         authenticate('jwt')
       )
     ],

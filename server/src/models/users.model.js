@@ -10,7 +10,7 @@ module.exports = function (app) {
     username: { type: String, required: true, unique: true},
     notifications: { type: Array, required: false, default: [] },
     email: { type: String, unique: true, lowercase: true, required: true },
-    phone: {type: String, required: false, unique: true},
+    phone: {type: String, required: false},
     password: { type: String },
     avatar: {type: String, default: 'https://guntrade.s3-us-west-1.amazonaws.com/STATICSAVE/defaultProfile.png'},
     premium: {type: Boolean, default: false},

@@ -9,7 +9,7 @@
 @media only screen and (max-width: 600px) {
   .mainCard {
     width: 90vw;
-    height: 75vh;
+    height: 85vh;
   }
 }
 /* For Puny Iphone SE */
@@ -52,21 +52,21 @@
 @media only screen and (min-width: 992px) {
   .mainCard {
     width: 55vw;
-    height: 65vh;
+    height: 75vh;
   }
 }
 
 @media (max-height: 700px) and (min-width: 768px){
   .mainCard {
     width: 60vw;
-    height: 80vh;
+    height: 85vh;
   }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
   .mainCard {
-    height: 65vh;
+    height: 75vh;
     width: 40vw;
   }
 }
@@ -74,7 +74,7 @@
 @media (max-height: 700px) and (min-width: 1200px){
   .mainCard {
     width: 60vw;
-    height: 70vh;
+    height: 80vh;
   }
 }
 

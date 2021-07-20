@@ -77,6 +77,33 @@
     </div>
     <q-separator/>
     <div style="width: 100%;font-size: 1.5em;display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;">
+      <template v-for="(article,index) in articles">
+      <q-card class="q-ma-md" @click="$router.push({name: 'article', params: {id:  article._id}})" v-if="index !== 0">
+        <q-card-section>
+          <q-img :src="$lget(article, 'mainImage.url', '')" height="200px"></q-img>
+        </q-card-section>
+        <q-card-section>
+          <div class="readFont">
+            {{ $lget(article, 'mainTitle', 'Gun Hub') }}
+          </div>
+          <div style="height: 60px;text-overflow: ellipsis;overflow: hidden;position: relative;font-size: 1em;"
+               class="q-mx-xl readFont">
+            <div v-html="$lget(article, 'sections[0].body', '')"></div>
+          </div>
+        </q-card-section>
+        <div class="flex justify-between avatarFont q-mx-md q-mb-sm">
+          <div class="flex flex-center">
+            <q-icon style="font-size: 1em;" name="fas fa-heart" color="red"></q-icon>
+            <span style="font-size: 1em; margin-left: 5px;">{{ $lget(article, 'favorites.length', 0) }}</span>
+            <q-icon style="font-size: 1em;" name="fas fa-comments" color="light-blue" class="q-ml-md"/>
+            <span class="q-ml-xs" style="font-size: 1em; margin-left: 5px;">{{ $lget(article, 'comments.length', 0) }}</span>
+          </div>
+          <div>
+            Published {{ $lget(article, 'publishedAt', '')| format }} ago
+          </div>
+        </div>
+      </q-card>
+      </template>
     </div>
     <q-dialog v-model="communityDialog">
       <community-dialog></community-dialog>
@@ -107,6 +134,7 @@
     },
     mixins: [
       makeFindMixin({
+        limit: 5,
         name: 'articles',
         service: 'articles',
         qid: 'articles'

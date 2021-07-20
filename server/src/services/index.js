@@ -13,6 +13,7 @@ const reportedBugs = require('./reported-bugs/reported-bugs.service.js');
 const appErrors = require('./app-errors/app-errors.service.js');
 const comments = require('./comments/comments.service.js');
 const mailer = require('./mailer/mailer.service.js');
+const reports = require('./reports/reports.service.js');
 // eslint-disable-next-line no-unused-vars
 module.exports = function (app) {
   app.configure(users);
@@ -30,4 +31,5 @@ module.exports = function (app) {
   app.configure(analytics);
   app.configure(reportedBugs);
   app.configure(appErrors);
+  app.configure(reports);
 };

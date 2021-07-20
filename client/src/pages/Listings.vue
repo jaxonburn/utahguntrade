@@ -60,12 +60,12 @@
         <div class="filter-row">
           <div class="menu-name">Filter by price</div>
           <div class="price-filter">
-            <q-input @click="filterOptions.minPrice = undefined" v-model="filterOptions.minPrice" label="Min" type="number">
+            <q-input debounce="200" @click="filterOptions.minPrice = undefined" v-model="filterOptions.minPrice" label="Min" type="number">
               <template v-slot:prepend>
                 <div style="font-size: .8em;">$</div>
               </template>
             </q-input>
-            <q-input @click="filterOptions.maxPrice = undefined" v-model="filterOptions.maxPrice" label="Max" type="number">
+            <q-input debounce="200" @click="filterOptions.maxPrice = undefined" v-model="filterOptions.maxPrice" label="Max" type="number">
               <template v-slot:prepend>
                 <div style="font-size: .8em;">$</div>
               </template>

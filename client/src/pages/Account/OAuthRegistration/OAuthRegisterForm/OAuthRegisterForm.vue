@@ -197,7 +197,7 @@
       },
       register() {
         if (!this.emitValues) {
-        let userToCreate = new models.api.User({...this.user});
+        let userToCreate = new models.api.Users({...this.user});
         this.loading = true;
         setTimeout(() => {
           userToCreate.create().then((res) => {

@@ -3,8 +3,6 @@ const lget = require('lodash.get');
 // eslint-disable-next-line no-unused-vars
 const {checkContext} = require('feathers-hooks-common');
 
-const verifyHooks = require('feathers-authentication-management').hooks;
-const accountService = require('../authmanagement/notifier');
 const {disallow, iff, isProvider, preventChanges} = require('feathers-hooks-common');
 
 const {
@@ -56,7 +54,6 @@ module.exports = {
     ],
     create: [
       hashPassword('password'),
-      verifyHooks.addVerification(),
     ],
     update: [
       disallow('external'),
@@ -78,7 +75,6 @@ module.exports = {
           'resetShortToken',
           'resetExpires'
         ),
-        hashPassword('password'),
         authenticate('jwt')
       )
     ],
@@ -98,10 +94,6 @@ module.exports = {
     get: [],
     create: [
       initialChat,
-      context => {
-        accountService(context.app).notifier('resendVerifySignup', context.result);
-      },
-      verifyHooks.removeVerification()
     ],
     update: [],
     patch: [modifyWatched,],

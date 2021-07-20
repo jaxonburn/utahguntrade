@@ -3,7 +3,7 @@ const lget = require('lodash.get');
 // eslint-disable-next-line no-unused-vars
 const {checkContext} = require('feathers-hooks-common');
 
-const {disallow, iff, isProvider, preventChanges} = require('feathers-hooks-common');
+const {preventChanges} = require('feathers-hooks-common');
 
 const {
   hashPassword, protect
@@ -56,30 +56,19 @@ module.exports = {
       hashPassword('password'),
     ],
     update: [
-      disallow('external'),
       authenticate('jwt')
     ],
     patch: [
-      iff(
-        isProvider('external'),
-        // TODO wont let patch user
-        preventChanges(
-          true,
-          'email',
-          'isVerified',
-          'verifyToken',
-          'verifyShortToken',
-          'verifyExpires',
-          'verifyChanges',
-          'resetToken',
-          'resetShortToken',
-          'resetExpires'
-        ),
-        authenticate('jwt')
-      )
+      authenticate('jwt'),
+      preventChanges(
+        true,
+        'facebookId',
+        'role',
+        'googleId',
+        'stripeId'
+      ),
     ],
     remove: [
-      disallow('external'),
       authenticate('jwt')
     ]
   },

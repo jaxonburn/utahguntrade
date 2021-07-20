@@ -99,7 +99,7 @@ overflow-y: scroll;
           </div>
           <div>
             <q-input outlined class="q-ma-sm bg-grey-3" label="Message" v-model="yourChat" style="overflow: scroll;"
-                     @keyup.enter="sendMessage" :loading="chatLoading">
+                     @keyup.enter="sendMessage" :loading="chatLoading" maxlength="200">
               <template v-slot:append>
                 <q-btn round dense flat icon="send" push class="text-primary" @click="sendMessage"/>
               </template>

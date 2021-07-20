@@ -14,7 +14,7 @@
         input-debounce="500"
         label="Search City or Postal"
         :options="options"
-        :option-label="opt => Object(opt) === opt ? opt.address.freeformAddress : ''"
+        :option-label="opt => Object(opt) === opt ? $lget(opt, 'address.freeformAddress', '') : ''"
         emit-value
         @filter="loadAddress"
         @filter-abort="abortFilterFn"
@@ -55,10 +55,21 @@
       }
     },
     watch: {
+      address: {
+        deep: true,
+        handler(newVal){
+          if(!Object.keys(newVal).length){
+            this.location = {}
+          }
+        }
+      },
       location: {
         deep: true,
         handler(newVal){
-          this.$emit('input', newVal);
+          if(Object.keys(newVal).length){
+            this.$emit('input', newVal);
+          }
+
         }
       }
     },

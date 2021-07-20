@@ -73,6 +73,21 @@
           </div>
         </div>
         <div class="filter-row">
+          <div class="menu-name">Filter by Listings Near You</div>
+          <location-form @input="setAddress" :address="address"></location-form>
+          <div class="row" style="display: flex;justify-content: center;">
+            <q-select rounded outlined label="Radius" v-model="radius" class="q-my-lg"
+                      :options="[5, 10, 15, 20, 25, 30, 40,  50, 75, 100, 150]"
+                      style="min-width: 125px;"></q-select>
+            <div class="text-weight-bold text-sm text-mb-sm q-ml-sm flex items-end q-mb-lg">miles</div>
+          </div>
+          <div class="flex justify-end">
+            <q-btn v-if="point" @click="point = null, address = {}, radius = 5" class="q-mr-sm">Clear</q-btn>
+            <q-btn label="Apply" class="text-white bg-primaryGradient" icon-right="search"
+                   @click="applyLocation"></q-btn>
+          </div>
+        </div>
+        <div class="filter-row">
           <div class="menu-name">Filter by category</div>
           <div class="category-filter" style="height: 300px; overflow: scroll; margin: 20px 0;">
             <div v-for="(cat, idx) of categories" :key="idx">
@@ -103,10 +118,12 @@
   import Listing from "components/common/Listing";
   import makeFindPaginateMixin from "src/mixins/makeFindPaginated";
   import Loading from 'components/common/Loading';
+  import LocationForm from "components/Forms/LocationForm/LocationForm";
+  import turf from '@turf/circle'
 
   export default {
     name: "Listings",
-    components: {ListingCard: Listing, Loading},
+    components: {LocationForm, ListingCard: Listing, Loading},
     mixins: [makeFindPaginateMixin({
       limit: 20,
       service: 'listings',
@@ -118,6 +135,9 @@
     })],
     data() {
       return {
+        point: null,
+        radius: 5,
+        address: {},
         dateSort: '',
         priceSort: '',
         filterMenu: true,
@@ -147,15 +167,30 @@
         }
       },
       listingQuery() {
-        let q = {
-          archived: false,
-          sold: false,
-          title: {$regex: `(?i).*${this.$lget(this.$route.query, 'search', '').length > 0 ? this.$route.query.search : ''}.*`},
-          category: {[this.filterOptions.categories.length > 0 ? '$in' : '$regex']: this.filterOptions.categories.length === 0 ? `(?i).*${this.$lget(this.$route.query, 'category', '').length > 0 ? this.$route.query.category : ''}.*` : this.filterOptions.categories},
-          price: { $lte: this.applyFilters && this.filterOptions.maxPrice > 0 ? this.filterOptions.maxPrice : 1000000, $gte: this.applyFilters && this.filterOptions.minPrice > 0? this.filterOptions.minPrice : 0 },
-          condition: { $in: this.filterOptions.conditions.length === 0 ? this.conditions : this.filterOptions.conditions },
-          $sort: this.sort,
-        };
+        let q;
+        if(this.point){
+          q = {
+            archived: false,
+            sold: false,
+            title: {$regex: `(?i).*${this.$lget(this.$route.query, 'search', '').length > 0 ? this.$route.query.search : ''}.*`},
+            category: {[this.filterOptions.categories.length > 0 ? '$in' : '$regex']: this.filterOptions.categories.length === 0 ? `(?i).*${this.$lget(this.$route.query, 'category', '').length > 0 ? this.$route.query.category : ''}.*` : this.filterOptions.categories},
+            price: { $lte: this.applyFilters && this.filterOptions.maxPrice > 0 ? this.filterOptions.maxPrice : 1000000, $gte: this.applyFilters && this.filterOptions.minPrice > 0? this.filterOptions.minPrice : 0 },
+            condition: { $in: this.filterOptions.conditions.length === 0 ? this.conditions : this.filterOptions.conditions },
+            $sort: this.sort,
+            point: this.point
+          };
+        }else {
+          q = {
+            archived: false,
+            sold: false,
+            title: {$regex: `(?i).*${this.$lget(this.$route.query, 'search', '').length > 0 ? this.$route.query.search : ''}.*`},
+            category: {[this.filterOptions.categories.length > 0 ? '$in' : '$regex']: this.filterOptions.categories.length === 0 ? `(?i).*${this.$lget(this.$route.query, 'category', '').length > 0 ? this.$route.query.category : ''}.*` : this.filterOptions.categories},
+            price: { $lte: this.applyFilters && this.filterOptions.maxPrice > 0 ? this.filterOptions.maxPrice : 1000000, $gte: this.applyFilters && this.filterOptions.minPrice > 0? this.filterOptions.minPrice : 0 },
+            condition: { $in: this.filterOptions.conditions.length === 0 ? this.conditions : this.filterOptions.conditions },
+            $sort: this.sort,
+          };
+        }
+
         return q;
       }
     },
@@ -163,6 +198,31 @@
       ...mapActions('analytics', {
         createAnalytic: 'create'
       }),
+      applyLocation(){
+        if (this.address !== '') {
+          this.listingsNearYou = [];
+          this.locationLoading = true;
+          let center = [this.address.position.lon, this.address.position.lat];
+          let radius = this.radius;
+          let options = {steps: 30, units: 'miles', properties: {}};
+          let circle = turf(center, radius, options);
+          this.point = {
+            $geoWithin: {
+              $geometry: {
+              ...circle.geometry
+              }
+            }
+          }
+        } else {
+          this.$q.notify({
+            type: 'info',
+            message: 'Put in a zip code or city to search'
+          })
+        }
+      },
+      setAddress(location) {
+        this.address = location;
+      },
       toggleCondition(con){
         if(!this.filterOptions.conditions.includes(con)){
           this.filterOptions.conditions.push(con);

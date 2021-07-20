@@ -222,6 +222,7 @@ overflow-y: scroll;
         let message = {
           sentBy: this.user._id,
           message: this.yourChat,
+          createdAt: new Date()
         };
         chat.messages.push(message);
         this.yourChat = '';

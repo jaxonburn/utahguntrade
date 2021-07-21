@@ -3,12 +3,10 @@ const lget = require('lodash.get');
 // eslint-disable-next-line no-unused-vars
 const {checkContext} = require('feathers-hooks-common');
 
-const verifyHooks = require('feathers-authentication-management').hooks;
-const accountService = require('../authmanagement/notifier');
-const {disallow, iff, isProvider, preventChanges} = require('feathers-hooks-common');
+const {preventChanges} = require('feathers-hooks-common');
 
 const {
-  hashPassword, protect,
+  hashPassword, protect
 } = require('@feathersjs/authentication-local').hooks;
 
 const initialChat = async context => {
@@ -17,8 +15,8 @@ const initialChat = async context => {
     users: [{user: userId, unreadMessages: []}, {user: '603aaafb1fcbe60d5424bb5a', unreadMessages: []}],
     messages: [{
       sentBy: '603aaafb1fcbe60d5424bb5a',
-      message: `Hi ${context.result.username}, welcome to Utah Gun Trade! Here you can send messages to others and negotiate on trades,offers, or other firearm related business. If you have any issues or questions don't hesitate to contact support@utahgunhub.com.`,
-    }],
+      message: `Hi ${context.result.username}, welcome to Utah Gun Trade! Here you can send messages to others and negotiate on trades,offers, or other firearm related business. If you have any issues or questions don't hesitate to contact support@utahgunhub.com.`
+    }]
   }).then((res) => {
     context.app.service('users').patch(userId, {chats: [res._id]});
   });
@@ -31,15 +29,15 @@ const modifyWatched = async context => {
   if (params === 'watchedAdd') {
     let patchObj = {
       $push: {
-        watchedBy: context.result._id,
-      },
+        watchedBy: context.result._id
+      }
     };
     context.app.service('listings').patch(id, patchObj);
   } else if (params === 'watchedRemove') {
     let patchObj = {
       $pull: {
-        watchedBy: context.result._id,
-      },
+        watchedBy: context.result._id
+      }
     };
     context.app.service('listings').patch(id, patchObj).then(res => console.log(res)).catch(err => console.log(err));
   }
@@ -49,24 +47,30 @@ module.exports = {
   before: {
     all: [],
     find: [
-      authenticate('jwt'),
+      authenticate('jwt')
     ],
     get: [
-      authenticate('jwt'),
+      authenticate('jwt')
     ],
     create: [
       hashPassword('password'),
     ],
     update: [
-      authenticate('jwt'),
+      authenticate('jwt')
     ],
     patch: [
-      hashPassword('password'),
       authenticate('jwt'),
+      preventChanges(
+        true,
+        'facebookId',
+        'role',
+        'googleId',
+        'stripeId'
+      ),
     ],
     remove: [
-      authenticate('jwt'),
-    ],
+      authenticate('jwt')
+    ]
   },
 
   after: {

@@ -1,7 +1,7 @@
 <template>
   <q-page class="listing-details" v-if="listing">
     <div class="left">
-      <VueAgile class="agile-comp" :initial-slide="0" :dots="false" :fade="true" :nav-buttons="listing.images.length ? true : false">
+      <VueAgile v-if="listing.images.length" class="agile-comp" :initial-slide="0" :dots="false" :fade="true" :nav-buttons="listing.images.length ? true : false">
         <!--          <img class="slide" v-for="(image, idx) of listing.images" :src="image.url" :key="idx"/>-->
 
         <!--          <div v-if="listing.images.length">-->
@@ -26,21 +26,29 @@
         <!---->
         <!--          </div>-->
       </VueAgile>
+      <div v-else class="agile-comp">
+        No Listing Images
+      </div>
     </div>
     <div class="right">
       <div class="top">
         <div>{{ listing.title }}</div>
         <div class="price">${{ listing.price }}</div>
-        <div style="margin-top: 5px; color: #a4a1a1;">Posted {{ Math.floor((new Date().getTime() - new Date(listing.createdAt).getTime())  / (1000 * 3600 * 24)) }} days ago</div>
+        <div style="margin-top: 5px; color: #a4a1a1;">Posted {{ Math.floor((new Date().getTime() - new Date(listing.createdAt).getTime())  / (1000 * 3600 * 24)) === 0 ? 'Today' : Math.floor((new Date().getTime() - new Date(listing.createdAt).getTime())  / (1000 * 3600 * 24)) + ' Days ago' }}</div>
         <div class="buttons">
           <div @click="startChat" class="action-btn" v-if="user && user._id !== listing.listedBy">Message user</div>
 <!--          <div class="action-btn" v-if="listing.contactMethods.includes('Phone')">{{ listing._fastjoin.listedBy.phone }}</div>-->
 <!--          <div class="action-btn" v-if="listing.contactMethods.includes('Email')">{{ listing._fastjoin.listedBy.email }}</div>-->
-          <div class="action-btn">
+          <div class="action-btn" @click="addToWatchList" v-if="!user.watched.includes(listing._id)">
             <q-icon name="visibility" />
             <q-tooltip>Add to watch list</q-tooltip>
           </div>
-          <div class="action-btn">
+
+          <div class="action-btn" @click="removeFromWatchList" v-if="user.watched.includes(listing._id)">
+            <q-icon name="remove_done" />
+            <q-tooltip>Remove from watch list</q-tooltip>
+          </div>
+          <div class="action-btn" @click="reportDio = true">
             <q-icon name="more_horiz" />
 
           </div>
@@ -83,6 +91,21 @@
         </span>
       </div>
     </div>
+
+    <q-dialog v-model="reportDio">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Report Listing</div>
+        </q-card-section>
+        <q-card-section>
+          Would you like to report this listing? We appreciate community feedback and it helps keep our site clean and secure.
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" v-close-popup color="red"/>
+          <q-btn @click="reportListing" label="Report Listing" v-close-popup color="red" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -97,16 +120,21 @@
     components: {
       VueAgile
     },
+    data() {
+      return {
+        reportDio: false
+      }
+    },
     mounted() {
       this.loadListing(this.$route.params.id).then((res) => {
-        // this.slide = res.images[0] ? res.images[0].url : NoImage;
-        // if (!res.viewed.includes(this.$lget(this.user, '_id'))) {
-        //   this.patchListing([this.listing._id, {
-        //     $push: {
-        //       viewed: this.$lget(this.user, '_id')
-        //     }
-        //   }])
-        // }
+        this.slide = res.images[0] ? res.images[0].url : NoImage;
+        if (!res.viewed.includes(this.$lget(this.user, '_id'))) {
+          this.patchListing([this.listing._id, {
+            $push: {
+              viewed: this.$lget(this.user, '_id')
+            }
+          }])
+        }
       }).catch(err => this.$q.notify({
         message: err.message,
         color: 'negative'
@@ -119,6 +147,28 @@
       ...mapActions('listings', {
         patchListing: 'patch'
       }),
+      ...mapActions('users', {
+        patchUser: 'patch'
+      }),
+      ...mapActions('reports', {
+        createReport: 'create'
+      }),
+      reportListing() {
+        this.createReport({
+          service: 'listings',
+          dataId: this.listing._id
+        }).then(() => {
+          this.$q.notify({
+            message: 'We appreciate the feedback, we will look into this soon.',
+            color: 'positive'
+          })
+        }).catch((er) => {
+          this.$q.notify({
+            message: er.message,
+            color: 'negative'
+          })
+        })
+      },
       startChat() {
         this.$q.loading.show();
         let newChat = new models.api.Chats({
@@ -136,6 +186,34 @@
             this.$router.push({name: 'messages', params: {chatId: String(err.message), created: 'false'}});
           }
         })
+      },
+      addToWatchList(){
+        if(this.user.watched.includes(this.listing._id)) return;
+        else {
+          this.patchUser([this.user._id, {
+            $push: {
+              watched: this.listing._id
+            },
+            params: {
+              name: 'watchedAdd',
+              id: this.listing._id
+            }
+          }])
+        }
+      },
+      removeFromWatchList(){
+        if(!this.user.watched.includes(this.listing._id)) return;
+        else {
+          this.patchUser([this.user._id, {
+            $pull: {
+              watched: this.listing._id
+            },
+            params: {
+              name: 'watchedRemove',
+              id: this.listing._id
+            }
+          }])
+        }
       },
       getConditionColor(condition) {
         if (condition === 'New') return 'green'

@@ -101,7 +101,6 @@
           let radius = this.radius;
           let options = {steps: 30, units: 'miles', properties: {}};
           let circle = turf(center, radius, options);
-          console.log('circle', circle);
 
           this.$store.dispatch('listings/find', {
             query:

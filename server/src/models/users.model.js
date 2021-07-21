@@ -7,7 +7,8 @@ module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const { Schema } = mongooseClient;
   const schema = new mongooseClient.Schema({
-    username: { type: String},
+    username: { type: String, required: true, unique: true},
+    role: { type: String, enum: ['Admin', 'User'], default: 'User'},
     notifications: { type: Array, required: false, default: [] },
     email: { type: String, unique: true, lowercase: true, required: true },
     phone: {type: String, required: false},
@@ -18,21 +19,12 @@ module.exports = function (app) {
     watched: [{type: Schema.Types.ObjectId, ref: 'listings'}],
     chats: [{type: Schema.Types.ObjectId, ref: 'chats'}],
     comments: [{type: Schema.Types.ObjectId, ref: 'articles'}],
-
     googleId: { type: String },
-
     facebookId: { type: String },
     stripeId: {type: String},
+
     takeToListings: { type: Boolean, default: false },
     active: false,
-
-    // For Auth Management
-    isVerified: {type: Boolean},
-    verifyToken: {type: String},
-    verifyExpires: {type: Date},
-    verifyChanges: {type: Object},
-    resetToken: {type: String},
-    resetExpires: {type: Date}
 
 
   }, {

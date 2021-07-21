@@ -12,8 +12,8 @@ const analytics = require('./analytics/analytics.service.js');
 const reportedBugs = require('./reported-bugs/reported-bugs.service.js');
 const appErrors = require('./app-errors/app-errors.service.js');
 const comments = require('./comments/comments.service.js');
-const mailer = require('./mailer/mailer.service.js');
-const authmanagement = require('./authmanagement/authmanagement.service.js');
+const reports = require('./reports/reports.service.js');
+const gunStores = require('./gun-stores/gun-stores.service.js');
 // eslint-disable-next-line no-unused-vars
 module.exports = function (app) {
   app.configure(users);
@@ -27,9 +27,9 @@ module.exports = function (app) {
   app.configure(notifications);
   app.configure(posts);
   app.configure(comments);
-  app.configure(mailer);
-  app.configure(authmanagement);
   app.configure(analytics);
   app.configure(reportedBugs);
   app.configure(appErrors);
+  app.configure(reports);
+  app.configure(gunStores);
 };

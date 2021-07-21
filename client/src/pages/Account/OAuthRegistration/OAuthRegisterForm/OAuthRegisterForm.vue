@@ -11,6 +11,11 @@
       <div class="q-pt-xs"
            style="height: 50%;display: flex; justify-content: space-evenly;flex-direction: column;align-items: center;">
         <div class="inputWrapper">
+          <label for="username" class="inputFont q-pb-sm" style="width: 95%;">USERNAME</label>
+          <input type="email" v-model="user.username" name="username" id="username" style="width: 95%;"
+                 :style="error ? 'border: 1px solid var(--q-color-negative);' : ''" @input="checkEmail"/>
+        </div>
+        <div class="inputWrapper">
           <label for="email" class="inputFont q-pb-sm" style="width: 95%;">EMAIL ADDRESS</label>
           <input type="email" v-model="user.email" name="email" id="email" style="width: 95%;"
                  :style="error ? 'border: 1px solid var(--q-color-negative);' : ''" @input="checkEmail"/>
@@ -137,6 +142,7 @@
         disableButton: false,
         passwordConfirmation:  '',
         user: {
+          username: '',
           email: '',
           password: '',
         },

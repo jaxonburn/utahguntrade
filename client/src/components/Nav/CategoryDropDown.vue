@@ -150,8 +150,8 @@
                 <q-separator vertical />
                 <div class="text-weight-medium">
                   <div class="q-my-xs cursor-pointer hoverText">Our Team</div>
-                  <div class="q-my-xs cursor-pointer hoverText">Terms and Conditions</div>
-                  <div class="q-my-xs cursor-pointer hoverText">Privacy Policy</div>
+                  <router-link to="/terms"><div class="q-my-xs cursor-pointer hoverText">Terms and Conditions</div></router-link>
+                  <router-link to="privacy-policy"><div class="q-my-xs cursor-pointer hoverText">Privacy Policy</div></router-link>
                 </div>
               </div>
             </div>

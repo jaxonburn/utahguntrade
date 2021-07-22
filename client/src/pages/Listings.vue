@@ -1,7 +1,6 @@
 <template>
   <div class="listings-page" style="min-height: 65vh;">
-    <Loading style="z-index: 5;" v-if="isPending"/>
-
+<!--    <Loading style="z-index: 5;" v-if="isPending"/>-->
     <div class="text-h5 q-mt-xl q-ml-xl">
       Showing Most relevant results <span>{{
         $route.query.search ? `for "${$route.query.search}"` : $route.query.category ? `for "${$route.query.category}"` : ''
@@ -22,7 +21,7 @@
                     :options="['Date newest to oldest', 'Date oldest to newest']"></q-select>
           <div @click="showFilter" class="col-1" style="display: flex; align-items: center; cursor: pointer;"><span>Filter</span> <q-icon class="q-ml-md" size="sm" name="list" /></div>
         </div>
-        <q-btn label="Reset search" @click="$router.push('/listings')" color="primary" class="q-mt-md" align="right"/>
+        <q-btn label="Reset search" @click="resetListings(true)" color="primary" class="q-mt-md" align="right"/>
       </div>
       <div class="listings-wrapper">
         <ListingCard :listing="listing" :key="idx" v-for="(listing, idx) in listings"></ListingCard>
@@ -65,7 +64,7 @@
                 <div style="font-size: .8em;">$</div>
               </template>
             </q-input>
-            <q-input debounce="200" @click="filterOptions.maxPrice = undefined" v-model="filterOptions.maxPrice" label="Max" type="number">
+            <q-input debounce="200" @click="filterOptions.maxPrice = undefined" v-model="filterOptions.maxPrice" label="Max" type="number" style="margin-left: 10px;">
               <template v-slot:prepend>
                 <div style="font-size: .8em;">$</div>
               </template>
@@ -73,7 +72,7 @@
           </div>
         </div>
         <div class="filter-row">
-          <div class="menu-name">Filter by Listings Near You</div>
+          <div class="menu-name">Filter by Location</div>
           <location-form @input="setAddress" :address="address"></location-form>
           <div class="row" style="display: flex;justify-content: center;">
             <q-select rounded outlined label="Radius" v-model="radius" class="q-my-lg"
@@ -83,7 +82,7 @@
           </div>
           <div class="flex justify-end">
             <q-btn v-if="point" @click="point = null, address = {}, radius = 5" class="q-mr-sm">Clear</q-btn>
-            <q-btn label="Apply" class="text-white bg-primaryGradient" icon-right="search"
+            <q-btn label="Apply" class="text-white bg-primaryGradient q-mr-lg" icon-right="search"
                    @click="applyLocation"></q-btn>
           </div>
         </div>
@@ -105,7 +104,6 @@
         </div>
         <div class="buttons-wrapper">
           <q-btn @click="resetListings" color="red" label="Reset" />
-          <q-btn @click="apply" color="secondary" label="Apply filters" />
         </div>
       </div>
     </q-drawer>
@@ -122,7 +120,7 @@
   import turf from '@turf/circle'
 
   export default {
-    name: "Listings",
+    name: 'Listings',
     components: {LocationForm, ListingCard: Listing, Loading},
     mixins: [makeFindPaginateMixin({
       limit: 20,
@@ -140,7 +138,7 @@
         address: {},
         dateSort: '',
         priceSort: '',
-        filterMenu: true,
+        filterMenu: false,
         filterOptions: {
           minPrice: 0,
           maxPrice: 0,
@@ -156,6 +154,18 @@
     mounted(){
       this.createAnalytic({reqFrom: 'listings'});
     },
+    watch: {
+      isPending: {
+        immediate: true,
+        handler(newVal) {
+          if (newVal === true) {
+            this.$q.loading.show();
+          } else {
+            this.$q.loading.hide();
+          }
+        }
+      }
+    },
     computed: {
       ...mapState('listings', {
         isPending: 'isFindPending'
@@ -168,27 +178,28 @@
       },
       listingQuery() {
         let q;
-        if(this.point){
+        if(this.point) {
           q = {
             archived: false,
             sold: false,
             title: {$regex: `(?i).*${this.$lget(this.$route.query, 'search', '').length > 0 ? this.$route.query.search : ''}.*`},
             category: {[this.filterOptions.categories.length > 0 ? '$in' : '$regex']: this.filterOptions.categories.length === 0 ? `(?i).*${this.$lget(this.$route.query, 'category', '').length > 0 ? this.$route.query.category : ''}.*` : this.filterOptions.categories},
-            price: { $lte: this.applyFilters && this.filterOptions.maxPrice > 0 ? this.filterOptions.maxPrice : 1000000, $gte: this.applyFilters && this.filterOptions.minPrice > 0? this.filterOptions.minPrice : 0 },
+            price: { $lte: this.filterOptions.maxPrice > 0 ? this.filterOptions.maxPrice : 1000000, $gte: this.filterOptions.minPrice > 0? this.filterOptions.minPrice : 0 },
             condition: { $in: this.filterOptions.conditions.length === 0 ? this.conditions : this.filterOptions.conditions },
             $sort: this.sort,
             point: this.point
           };
-        }else {
+        } else {
           q = {
             archived: false,
             sold: false,
             title: {$regex: `(?i).*${this.$lget(this.$route.query, 'search', '').length > 0 ? this.$route.query.search : ''}.*`},
             category: {[this.filterOptions.categories.length > 0 ? '$in' : '$regex']: this.filterOptions.categories.length === 0 ? `(?i).*${this.$lget(this.$route.query, 'category', '').length > 0 ? this.$route.query.category : ''}.*` : this.filterOptions.categories},
-            price: { $lte: this.applyFilters && this.filterOptions.maxPrice > 0 ? this.filterOptions.maxPrice : 1000000, $gte: this.applyFilters && this.filterOptions.minPrice > 0? this.filterOptions.minPrice : 0 },
+            price: { $lte: this.filterOptions.maxPrice > 0 ? this.filterOptions.maxPrice : 1000000, $gte: this.filterOptions.minPrice > 0? this.filterOptions.minPrice : 0 },
             condition: { $in: this.filterOptions.conditions.length === 0 ? this.conditions : this.filterOptions.conditions },
             $sort: this.sort,
           };
+          console.log(q);
         }
 
         return q;
@@ -240,10 +251,6 @@
             return ca !== cat;
           })
         }
-        console.log(this.filterOptions.categories);
-      },
-      apply(){
-        this.applyFilters = true;
       },
       showFilter(){
         if(this.$lget(this.$route.query, 'search') || this.$lget(this.$route.query, 'category')){
@@ -262,7 +269,11 @@
           this.listingsHandlePageChange(this.listingsCurrentPage + 1);
         }
       },
-      resetListings(){
+      resetListings(route = false) {
+        if (route && (this.$route.query.category || this.$route.query.search)) {
+          this.$router.push('/listings');
+          return;
+        }
         this.filterMenu = false;
         this.applyFilters = false;
         this.filterOptions = {
@@ -273,9 +284,6 @@
         };
         this.dateSort = '';
         this.priceSort = '';
-        if(this.$lget(this.$route.query, 'search') || this.$lget(this.$route.query, 'category')){
-          this.$router.push({name: 'listings'})
-        }
       }
     }
   }
@@ -375,6 +383,7 @@
     border-right: 1px solid #343131;
 
     .filter-row {
+      padding-left: 10px;
       .menu-name {
         font-size: 1.15em;
         margin: 8px;
@@ -382,6 +391,8 @@
       }
 
       .price-filter {
+        width: 90%;
+        margin: 0 auto;
         display: flex;
         padding: 0 5px;
         justify-content: space-between;

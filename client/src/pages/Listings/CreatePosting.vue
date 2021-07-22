@@ -20,7 +20,7 @@
       </multi-image-upload>
       <div class="form">
         <div class="row justify-between q-my-lg">
-          <q-input v-model="listingForm.title" class="col-4" style="width: 30%" label="Title"/>
+          <q-input maxlength="150" v-model="listingForm.title" class="col-4" style="width: 30%" label="Title"/>
           <q-input v-model="listingForm.price" class="col-3" type="number" label="Price" prefix="$"/>
           <q-select v-model="listingForm.condition" class="col-4" :options="['New', 'Like New', 'Used', 'Worn']"
                     label="Condition"/>
@@ -31,6 +31,7 @@
         </div>
         <q-select
           label="Tags"
+          max-values="15"
           filled
           v-model="listingForm.tags"
           use-input
@@ -44,7 +45,7 @@
           <q-checkbox v-model="listingForm.openToTrades" class="col-3" label="Open To Trades" />
           <q-select class="col-4" :options="['Email', 'Phone', 'In app chat']" label="Methods Of Contact" filled v-model="listingForm.contactMethods" use-chips multiple new-value-mode="add-unique"></q-select>
         </div>
-        <q-input v-model="listingForm.description" class="q-my-lg" type="textarea" label="Description"/>
+        <q-input maxlength="2000" v-model="listingForm.description" class="q-my-lg" type="textarea" label="Description"/>
         <q-space></q-space>
         <div style="text-align: right;" v-if="!isEditing">
           <q-btn color="secondary" class="q-my-lg" label="Post listing" @click="savePosting"/>
@@ -77,13 +78,13 @@
       </div>
       <div class="form">
         <div class="row justify-between q-my-lg">
-          <q-input v-model="listingForm.title" class="col-4" style="width: 30%" label="Title"/>
+          <q-input maxlength="150" v-model="listingForm.title" class="col-4" style="width: 30%" label="Title"/>
           <q-input v-model="listingForm.price" class="col-3" type="number" label="Price"/>
           <q-select v-model="listingForm.condition" class="col-4" :options="['New', 'Like New', 'Used', 'Worn']"
                     label="Condition"/>
         </div>
         <div class="row justify-between q-my-lg">
-          <LocationForm @input="setAddress" :address="listing.address"/>
+          <LocationForm @input="setAddress" :address="myAddress"/>
           <!--          <LocationForm v-else @input="setAddress"/>-->
           <q-select v-model="listingForm.category" class="col-3" :options="categories" label="Category"/>
         </div>
@@ -92,6 +93,7 @@
           filled
           v-model="listingForm.tags"
           use-input
+          max-values="15"
           use-chips
           multiple
           hide-dropdown-icon
@@ -102,7 +104,7 @@
           <q-checkbox v-model="listingForm.openToTrades" class="col-3" label="Open To Trades" />
           <q-select label="Methods Of Contact" filled v-model="listingForm.contactMethods" use-input use-chips multiple new-value-mode="add-unique"></q-select>
         </div>
-        <q-input v-model="listingForm.description" class="q-my-lg" type="textarea" label="Description"/>
+        <q-input maxlength="2000" v-model="listingForm.description" class="q-my-lg" type="textarea" label="Description"/>
         <q-space></q-space>
         <div style="text-align: right;" v-if="!isEditing">
           <q-btn color="secondary" class="q-my-lg" label="Post listing" @click="savePosting"/>
@@ -162,7 +164,10 @@
     computed: {
       ...mapState('auth', {
         user: 'user'
-      })
+      }),
+      myAddress() {
+        return Object.keys(this.listing.address).length ? this.listing.address : {};
+      }
     },
     methods: {
       ...mapActions('listings', {
@@ -219,6 +224,13 @@
         if(!this.listingForm.title) {
           this.$q.notify({
             message: 'Listing must have a title'
+          });
+          this.$q.loading.hide();
+          return;
+        }
+        if(this.listingForm.price > 99999) {
+          this.$q.notify({
+            message: 'Listings have a max price of $99,999'
           });
           this.$q.loading.hide();
           return;

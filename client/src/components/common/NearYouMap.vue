@@ -130,7 +130,7 @@
             }, 1500)
             console.log(this.listingsNearYou);
           }).catch((err) => {
-            console.log(err);
+            console.error(err);
           })
           this.layer++;
           this.map.addLayer({

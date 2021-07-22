@@ -8,7 +8,7 @@
     </div>
     <div class="body">
       <Loading v-if="!isLoaded"/>
-      <div class="listings-wrapper">
+      <div class="listings-wrapper" style="min-height: 50vh;">
         <div v-if="listings.length === 0 && showResults === 'Posted listings'" class="no-listings">No listings found, try checking archived</div>
         <div v-if="listings.length === 0 && showResults === 'Archived listings'" class="no-listings">No Archived found, try checking posted listings</div>
         <div v-if="listings.length === 0 && showResults === 'Sold listings'" class="no-listings">No Sold listings found</div>

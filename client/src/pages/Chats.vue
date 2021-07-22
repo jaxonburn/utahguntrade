@@ -316,7 +316,7 @@
 
     .chat-box {
       position: sticky;
-      bottom: 30px;
+      bottom: 0px;
       font-size: 10em;
       //background-color: white;
     }

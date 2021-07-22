@@ -179,10 +179,9 @@
       },
       openCustomerPortal() {
         this.createPortal({stripeId: this.user.stripeId}).then((res) => {
-          console.log(res);
           window.location = res.result;
         }).catch((err) => {
-          console.log(err);
+          console.error(err);
         })
       },
     }

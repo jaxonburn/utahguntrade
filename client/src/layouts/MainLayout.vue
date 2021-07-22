@@ -61,11 +61,11 @@
               <q-btn outlined color="dark" label="log in" flat></q-btn>
             </router-link>
             <div @mouseover="category.open = true;" class="flex justify-end" v-else>
-              <dropdown-links :user="user" :category="category"></dropdown-links>
+              <dropdown-links @hideMain="hideMain" :user="user" :category="category"></dropdown-links>
             </div>
           </div>
         </div>
-        <category-drop-down v-if="!$q.platform.is.mobile && $route.path !== '/register'"></category-drop-down>
+        <category-drop-down :hide="hideMainDropdown" v-if="!$q.platform.is.mobile && $route.path !== '/register'"></category-drop-down>
       </q-toolbar>
     </q-header>
     <q-page-container style="height: 100%;">
@@ -106,8 +106,7 @@
             displayed: true
           }]);
           return not;
-        })).then(res => {
-          console.log(res);
+        })).then(() => {
         }).catch(err => {
           this.$q.notify({
             message: err.message,
@@ -137,7 +136,8 @@
           label: ''
         },
         lastNotification: '',
-        lastUserNotification: ''
+        lastUserNotification: '',
+        hideMainDropdown: false
       }
     },
     watch: {
@@ -193,6 +193,12 @@
         deleteNotification: 'remove',
         patchNotification: 'patch'
       }),
+      hideMain() {
+        this.hideMainDropdown = true;
+        setTimeout(() => {
+          this.hideMainDropdown = false;
+        }, 100);
+      },
       async expireNoti(noti) {
         await this.patchNotification([noti._id, {
           displayed: true

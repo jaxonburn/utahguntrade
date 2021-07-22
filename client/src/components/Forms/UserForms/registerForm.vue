@@ -122,7 +122,6 @@
           return;
         }
         let userData = {email: user.email, password: user.password};
-        console.log('this is the user', user);
         user.create().then(() => {
           this.$q.loading.hide();
           this.$q.notify({
@@ -137,7 +136,7 @@
           this.$router.push('/');
         }).catch((err) => {
           this.$q.loading.hide();
-          console.log(err);
+          console.error(err);
           if(err.name === 'Conflict'){
             this.$q.notify({
               color: 'primary',

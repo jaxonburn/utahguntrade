@@ -129,7 +129,7 @@
               timeout: 3000,
             })
           }).catch((err) => {
-            console.log(err);
+            console.error(err);
             this.$q.notify({
               type: 'error',
               message: 'Something went wrong with liking, please refresh and try again'
@@ -137,8 +137,7 @@
           })
         } else {
           this.article.comments[index].upVote.push(this.user._id);
-          this.article.save().then((res) => {
-            console.log(res);
+          this.article.save().then(() => {
             this.$q.notify({
               color: 'secondary',
               textColor: 'white',
@@ -148,7 +147,7 @@
               timeout: 3000,
             })
           }).catch((err) => {
-            console.log(err);
+            console.error(err);
             this.$q.notify({
               type: 'error',
               message: 'Something went wrong with liking, please refresh and try again'

@@ -68,7 +68,6 @@
         this.document.fullImage = encoded;
       },
       saveDocument(){
-        console.log(this.document);
         delete this.document.fullImage;
         if(!this.document.signature || !this.document.dateSigned) {
           this.$q.notify({

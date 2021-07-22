@@ -69,9 +69,8 @@
     },
     methods: {
       saveForm(){
-        this.form.save().then((res) => {
+        this.form.save().then(() => {
           this.$emit('close')
-          console.log('res', res);
           this.$q.notify({
             color: 'secondary',
             textColor: 'white',

@@ -74,7 +74,7 @@
             }
           },
           {
-            if: this.$route.path !== '/messages',
+            // if: this.$route.path !== '/messages',
             label: 'Messages',
             icon: 'message',
             class: 'bg-primaryGradient q-pa-xs',
@@ -83,7 +83,7 @@
             }
           },
           {
-            if: this.$route.path !== '/account',
+            // if: this.$route.path !== '/account',
             label: 'Account',
             icon: 'far fa-user-circle',
             class: 'bg-primaryGradient q-pa-xs',
@@ -104,6 +104,7 @@
     },
     methods: {
       changeRoute(route) {
+        this.$emit('hideMain');
         if (this.$route.fullPath === route) return;
         this.$router.push(route);
       },

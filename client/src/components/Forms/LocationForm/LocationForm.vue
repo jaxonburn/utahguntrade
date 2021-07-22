@@ -101,7 +101,7 @@
               )
             }, 300)
           }).catch((err) => {
-            console.log(err);
+            console.error(err);
             this.geoLoading = false;
           })
         }

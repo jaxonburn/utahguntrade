@@ -1,5 +1,5 @@
 module.exports = {
-  'host': 'localhost',
+  'host': 'gunhubutah.com',
   'port': 3030,
   'public': '../public/',
   'paginate': {

@@ -16,7 +16,7 @@ module.exports = function (app) {
       // Obtain the logged in user from the connection
       const user = connection.user;
       app.service('users')._patch(connection.user._id, {active: true}).then(() => {
-        console.log('Patched User Active');
+        return app.channel('authenticated');
       });
 
       // The connection is no longer anonymous, remove it
@@ -41,7 +41,7 @@ module.exports = function (app) {
   app.on('disconnect', connection => {
     if(connection.user){
       app.service('users')._patch(connection.user._id, {active: false}).then(() => {
-        console.log('Patched user inactive');
+        return app.channel('authenticated');
       }).catch((err) => {
         console.error(err);
       });

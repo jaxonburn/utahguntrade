@@ -84,6 +84,7 @@
         address: '',
         locationLoading: true,
         listingsNearYou: [],
+        layer: 0,
       }
     },
     methods: {
@@ -93,8 +94,13 @@
       setAddress(location) {
         this.address = location;
       },
-      createRadius() {
+      async createRadius() {
         if (this.address !== '') {
+          if(this.layer) {
+            this.map.removeLayer(`overlay${this.layer}`);
+            this.addedLayer = false;
+          }
+
           this.listingsNearYou = [];
           this.locationLoading = true;
           let center = [this.address.position.lon, this.address.position.lat];
@@ -126,8 +132,9 @@
           }).catch((err) => {
             console.log(err);
           })
+          this.layer++;
           this.map.addLayer({
-            'id': 'overlay',
+            'id': `overlay${this.layer}`,
             'type': 'fill',
             'source': {
               'type': 'geojson',

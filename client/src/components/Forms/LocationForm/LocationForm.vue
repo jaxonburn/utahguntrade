@@ -66,7 +66,7 @@
       location: {
         deep: true,
         handler(newVal){
-          if(Object.keys(newVal).length){
+          if(newVal && Object.keys(newVal).length){
             this.$emit('input', newVal);
           }
 
@@ -83,9 +83,7 @@
       loadAddress(val, update, abort){
         if(val !== ''){
           this.loadAddresses({query: {text: val}}).then((res) => {
-            console.log(res);
             this.options = res.data;
-            console.log('locations', this.options);
             setTimeout(() => {
               update(
                 () => {

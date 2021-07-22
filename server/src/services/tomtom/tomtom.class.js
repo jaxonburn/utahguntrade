@@ -16,7 +16,7 @@ exports.Tomtom = class Tomtom {
     let queryParams = {
       key: key,
       language: 'en-US',
-      limit: 10,
+      limit: 5,
       countrySet: 'US',
       typeahead: true,
     };

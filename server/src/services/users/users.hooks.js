@@ -9,19 +9,19 @@ const {
   hashPassword, protect
 } = require('@feathersjs/authentication-local').hooks;
 
-const initialChat = async context => {
-  const userId = context.result._id;
-  await context.app.service('chats').create({
-    users: [{user: userId, unreadMessages: []}, {user: '603aaafb1fcbe60d5424bb5a', unreadMessages: []}],
-    messages: [{
-      sentBy: '603aaafb1fcbe60d5424bb5a',
-      message: `Hi ${context.result.username}, welcome to Utah Gun Trade! Here you can send messages to others and negotiate on trades,offers, or other firearm related business. If you have any issues or questions don't hesitate to contact support@utahgunhub.com.`
-    }]
-  }).then((res) => {
-    context.app.service('users').patch(userId, {chats: [res._id]});
-  });
-  return context;
-};
+// const initialChat = async context => {
+//   const userId = context.result._id;
+//   await context.app.service('chats').create({
+//     users: [{user: userId, unreadMessages: []}, {user: '603aaafb1fcbe60d5424bb5a', unreadMessages: []}],
+//     messages: [{
+//       sentBy: '603aaafb1fcbe60d5424bb5a',
+//       message: `Hi ${context.result.username}, welcome to Utah Gun Trade! Here you can send messages to others and negotiate on trades,offers, or other firearm related business. If you have any issues or questions don't hesitate to contact support@utahgunhub.com.`
+//     }]
+//   }).then((res) => {
+//     context.app.service('users').patch(userId, {chats: [res._id]});
+//   });
+//   return context;
+// };
 
 const modifyWatched = async context => {
   let params = lget(context.arguments[1], 'params.name', '');
@@ -82,7 +82,6 @@ module.exports = {
     find: [],
     get: [],
     create: [
-      initialChat,
     ],
     update: [],
     patch: [modifyWatched],

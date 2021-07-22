@@ -16,7 +16,7 @@ module.exports = function (app) {
     ],
     messages: [{
       sentBy: {type: Schema.Types.ObjectId, ref: 'users', required: true},
-      message: {type: String, required: true, maxLength: 200},
+      message: {type: String, required: true, maxLength: 400},
       createdAt: {type: Date}
     }],
 

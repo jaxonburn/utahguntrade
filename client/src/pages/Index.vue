@@ -57,14 +57,9 @@
     },
     mounted(){
       this.createAnalytic({reqFrom: 'layout'});
-      this.findListings({query: {$limit: 6,$sort: {createdAt: -1},sold: false,archived: false}}).then((res) => {
-        console.log(res);
-        this.latestListings = res.data;
-      })
     },
     data() {
       return {
-        latestListings: [],
         swiperOption: {
           effect: 'coverflow',
           grabCursor: true,
@@ -93,9 +88,6 @@
       ...mapActions('analytics', {
         createAnalytic: 'create'
       }),
-      ...mapActions('listings', {
-        findListings: 'find'
-      })
     }
   }
 </script>

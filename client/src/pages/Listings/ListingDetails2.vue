@@ -39,12 +39,12 @@
           <div @click="startChat" class="action-btn" v-if="user && user._id !== listing.listedBy">Message user</div>
 <!--          <div class="action-btn" v-if="listing.contactMethods.includes('Phone')">{{ listing._fastjoin.listedBy.phone }}</div>-->
 <!--          <div class="action-btn" v-if="listing.contactMethods.includes('Email')">{{ listing._fastjoin.listedBy.email }}</div>-->
-          <div class="action-btn" @click="addToWatchList" v-if="!user.watched.includes(listing._id)">
+          <div class="action-btn" @click="addToWatchList" v-if="user && !user.watched.includes(listing._id)">
             <q-icon name="visibility" />
             <q-tooltip>Add to watch list</q-tooltip>
           </div>
 
-          <div class="action-btn" @click="removeFromWatchList" v-if="user.watched.includes(listing._id)">
+          <div class="action-btn" @click="removeFromWatchList" v-if="user && user.watched.includes(listing._id)">
             <q-icon name="remove_done" />
             <q-tooltip>Remove from watch list</q-tooltip>
           </div>
@@ -85,7 +85,7 @@
             <div style="font-size: .8em; color: #c1bfbf;">{{ $lget(listing, '_fastjoin.listedBy.email') }}</div>
           </span>
           <span class="right-avatar" v-else>
-            <div>Must Be Logged In</div>
+            <div>Log in to View</div>
 <!--            <div style="font-size: .8em; color: #c1bfbf;">{{ $lget(listing, '_fastjoin.listedBy.email') }}</div>-->
           </span>
         </span>
@@ -128,6 +128,9 @@
     mounted() {
       this.loadListing(this.$route.params.id).then((res) => {
         this.slide = res.images[0] ? res.images[0].url : NoImage;
+        if(!this.user){
+          return;
+        }
         if (!res.viewed.includes(this.$lget(this.user, '_id'))) {
           this.patchListing([this.listing._id, {
             $push: {

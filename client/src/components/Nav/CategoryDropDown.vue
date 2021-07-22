@@ -145,7 +145,7 @@
                   <router-link to="/bill-of-sale"><div class="q-my-xs cursor-pointer hoverText">Bill Of Sale</div></router-link>
                   <div class="q-my-xs cursor-pointer hoverText">Gun Stores in Utah</div>
                   <div class="q-my-xs cursor-pointer hoverText">Firearm Classes</div>
-                  <div class="q-my-xs cursor-pointer hoverText">Prevent Fraud</div>
+                  <router-link to="prevent-fraud"><div class="q-my-xs cursor-pointer hoverText">Prevent Fraud</div></router-link>
                 </div>
                 <q-separator vertical />
                 <div class="text-weight-medium">

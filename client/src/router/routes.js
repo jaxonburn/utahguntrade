@@ -13,6 +13,7 @@ export default function({ store }) {
         { path: 'create-posting', name: 'create-posting', component: () => import('pages/Listings/CreatePosting'), meta: { requiresAuth: true } },
         { path: 'bill-of-sale', name: 'billOfSale', component: () => import('pages/Resources/billOfSale') },
         { path: 'terms', name: 'terms', component: () => import('pages/Resources/TermsAndConditions') },
+        { path: 'prevent-fraud', name: 'prevent-fraud', component: () => import('pages/Resources/PreventFraud') },
         { path: 'privacy-policy', name: 'privacy-policy', component: () => import('pages/Resources/PrivacyPolicy') },
         { path: 'listings', name: 'listings', component: () => import('pages/Listings') },
         { path: 'my-watched', name: 'my-watched', component: () => import('pages/Listings/MyWatched'), meta: { requiresAuth: true } },

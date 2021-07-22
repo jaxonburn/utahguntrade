@@ -209,6 +209,7 @@
               })
             })
           }).catch((err) => {
+            console.error(err);
             this.loading = false;
             this.errorText = 'Email is already in use.';
             this.error = true;

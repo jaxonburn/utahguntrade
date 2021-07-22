@@ -145,13 +145,13 @@
                   <router-link to="/bill-of-sale"><div class="q-my-xs cursor-pointer hoverText">Bill Of Sale</div></router-link>
                   <div class="q-my-xs cursor-pointer hoverText">Gun Stores in Utah</div>
                   <div class="q-my-xs cursor-pointer hoverText">Firearm Classes</div>
-                  <div class="q-my-xs cursor-pointer hoverText">Prevent Fraud</div>
+                  <router-link to="prevent-fraud"><div class="q-my-xs cursor-pointer hoverText">Prevent Fraud</div></router-link>
                 </div>
                 <q-separator vertical />
                 <div class="text-weight-medium">
                   <div class="q-my-xs cursor-pointer hoverText">Our Team</div>
-                  <div class="q-my-xs cursor-pointer hoverText">Terms and Conditions</div>
-                  <div class="q-my-xs cursor-pointer hoverText">Privacy Policy</div>
+                  <router-link to="/terms"><div class="q-my-xs cursor-pointer hoverText">Terms and Conditions</div></router-link>
+                  <router-link to="privacy-policy"><div class="q-my-xs cursor-pointer hoverText">Privacy Policy</div></router-link>
                 </div>
               </div>
             </div>

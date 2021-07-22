@@ -10,7 +10,8 @@ module.exports = function (app) {
     users: [
       {
         user: {type: Schema.Types.ObjectId, ref: 'users'},
-        unreadMessages: [{type: Schema.Types.ObjectId, ref: 'chats'}]
+        unreadMessages: [{type: Schema.Types.ObjectId, ref: 'chats'}],
+        left: {type: Boolean, default: false}
       }
     ],
     messages: [{

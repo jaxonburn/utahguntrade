@@ -77,7 +77,7 @@ module.exports = {
     all: [
       // Make sure the password field is never sent to the client
       // Always must be the last hook
-      protect('password')
+      protect('password'),
     ],
     find: [],
     get: [],
@@ -85,8 +85,8 @@ module.exports = {
       initialChat,
     ],
     update: [],
-    patch: [modifyWatched,],
-    remove: []
+    patch: [modifyWatched],
+    remove: [],
   },
 
   error: {
@@ -96,6 +96,6 @@ module.exports = {
     create: [],
     update: [],
     patch: [],
-    remove: []
-  }
+    remove: [],
+  },
 };

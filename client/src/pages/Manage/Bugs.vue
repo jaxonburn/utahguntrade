@@ -12,6 +12,15 @@
         </div>
         <q-icon name="delete" size="lg" style="cursor: pointer;" @click="removeBug(bug)" color="red" />
       </div>
+      <div style="text-align: center; margin: 30px 0; font-size: 2em;">Errors</div>
+      <div class="bug-wrapper" v-for="(err, idx) of errs" :key="err._id">
+        <div class="bug">
+          <div><span>Error Type:</span> {{ err.type }}</div>
+          <div><span>Class Name:</span> {{ err.className }}</div>
+          <div><span>Code:</span> {{ err.code }}</div>
+        </div>
+        <q-icon name="delete" size="lg" style="cursor: pointer;" @click="removeErr(err)" color="red" />
+      </div>
     </div>
   </q-page>
 </template>
@@ -24,11 +33,16 @@
     name: "Bugs",
     mounted(){
       this.loadBugs();
+      this.loadErrs();
     },
     methods: {
       ...mapActions('reported-bugs', {
         loadBugs: 'find',
         deleteBug: 'remove'
+      }),
+      ...mapActions('app-errors', {
+        loadErrs: 'find',
+        deleteErr: 'remove'
       }),
       removeBug(bug){
         this.deleteBug(bug._id).then(() => {
@@ -42,12 +56,32 @@
             message: err.message
           })
         })
+      },
+      removeErr(err){
+        this.deleteErr(err._id).then(() => {
+          this.$q.notify({
+            color: 'positive',
+            message: 'Error deleted'
+          })
+        }).catch(err => {
+          this.$q.notify({
+            color: 'negative',
+            message: err.message
+          })
+        })
       }
     },
     computed: {
       ...mapGetters('reported-bugs', {
-        findBugs: 'find'
+        findBugs: 'find',
       }),
+      ...mapGetters('app-errors', {
+        findErrs: 'find'
+      }),
+      errs() {
+        console.log(this.findErrs());
+        return this.findErrs().data;
+      },
       bugs(){
         return this.findBugs().data;
       }

@@ -100,7 +100,6 @@
         }
       },
       beforeRemove(index, done, fileList) {
-        console.log('index', index, fileList)
         let r = confirm("remove image")
         if (r) {
           done()
@@ -110,7 +109,7 @@
 
       },
       editImage(formData, index, fileList) {
-        console.log('edit data', formData, index, fileList)
+        // console.log('edit data', formData, index, fileList)
       },
     }
   };

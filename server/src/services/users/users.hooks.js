@@ -60,13 +60,13 @@ module.exports = {
     ],
     patch: [
       authenticate('jwt'),
-      preventChanges(
-        true,
-        'facebookId',
-        'role',
-        'googleId',
-        'stripeId'
-      ),
+      // preventChanges(
+      //   true,
+      //   'facebookId',
+      //   'role',
+      //   'googleId',
+      //   'stripeId'
+      // ),
     ],
     remove: [
       authenticate('jwt')

@@ -81,7 +81,7 @@ box-shadow: 0 5px 10px 2px rgba(0,0,0,0.5);">
           },
           {
             img: notification,
-            label: 'Send Notification',
+            label: 'Home Page Popup',
             separator: true,
             path: '/manage/notifications'
           },

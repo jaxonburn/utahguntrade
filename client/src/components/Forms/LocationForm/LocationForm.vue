@@ -83,9 +83,8 @@
       loadAddress(val, update, abort){
         if(val !== ''){
           this.loadAddresses({query: {text: val}}).then((res) => {
-            console.log(res);
             this.options = res.data;
-            console.log('locations', this.options);
+            // console.log('locations', this.options);
             setTimeout(() => {
               update(
                 () => {
@@ -103,7 +102,7 @@
               )
             }, 300)
           }).catch((err) => {
-            console.log(err);
+            console.error(err);
             this.geoLoading = false;
           })
         }

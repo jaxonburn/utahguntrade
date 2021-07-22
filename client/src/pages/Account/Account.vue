@@ -14,9 +14,9 @@
             @edit-image="editImage"
             :data-images="images"
             drop-text="Upload images"
-            drag-text="Upload listing images"
+            drag-text="Upload Profile Picture"
             browse-text=""
-            primary-text="Weapon images"
+            primary-text="Profile Picture"
             :multiple="false"
             popup-text="We accept most common image formats, including: gif, jpg, png, bmp, jpeg"
           >

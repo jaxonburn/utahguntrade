@@ -69,11 +69,11 @@
             })
           }, 1500)
         }).catch((err => {
-          console.log(err);
+          console.error(err);
         }))
       },
       abortFilterFn() {
-        console.log('abortFilter');
+        // console.log('abortFilter');
       },
       addChat() {
         this.$isLoading = true;
@@ -90,7 +90,7 @@
           this.loadChats({query: {_id: {$in: this.user.chats}}});
           this.$emit('close');
         }).catch((err) => {
-          console.log(err);
+          console.error(err);
           if(err.name === 'GeneralError'){
             this.$q.notify({
               color: 'primary',

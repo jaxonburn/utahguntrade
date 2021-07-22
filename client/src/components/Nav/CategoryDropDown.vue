@@ -82,7 +82,7 @@
                     </q-avatar>
                   </q-item-section>
                 </q-item>
-                <q-item clickable v-ripple v-else @click="$router.push('/register')">
+                <q-item clickable v-ripple v-else @click="navTo('/register')">
                   <q-item-section class="text-xs text-mb-xs">Create Account</q-item-section>
                   <q-item-section avatar>
                     <q-avatar rounded>
@@ -111,7 +111,7 @@
 <!--                    {{ $lget(articles, '[0].mainTitle', 'Gun Hub') }}-->
 <!--                  </div>-->
                 </div>
-                <q-card class="text-black cursor-pointer" style="width: 100%;" @click="$router.push('/articles')">
+                <q-card class="text-black cursor-pointer" style="width: 100%;" @click="navTo('/articles')">
                   <q-card-section horizontal>
                     <q-img :src="$lget(articles, '[0].mainImage.url', '')"
                            style="height: 100px;max-width: 100px;"></q-img>
@@ -180,6 +180,21 @@
         return dateUtils(newDate);
       }
     },
+    props: {
+      hide: {
+        type: Boolean,
+        default: false
+      }
+    },
+    watch: {
+      hide: {
+        handler(newVal) {
+          if (newVal === true) {
+            this.tabOpen = false;
+          }
+        }
+      }
+    },
     data() {
       return {
         tabOpen: false,
@@ -220,6 +235,7 @@
     },
     methods: {
       navTo(path) {
+        this.tabOpen = false;
         if(this.$route.path === path) return;
         this.$router.push(path);
       }

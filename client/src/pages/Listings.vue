@@ -147,7 +147,7 @@
         },
         applyFilters: false,
         conditions: ['New', 'Like New', 'Used', 'Worn'],
-        categories: ['Knives', 'Rifle', 'AssaultRifle', 'Handgun', 'SubmachineGun', 'Hunting', 'Magazines', 'Scopes', 'Other', 'AssaultAmmo', 'HandgunAmmo.', 'RifleAmmo', 'ShotgunAmmo', 'SubmachineAmmo', 'Misc' ],
+        categories: ['Knives', 'Rifle', 'AssaultRifle', 'Handgun', 'Shotgun', 'Hunting', 'Magazines', 'Scopes', 'Other', 'AssaultAmmo', 'HandgunAmmo.', 'RifleAmmo', 'ShotgunAmmo', 'SubmachineAmmo', 'Misc' ],
 
       }
     },
@@ -177,29 +177,18 @@
         }
       },
       listingQuery() {
-        let q;
-        if(this.point) {
-          q = {
-            archived: false,
-            sold: false,
-            title: {$regex: `(?i).*${this.$lget(this.$route.query, 'search', '').length > 0 ? this.$route.query.search : ''}.*`},
-            category: {[this.filterOptions.categories.length > 0 ? '$in' : '$regex']: this.filterOptions.categories.length === 0 ? `(?i).*${this.$lget(this.$route.query, 'category', '').length > 0 ? this.$route.query.category : ''}.*` : this.filterOptions.categories},
-            price: { $lte: this.filterOptions.maxPrice > 0 ? this.filterOptions.maxPrice : 1000000, $gte: this.filterOptions.minPrice > 0? this.filterOptions.minPrice : 0 },
-            condition: { $in: this.filterOptions.conditions.length === 0 ? this.conditions : this.filterOptions.conditions },
-            $sort: this.sort,
-            point: this.point
-          };
-        } else {
-          q = {
-            archived: false,
-            sold: false,
-            title: {$regex: `(?i).*${this.$lget(this.$route.query, 'search', '').length > 0 ? this.$route.query.search : ''}.*`},
-            category: {[this.filterOptions.categories.length > 0 ? '$in' : '$regex']: this.filterOptions.categories.length === 0 ? `(?i).*${this.$lget(this.$route.query, 'category', '').length > 0 ? this.$route.query.category : ''}.*` : this.filterOptions.categories},
-            price: { $lte: this.filterOptions.maxPrice > 0 ? this.filterOptions.maxPrice : 1000000, $gte: this.filterOptions.minPrice > 0? this.filterOptions.minPrice : 0 },
-            condition: { $in: this.filterOptions.conditions.length === 0 ? this.conditions : this.filterOptions.conditions },
-            $sort: this.sort,
-          };
-          console.log(q);
+        let q = {
+          archived: false,
+          sold: false,
+          title: {$regex: this.$lget(this.$route.query, 'search', '').length > 0 ? this.$route.query.search : '', $options: 'i'},
+          category: {$in: this.filterOptions.categories.length ? this.filterOptions.categories.length : this.categories},
+          price: { $lte: this.filterOptions.maxPrice > 0 ? this.filterOptions.maxPrice : 1000000, $gte: this.filterOptions.minPrice > 0 ? this.filterOptions.minPrice : 0 },
+          condition: { $in: this.filterOptions.conditions.length === 0 ? this.conditions : this.filterOptions.conditions },
+          $sort: this.sort,
+        }
+
+        if(this.point){
+          q.point = this.point;
         }
 
         return q;

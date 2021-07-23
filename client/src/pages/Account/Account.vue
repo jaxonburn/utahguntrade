@@ -25,7 +25,7 @@
         <div class="q-ma-lg row" style="display: flex; flex-direction: column;">
           <div>
             <span v-if="!editing" class="text-weight-bold text-h4">{{ user.username }}</span>
-            <q-input v-if="editing" label="Username" v-model="clonedUser.username" :placeholder="user.username"/>
+            <q-input v-if="editing" label="Username" v-model="clonedUser.username" :placeholder="user.username" maxlength="20"/>
           </div>
           <q-separator/>
           <div class="column q-mt-lg">

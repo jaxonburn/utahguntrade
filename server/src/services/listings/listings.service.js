@@ -7,7 +7,7 @@ module.exports = function (app) {
   const options = {
     Model: createModel(app),
     paginate: app.get('paginate'),
-    whitelist: ['$geoWithin', '$geometry', '$regex'],
+    whitelist: ['$geoWithin', '$geometry', '$regex', '$options'],
   };
 
   // Initialize our service with any options it requires

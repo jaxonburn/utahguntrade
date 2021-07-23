@@ -177,21 +177,21 @@
         }
       },
       listingQuery() {
-        let q = {
+        let query = {
           archived: false,
           sold: false,
-          title: {$regex: this.$lget(this.$route.query, 'search', '').length > 0 ? this.$route.query.search : '', $options: 'i'},
-          category: {$in: this.filterOptions.categories.length ? this.filterOptions.categories.length : this.categories},
+          title: {$regex: this.$route.query.search || '', $options: 'i'},
+          category: {$in: this.filterOptions.categories.length ? this.filterOptions.categories : this.categories},
           price: { $lte: this.filterOptions.maxPrice > 0 ? this.filterOptions.maxPrice : 1000000, $gte: this.filterOptions.minPrice > 0 ? this.filterOptions.minPrice : 0 },
-          condition: { $in: this.filterOptions.conditions.length === 0 ? this.conditions : this.filterOptions.conditions },
+          condition: { $in: this.filterOptions.conditions.length  ?  this.filterOptions.conditions : this.conditions},
           $sort: this.sort,
         }
 
         if(this.point){
-          q.point = this.point;
+          query.point = this.point;
         }
 
-        return q;
+        return query;
       }
     },
     methods: {

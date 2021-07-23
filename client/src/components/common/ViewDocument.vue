@@ -36,8 +36,16 @@
       if(this.document && !this.id) {
         this.displayDocument = this.document;
       } else {
+        this.$q.loading.show();
         this.getDocument(this.id).then(res => {
+          this.$q.loading.hide();
           this.displayDocument = res;
+        }).catch((er) => {
+          this.$q.loading.hide();
+          this.$q.notify({
+            message: er.message,
+            color: 'negative'
+          })
         })
       }
     },
@@ -54,6 +62,9 @@
     height: 60vh;
     background-size: contain;
     background-repeat: no-repeat;
+    margin: 0 auto;
+    width: auto;
+    text-align: center;
   }
   .right {
     width: 40vw;
@@ -83,6 +94,12 @@
       div:last-child {
         margin-left: 60px;
       }
+    }
+  }
+
+  @media only screen and (max-width: 1200px) {
+    .right {
+      width: 100vw;
     }
   }
 </style>

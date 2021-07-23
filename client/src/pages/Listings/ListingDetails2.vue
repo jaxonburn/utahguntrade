@@ -353,9 +353,9 @@
     margin: 0 auto;
     margin-top: 20px;
     background: #f6f6f6;
-    box-shadow: 2px 2px 20px 1px rgba(0, 0, 0, 0.3);
+    box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, 0.3);
     padding: 20px;
-    border-radius: 20px;
+    border-radius: 5px;
   }
 
   .slide-img {
@@ -459,6 +459,7 @@
       }
       .agile-comp {
         height: 60vh;
+        width: 90vw;
       }
       .slide-img {
         height: 40vh;

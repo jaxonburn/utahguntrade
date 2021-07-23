@@ -19,6 +19,7 @@ module.exports = {
       'local',
       'google'
     ],
+    'boring': 'b003AXeUk4bdTNweUgFT2fLhqjr1tuQ52sVqFnoC',
     'jwtOptions': {
       'header': {
         'typ': 'access'

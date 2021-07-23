@@ -11,6 +11,18 @@
         </q-btn>
       </div>
     </div>
+
+    <div v-else-if="$q.platform.is.mobile && isMyListing && !listing.sold" style="display: flex; align-items: center; justify-content: center; width: 100%; background-color: rgba(0, 0, 0, 0.3); padding: 15px;">
+      <div v-if="isMyListing && !listing.sold">
+        <q-btn @click="markAsSolidDialog = true" size="sm" class="q-ml-sm sold-icon" icon="attach_money" color="green" rounded>
+          <q-tooltip>Mark as sold</q-tooltip>
+        </q-btn>
+        <q-btn class="bg-secondaryGradient text-white q-mx-sm" size="sm" @click="$router.push(`listing-details/${listing._id}`)" label="View Details" />
+        <q-btn @click="deleteListingDialog = true" size="sm" class="q-mr-sm delete-icon" icon="close" color="negative" rounded>
+          <q-tooltip>Permanently Delete</q-tooltip>
+        </q-btn>
+      </div>
+    </div>
     <div class="top">
 <!--      <img-->
 <!--        :src="$lget(listing.images[0], 'url', 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/No_image_3x4.svg/1200px-No_image_3x4.svg.png')">-->
@@ -375,5 +387,12 @@
   }
   .listing:hover  .hover-btn {
     opacity: 1;
+  }
+
+  @media only screen and (max-width: 1000px) {
+    .listing {
+      box-shadow: 2px 2px 20px 2px rgba(0, 0, 0, 0.25) !important;
+      width: 100%;
+    }
   }
 </style>

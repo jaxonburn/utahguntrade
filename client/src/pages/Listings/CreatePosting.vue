@@ -20,14 +20,14 @@
       </multi-image-upload>
       <div class="form">
         <div class="row justify-between q-my-lg">
-          <q-input maxlength="150" v-model="listingForm.title" class="col-4" style="width: 30%" label="Title"/>
-          <q-input v-model="listingForm.price" class="col-3" type="number" label="Price" prefix="$"/>
-          <q-select v-model="listingForm.condition" class="col-4" :options="['New', 'Like New', 'Used', 'Worn']"
+          <q-input maxlength="150" v-model="listingForm.title" class="col-4 inp" style="width: 30%" label="Title"/>
+          <q-input v-model="listingForm.price" class="col-3 inp" type="number" label="Price" prefix="$"/>
+          <q-select v-model="listingForm.condition" class="col-4 inp" :options="['New', 'Like New', 'Used', 'Worn']"
                     label="Condition"/>
         </div>
         <div class="row justify-between q-my-lg">
           <LocationForm @input="setAddress"/>
-          <q-select v-model="listingForm.category" class="col-3" :options="categories" label="Category"/>
+          <q-select v-model="listingForm.category" class="col-3 inp" :options="categories" label="Category"/>
         </div>
         <q-select
           label="Tags"
@@ -42,8 +42,8 @@
           new-value-mode="add-unique"
         />
         <div class="row justify-between q-my-lg">
-          <q-checkbox v-model="listingForm.openToTrades" class="col-3" label="Open To Trades" />
-          <q-select class="col-4" :options="['Email', 'Phone', 'In app chat']" label="Methods Of Contact" filled v-model="listingForm.contactMethods" use-chips multiple new-value-mode="add-unique"></q-select>
+          <q-checkbox v-model="listingForm.openToTrades" class="col-md-3 col-xs-12" label="Open To Trades" />
+          <q-select class="col-4 inp" :options="['Email', 'Phone', 'In app chat']" label="Methods Of Contact" filled v-model="listingForm.contactMethods" use-chips multiple new-value-mode="add-unique"></q-select>
         </div>
         <q-input maxlength="2000" v-model="listingForm.description" class="q-my-lg" type="textarea" label="Description"/>
         <q-space></q-space>
@@ -78,15 +78,15 @@
       </div>
       <div class="form">
         <div class="row justify-between q-my-lg">
-          <q-input maxlength="150" v-model="listingForm.title" class="col-4" style="width: 30%" label="Title"/>
-          <q-input v-model="listingForm.price" class="col-3" type="number" label="Price"/>
-          <q-select v-model="listingForm.condition" class="col-4" :options="['New', 'Like New', 'Used', 'Worn']"
+          <q-input maxlength="150" v-model="listingForm.title" class="col-4 inp" style="width: 30%" label="Title"/>
+          <q-input v-model="listingForm.price" class="col-3 inp" type="number" label="Price"/>
+          <q-select v-model="listingForm.condition" class="col-4 inp" :options="['New', 'Like New', 'Used', 'Worn']"
                     label="Condition"/>
         </div>
         <div class="row justify-between q-my-lg">
           <LocationForm @input="setAddress" :address="myAddress"/>
           <!--          <LocationForm v-else @input="setAddress"/>-->
-          <q-select v-model="listingForm.category" class="col-3" :options="categories" label="Category"/>
+          <q-select v-model="listingForm.category" class="col-3 inp" :options="categories" label="Category"/>
         </div>
         <q-select
           label="Tags"
@@ -101,8 +101,8 @@
           new-value-mode="add-unique"
         />
         <div class="row justify-between q-my-lg">
-          <q-checkbox v-model="listingForm.openToTrades" class="col-3" label="Open To Trades" />
-          <q-select label="Methods Of Contact" filled v-model="listingForm.contactMethods" use-input use-chips multiple new-value-mode="add-unique"></q-select>
+          <q-checkbox v-model="listingForm.openToTrades" class="col-md-3 col-xs-12" label="Open To Trades" />
+          <q-select class="inp" label="Methods Of Contact" filled v-model="listingForm.contactMethods" use-input use-chips multiple new-value-mode="add-unique"></q-select>
         </div>
         <q-input maxlength="2000" v-model="listingForm.description" class="q-my-lg" type="textarea" label="Description"/>
         <q-space></q-space>
@@ -332,7 +332,7 @@
   }
 
   .image-uploader {
-    width: 45vw;
+    width: 85vw;
     height: 60vh;
     border: 2px solid black;
     display: flex;
@@ -377,6 +377,25 @@
       .icon {
         margin-left: 5px;
       }
+    }
+  }
+
+  @media only screen and (max-width: 1200px) {
+    .create-listing-wrapper {
+      flex-direction: column;
+
+    }
+    .form {
+      width: 90%;
+    }
+  }
+
+  @media only screen and (max-width: 700px) {
+    .create-listing-wrapper {
+      padding: 40px 10px;
+    }
+    .inp {
+      width: 100% !important;
     }
   }
 </style>

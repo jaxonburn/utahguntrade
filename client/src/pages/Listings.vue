@@ -15,10 +15,10 @@
     <div v-else>
       <div class="filter-menu row justify-between q-px-xl q-pt-lg" style="align-items: center;">
         <div class="row col-8 col-xs-12 col-sm-8">
-          <q-select class="q-mr-xl col-4 col-xs-12 col-sm-4 q-mt-md" v-model="priceSort" filled label="Sort by price"
+          <q-select class="q-mr-xl col-4 col-xs-12 col-sm-4 q-mt-md q-mb-md" v-model="priceSort" filled label="Sort by price"
                     :options="['Price low to high', 'Price high to low']"></q-select>
-          <q-select class="q-mr-xl col-4 col-xs-12 q-mt-md col-sm-4" v-model="dateSort" filled label="Sort by date"
-                    :options="['Date newest to oldest', 'Date oldest to newest']"></q-select>
+<!--          <q-select class="q-mr-xl col-4 col-xs-12 q-mt-md col-sm-4" v-model="dateSort" filled label="Sort by date"-->
+<!--                    :options="['Date newest to oldest', 'Date oldest to newest']"></q-select>-->
           <div @click="showFilter" class="col-1" style="display: flex; align-items: center; cursor: pointer;"><span>Filter</span> <q-icon class="q-ml-md" size="sm" name="list" /></div>
         </div>
         <q-btn label="Reset search" @click="resetListings(true)" color="primary" class="q-mt-md" align="right"/>
@@ -199,7 +199,6 @@
             condition: { $in: this.filterOptions.conditions.length === 0 ? this.conditions : this.filterOptions.conditions },
             $sort: this.sort,
           };
-          console.log(q);
         }
 
         return q;
@@ -341,9 +340,19 @@
     margin-top: 150px;
   }
 
-  @media screen and (max-width: 1250px) {
+  @media screen and (max-width: 1550px) {
     .listings-wrapper {
       grid-template-columns: 1fr 1fr 1fr;
+      padding: 50px 0px;
+    }
+    .listings-page {
+      width: 90vw;
+    }
+  }
+
+  @media screen and (max-width: 1200px) {
+    .listings-wrapper {
+      grid-template-columns: 1fr 1fr;
     }
   }
 
@@ -356,7 +365,7 @@
       //top: 40px;
     }
     .listing {
-      width: 60%;
+      width: 70%;
     }
   }
 

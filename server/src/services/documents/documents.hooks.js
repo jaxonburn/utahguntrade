@@ -36,9 +36,8 @@ function encode(data){
 }
 
 const getAWSImage = async context => {
-  if(context.result.document.key.includes(context.params.user._id)) {
+  if(context.result.document && context.result.document.key.includes(context.params.user._id)) {
     await getImage(context.result.document.key).then((img)=>{
-      // let image = "<img class='img' src='data:image/jpeg;base64," + encode(img.Body) + "'" + "/>";
       let image = 'data:image/jpeg;base64,' + encode(img.Body);
       context.result.document = String(image);
       console.log(context.result);

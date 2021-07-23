@@ -37,8 +37,9 @@
       }
     },
     mounted(){
-      this.loadListings({listedBy: {$in: this.user._id}, $limit: 200}).then(this.isLoaded = true);
-      console.log(this.user);
+      this.loadListings({query: {listedBy: this.user._id, $limit: 200}}).then(() => {
+        this.isLoaded = true;
+      });
     },
     computed: {
       ...mapGetters('listings', {
@@ -54,7 +55,7 @@
         if(this.showResults !== 'Sold listings') {
           return {
             query: {
-              listedBy: {$in: this.user._id},
+              listedBy: this.user._id,
               archived: this.showResults === 'Posted listings' ? false : true,
               sold: false,
               $limit: 200
@@ -63,7 +64,7 @@
         } else {
           return {
             query: {
-              listedBy: {$in: this.user._id},
+              listedBy: this.user._id,
               sold: true,
               $limit: 200
             }

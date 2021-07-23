@@ -7,17 +7,17 @@
       </SingleImageUpload>
       <div class="signature">
         <div class="notes">
-          <q-input v-model="document.notes" type="textarea" filled label="Add notes (optional)"/>
+          <q-input maxlength="500" v-model="document.notes" type="textarea" filled label="Add notes (optional)"/>
         </div>
         <div class="text-h6">Type in your name and Today's date</div>
         <div class="input-wrapper">
-          <q-input v-model="document.signature" label="Your full name" type="text"/>
+          <q-input maxlength="30" v-model="document.signature" label="Your full name" type="text"/>
           <q-input v-model="document.dateSigned" class="q-pa-md" type="date"/>
         </div>
       </div>
     </div>
 
-    <div class="right">
+    <div class="right" v-if="!$q.platform.is.mobile">
       <ViewDocument :document="document" />
     </div>
 
@@ -67,7 +67,14 @@
       saveImageEncoded(encoded) {
         this.document.fullImage = encoded;
       },
-      saveDocument(){
+      saveDocument() {
+        if(!this.document.fullImage) {
+          this.$q.notify({
+            message: 'Must attach image',
+            color: 'negative'
+          })
+          return;
+        }
         delete this.document.fullImage;
         if(!this.document.signature || !this.document.dateSigned) {
           this.$q.notify({
@@ -140,4 +147,28 @@
       right: 20px;
     }
   }
+
+  @media only screen and (max-width: 800px) {
+    .document-wrapper {
+      flex-direction: column;
+      height: 110vh;
+      padding: 10px;
+    }
+
+    .buttons-wrapper {
+      //display: flex;
+      //flex-direction: column;
+      //justify-content: center;
+      //align-items: center;
+      position: static !important;
+    }
+    .input-wrapper {
+      display: flex;
+      flex-direction: column;
+    }
+    .buttons-wrapper {
+      text-align: center;
+    }
+  }
+
 </style>

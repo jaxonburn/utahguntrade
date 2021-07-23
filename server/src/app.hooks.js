@@ -7,8 +7,15 @@ const removeFastJoin = require('./hooks/common/remove-fastjoin');
 module.exports = {
   before: {
     all: [
-      paramsFromClient('$options', '$regex'),
+      paramsFromClient('$options', '$regex', 'boring'),
       removeFastJoin(),
+      ctx => {
+        if(ctx.params.boring === ctx.app.get('boring') || ctx.params.query._id) {
+          // console.log(ctx.params.boring === ctx.app.get('boring'));
+        } else {
+          throw new Error('Must be origin URL');
+        }
+      },
     ],
     find: [],
     get: [],
@@ -30,7 +37,9 @@ module.exports = {
 
   error: {
     all: [ctx => {
-      ctx.app.service('app-errors').create({type: ctx.error.type, className: ctx.error.className, code: ctx.error.code});
+      if(ctx.error && ctx.error.type) {
+        ctx.app.service('app-errors').create({type: ctx.error.type, className: ctx.error.className, code: ctx.error.code});
+      }
     }],
     find: [],
     get: [],

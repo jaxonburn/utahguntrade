@@ -8,7 +8,7 @@ import feathersVuex from 'feathers-vuex'
 const socket = io('http://localhost:3030', {transports: ['websocket']})
 
 const feathersClient = feathers()
-  .configure(socketio(socket))
+  .configure(socketio(socket, {timeout: 15000}))
   .configure(auth({ storage: window.localStorage }))
   .hooks({
     before: {
@@ -18,7 +18,7 @@ const feathersClient = feathers()
           discard('__id', '__isTemp')
         ),
         context => {
-          context.params = paramsForServer(context.params);
+          context.params = paramsForServer({...context.params, boring: 'b003AXeUk4bdTNweUgFT2fLhqjr1tuQ52sVqFnoC'});
         }
       ]
     }

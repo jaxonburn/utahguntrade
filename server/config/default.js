@@ -10,6 +10,7 @@ module.exports = {
     'ENCRYPT_32BYTE_STRING': '/KCzwyzSjrxEx7C4jc10T3lLSDhUovhRrS7YBCUezeM=',
     'ENCRYPT_64BYTE_STRING': 'oGTlOBe7rQhySGt589912d2XpV3d0Ejxu5m2Un6C2AjENKn7GfK4yXvZyoGRpCd/DRJnwnSxtpocbH1N/4hazw==',
   },
+  'boring': 'b003AXeUk4bdTNweUgFT2fLhqjr1tuQ52sVqFnoC',
   'authentication': {
     'entity': 'user',
     'service': 'users',

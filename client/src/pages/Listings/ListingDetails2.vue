@@ -35,7 +35,7 @@
             <q-tooltip>Remove from watch list</q-tooltip>
           </div>
           <div v-if="user" class="action-btn" @click="reportDio = true">
-            <q-icon name="more_horiz" />
+            <q-icon name="fas fa-exclamation-triangle" color="warning"/>
 
           </div>
         </div>
@@ -83,18 +83,7 @@
     </div>
 
     <q-dialog v-model="reportDio">
-      <q-card>
-        <q-card-section>
-          <div class="text-h6">Report Listing</div>
-        </q-card-section>
-        <q-card-section>
-          Would you like to report this listing? We appreciate community feedback and it helps keep our site clean and secure.
-        </q-card-section>
-        <q-card-actions align="right">
-          <q-btn flat label="Cancel" v-close-popup color="red"/>
-          <q-btn @click="reportListing" label="Report Listing" v-close-popup color="red" />
-        </q-card-actions>
-      </q-card>
+      <report-dialog name="listing" service="listings" :data-id="listing._id"></report-dialog>
     </q-dialog>
   </q-page>
 </template>
@@ -104,10 +93,12 @@
   import {mapActions, mapGetters} from 'vuex';
   import {models} from 'feathers-vuex';
   import {VueAgile} from "vue-agile";
+  import ReportDialog from "components/common/Dialogs/ReportDialog";
 
   export default {
     name: 'ListingDetails2',
     components: {
+      ReportDialog,
       VueAgile
     },
     data() {
@@ -152,7 +143,7 @@
           dataId: this.listing._id
         }).then(() => {
           this.$q.notify({
-            message: 'We appreciate the feedback, we will look into this soon.',
+            message: 'We appreciate the feedback, our team will review it ASAP.',
             color: 'positive'
           })
         }).catch((er) => {

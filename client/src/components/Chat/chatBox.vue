@@ -1,19 +1,12 @@
 <template>
   <div class="q-pa-md row justify-center">
-    <div class="bg-white" style="width: 100%; max-width: 320px;position: fixed;
-    height: 500px;
-  bottom: 10px;
-  right: 15px;
-  z-index: 5;
-  -webkit-box-shadow: 0 0 6px 1px rgba(0,0,0,0.35);
-box-shadow: 0 0 6px 1px rgba(0,0,0,0.35);
-overflow-y: scroll;
-" >
+    <div class="bg-white chatBoxContainer">
       <q-inner-loading :showing="loadingChats">
         <q-spinner-comment size="75px" color="primary"/>
       </q-inner-loading>
         <div v-if="!inChat">
-          <div class="row items-center" style="border-bottom: .5px solid var(--q-color-secondary)">
+          <div class="chatBoxTopBar">
+            <div>
             <q-input
               v-model="searchUser"
               filled
@@ -26,6 +19,7 @@ overflow-y: scroll;
                 <q-icon name="search" color="secondary"/>
               </template>
             </q-input>
+            </div>
             <q-space/>
             <q-icon name="person_add" size="sm" class="q-ma-sm cursor-pointer" color="primary"
                     @click="addChat = !addChat"/>
@@ -33,45 +27,20 @@ overflow-y: scroll;
                     @click="$emit('close')"></q-icon>
           </div>
           <div>
-            <div v-for="(chat,index) in chats" :key="index" class="test">
-              <q-item class="q-my-sm" clickable v-ripple @click.stop="openChat(chat)">
-                <q-badge v-if="chat.users.filter((chatUser) => chatUser.user === user._id)[0].unreadMessages.length > 0"
-                         color="primary" class="q-mr-md" floating>
-                  <span class="text-weight-bolder">{{ chat.users.filter((chatUser) => chatUser.user === user._id)[0].unreadMessages.length }}</span>
-                </q-badge>
-                <div class="flex flex-center">
-                  <q-icon name="fiber_manual_record" :color="$lget($lget(chat, '_fastjoin.users', []).filter((chatUser) => chatUser._id !== user._id), '[0].active', false) ? 'positive' : 'negative'"
-                          style="font-size: 1em;"></q-icon>
-                </div>
-                <q-item-section avatar
-                                v-for="users in chat._fastjoin.users.filter((userFilt) => {return userFilt._id !== user._id;})"
-                                :key="users._id" class="q-mr-none q-pa-none">
-                  <q-avatar color="white" text-color="white">
-                    <img :src="users.avatar" alt="Avatar"/>
-                  </q-avatar>
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>{{
-                      chat._fastjoin.users[0]._id === user._id ? $lget(chat, '_fastjoin.users[1].username', 'Username Not Found') : chat._fastjoin.users[0].username
-                    }}
-                  </q-item-label>
-                  <q-item-label caption lines="1">
-                    {{ $lget(chat, `messages[[${$lget(chat, 'messages.length', 0) - 1}]].message`, '') }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
+            <div v-for="(chat,index) in chats" :key="index">
+              <chat-item :chat="chat"  :user="user" @openChat="openChat"></chat-item>
               <q-separator/>
             </div>
           </div>
         </div>
         <div v-if="inChat" style="display: flex; flex-direction: column; justify-content: center;">
-          <div class="bg-grey-3 q-pa-sm row">
+          <div class="bg-grey-3 q-pa-sm" style="display: flex; flex-direction: row;align-items: center;">
             <q-btn icon="arrow_back" size="md" push @click.stop="inChat = null" flat/>
             <q-space/>
+            <div class="text-weight-bold text-xxs text-mb-xxs q-mr-sm">
+                {{$lget(notUser, 'username', '')}}
+            </div>
             <div>
-              <span class="text-weight-bold text-xs text-mb-xs">{{
-                  $lget(notUser, 'username', '')
-                }} &nbsp; &nbsp;</span>
               <q-avatar>
                 <img :src="$lget(notUser, 'avatar', '')" style="border: 1.5px solid var(--q-color-primary)"/>
               </q-avatar>
@@ -95,11 +64,11 @@ overflow-y: scroll;
               text-color="white"
               class="q-ma-sm"
             />
-
+            <div class="text-center text-weight-bold text-grey-7 q-mt-md" v-if="userLeft"> {{$lget(notUser, 'username')}} left the chat</div>
           </div>
           <div>
             <q-input outlined class="q-ma-sm bg-grey-3" label="Message" v-model="yourChat" style="overflow: scroll;"
-                     @keyup.enter="sendMessage" :loading="chatLoading" maxlength="200">
+                     @keyup.enter="sendMessage" :loading="chatLoading" maxlength="400">
               <template v-slot:append>
                 <q-btn round dense flat icon="send" push class="text-primary" @click="sendMessage"/>
               </template>
@@ -119,10 +88,11 @@ overflow-y: scroll;
   const {formatDate} = date;
   import AddFriendForm from 'components/Forms/ChatForm/addFriendForm';
   import EmojiPicker from 'vue-emoji-picker'
+  import ChatItem from "components/Chat/chatItem";
 
   export default {
     name: 'chatBox',
-    components: {AddFriendForm, EmojiPicker},
+    components: {ChatItem, AddFriendForm, EmojiPicker},
     props: {
       user: Object,
     },
@@ -183,6 +153,15 @@ overflow-y: scroll;
           return this.findChats({query: {_id: {$in: this.user.chats}}}).data;
         }
       },
+      userLeft(){
+        let userLeft = false;
+        this.inChat.users.map((chatUser) => {
+          if(chatUser.left === true){
+            userLeft = true;
+          }
+        });
+        return userLeft;
+      },
       notUser() {
         if (this.inChat) {
           return this.inChat._fastjoin.users.filter((userFilt) => {
@@ -217,6 +196,10 @@ overflow-y: scroll;
         }, 100)
       },
       sendMessage() {
+        if(this.userLeft){
+          this.$q.notify({type: 'info', message: 'Other user left the chat.'});
+          return;
+        }
         this.chatLoading = true;
         let chat = this.inChat.clone();
         let message = {
@@ -245,6 +228,24 @@ overflow-y: scroll;
 </script>
 
 <style scoped>
+
+.chatBoxContainer {
+  width: 100%; max-width: 320px;position: fixed;
+  height: 500px;
+  bottom: 10px;
+  right: 15px;
+  z-index: 5;
+  -webkit-box-shadow: 0 0 6px 1px rgba(0,0,0,0.35);
+  box-shadow: 0 0 6px 1px rgba(0,0,0,0.35);
+  overflow-y: scroll;
+}
+
+.chatBoxTopBar{
+  border-bottom: .5px solid var(--q-color-secondary);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 
   .emoji-invoker {
     position: absolute;
@@ -313,5 +314,6 @@ overflow-y: scroll;
     background: #ececec;
     cursor: pointer;
   }
+
 
 </style>

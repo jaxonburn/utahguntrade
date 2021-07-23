@@ -71,12 +71,12 @@
     <q-page-container style="height: 100%;">
       <router-view/>
       <transition name="lide-fade" appear>
-        <q-avatar v-if="!chat && $lget(user, '_id', false) && $route.name !== 'messages'"
+        <q-avatar v-if="!chat && user && $route.name !== 'messages'"
                   class="chatIcon cursor-pointer" @click="chat = !chat">
           <q-img alt="Chat Box" src="../assets/isometricchat.png" class="chatImage q-pa-md" />
         </q-avatar>
       </transition>
-      <chat-box v-if="chat" @close="chat = !chat" :user="user"></chat-box>
+      <chat-box v-if="chat && user" @close="chat = !chat" :user="user"></chat-box>
     </q-page-container>
         <main-footer></main-footer>
   </q-layout>

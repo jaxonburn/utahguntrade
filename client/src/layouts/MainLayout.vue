@@ -2,7 +2,7 @@
   <q-layout view="hHh lpR fff">
     <q-header elevated>
       <q-toolbar class="bg-white" style="display: flex; flex-direction: column;width: 100%;">
-        <div style="width: 100%;display: grid; grid-template-columns: 0.4fr 3fr 0.5fr;">
+        <div style="width: 100%;display: flex; flex-direction: row;justify-content: space-between;">
           <div class="flex flex-center">
             <img src="../assets/Logos/utahgunhublogo.png" style="height: 100px;width: 125px;" @click="$router.push('/')"
                  class="cursor-pointer">
@@ -13,7 +13,7 @@
               v-model="searchAll"
               filled
               placeholder="Search Marketplace..."
-              style="width: 100%;"
+              style="width: 50vw;"
               @keyup.enter="searchMarketPlace"
             >
               <template v-slot:append>
@@ -65,7 +65,7 @@
             </div>
           </div>
         </div>
-        <category-drop-down :hide="hideMainDropdown" v-if="!$q.platform.is.mobile && $route.path !== '/register'"></category-drop-down>
+        <category-drop-down :hide="hideMainDropdown" v-if="!$q.screen.lt.md && $route.path !== '/register'"></category-drop-down>
       </q-toolbar>
     </q-header>
     <q-page-container style="height: 100%;">

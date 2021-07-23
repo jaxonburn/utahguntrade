@@ -3,7 +3,7 @@
     <div class="map-wrapper"
          :style="$q.screen.lt.md ? 'grid-template-rows: 1fr 1fr;' : 'grid-template-columns: 1fr 1fr;'">
       <div class="flex flex-center">
-        <q-card :style="$q.screen.lt.md ? 'width: 350px;' : 'width: 700px'" class="cardContainer">
+        <q-card :style="$q.screen.lt.md ? 'width: 100%;' : 'width: 700px'" class="cardContainer" flat>
             <div>
               <q-card-section class="text-lg text-mb-lg text-weight-medium flex justify-center">
                 See Gun Listings Near You

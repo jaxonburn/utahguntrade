@@ -9,13 +9,13 @@ module.exports = {
     all: [
       paramsFromClient('$options', '$regex', 'boring'),
       removeFastJoin(),
-      ctx => {
-        if(ctx.params.boring === ctx.app.get('boring') || ctx.params.query._id) {
-          // console.log(ctx.params.boring === ctx.app.get('boring'));
-        } else {
-          throw new Error('Must be origin URL');
-        }
-      },
+      // ctx => {
+      //   if(ctx.params.boring === ctx.app.get('boring') || ctx.params.query._id) {
+      //     // console.log(ctx.params.boring === ctx.app.get('boring'));
+      //   } else {
+      //     throw new Error('Must be origin URL');
+      //   }
+      // },
     ],
     find: [],
     get: [],

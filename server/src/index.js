@@ -13,16 +13,14 @@ process.on('unhandledRejection', (reason, p) =>
 server.on('listening', () =>
   logger.info('Feathers application started on http://%s:%d', app.get('host'), port)
 );
-
-/* eslint-disable no-console */
+//
+// /* eslint-disable no-console */
 
 // const logger = require('./logger');
 // const app = require('./app');
 // const port = app.get('port');
 // const https = require('https');
 // const fs = require('fs');
-//
-// console.log(fs.readFileSync('/etc/letsencrypt/keys/0000_key-certbot.pem'));
 //
 // const server = https.createServer({
 //   key: fs.readFileSync('/etc/letsencrypt/live/gunhubutah.com/privkey.pem'),

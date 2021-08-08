@@ -11,7 +11,7 @@
           <q-icon size="md" name="chevron_right"/>
         </template>
         <template slot="caption">
-          <div class="text-center q-my-md text-h6">Swipe to view images</div>
+          <div class="text-center q-my-md text-h6">{{ listing.images.length ? 'Swipe to view images' : 'No images' }}</div>
         </template>
       </VueAgile>
       <div v-else class="agile-comp">
@@ -64,7 +64,7 @@
         <span class="seller-details" v-if="user">
           <span>
             <q-avatar class="avatar">
-              <div class="img" :style="{backgroundImage: `url(${$lget(listing, '_fastjoin.listedBy.avatar')})`}" />
+              <div class="img" :style="{backgroundImage: `url(${$lget(listing, '_fastjoin.listedBy.avatar')})`, objectFit: 'cover'}" />
             </q-avatar>
           </span>
           <span class="right-avatar" v-if="user">
@@ -330,6 +330,8 @@
       .img {
         height: 5vw;
         width: 5vw;
+        background-position: center;
+        background-size: cover;
       }
 
       .right-avatar {

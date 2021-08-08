@@ -32,7 +32,13 @@ module.exports = {
     create: [addToUser],
     update: [],
     patch: [],
-    remove: []
+    remove: [ctx => {
+      ctx.result.images.forEach(async image => {
+        if (image.Key || image.key) {
+          await ctx.app.service('img-uploader').remove({fileName: image.key || image.Key});
+        }
+      });
+    }]
   },
 
   error: {

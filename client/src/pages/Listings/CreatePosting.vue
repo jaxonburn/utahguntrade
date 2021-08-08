@@ -120,16 +120,9 @@
 
 <script>
   import MultiImageUpload from 'components/common/MultiImageUpload';
-  import AWS from 'aws-sdk';
   import {mapActions, mapState} from 'vuex';
   import LocationForm from "components/Forms/LocationForm/LocationForm";
   import { models } from 'feathers-vuex';
-
-  AWS.config.update({
-    accessKeyId: process.env.ACCESS_KEY_ID,
-    secretAccessKey: process.env.SECRET_ACCESS_KEY,
-    region: 'us-west-1',
-  });
 
   export default {
     name: "CreatePosting",
@@ -139,7 +132,7 @@
     },
     data() {
       return {
-        categories: ['Knives', 'Rifle', 'AssaultRifle', 'Handgun', 'SubmachineGun', 'Hunting', 'Magazines', 'Scopes', 'Other', 'AssaultAmmo', 'HandgunAmmo.', 'RifleAmmo', 'ShotgunAmmo', 'SubmachineAmmo', 'Misc' ],
+        categories: ['Knives', 'Rifle', 'Handgun', 'Shotgun', 'Hunting', 'Magazines', 'Scopes', 'Ammo', 'Misc' ],
         images: [],
         formData: {},
         listingForm: new models.api.Listings().clone()
@@ -175,6 +168,9 @@
       }),
       ...mapActions('listings', {
         patchListing: 'patch'
+      }),
+      ...mapActions('img-uploader', {
+        addFile: 'create'
       }),
       editPosting() {
         this.savePosting();
@@ -220,7 +216,7 @@
           })
           this.$q.loading.hide();
           return;
-        };
+        }
         if(!this.listingForm.title) {
           this.$q.notify({
             message: 'Listing must have a title'
@@ -243,33 +239,17 @@
           this.publishEdited();
           return;
         }
-        let s3 = new AWS.S3();
-        let today = new Date();
-        let options = {
-          partSize: 10 * 1024 * 1024,
-          queueSize: 1
-        };
-        await this.images.forEach((image) => {
-          let uniqueName = {
-            path: `profile/${today.getFullYear().toString()}${today.getMonth().toString().padStart(2, "0")}/`,
-            file: `guntrade_${image.name.replace(/[^a-zA-Z0-9.]/g, "")}`
-          };
-          let params = {
-            Bucket: 'guntrade',
-            Key: uniqueName.path + uniqueName.file + Date.now(),
-            Body: image.file,
-            ContentEncoding: 'base64',
-            ContentType: image.type,
-            ACL: 'public-read'
-          };
-          s3.upload(params, options, function (err, data) {
-            if (err) {
-              this.$q.notify({message: 'Something went wrong when uploading images', color: 'negative'})
-            } else {
-              this.insertImg(data);
-            }
-          }.bind(this));
-
+        await this.images.forEach(async image => {
+          let res;
+          try {
+            res = await this.addFile({image, public: true, type: 'listing'});
+            this.insertImg(res.newImage);
+          } catch(e) {
+            this.$q.notify({
+              message: e.message,
+              color: 'negative'
+            })
+          }
         })
       },
       insertImg(data) {
@@ -301,7 +281,9 @@
             }
           })
           this.images = [];
+          this.listingForm = new models.api.Listings().clone();
         }).catch(err => {
+          // delete images
           this.$q.loading.hide();
           console.log(err);
           this.$q.notify({
@@ -312,7 +294,6 @@
       },
       uploadImageSuccess(formData, index, fileList) {
         this.images = fileList;
-        console.log(fileList);
       },
       beforeRemove(index, done, fileList) {
         var r = confirm("remove image")

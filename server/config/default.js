@@ -24,7 +24,7 @@ module.exports = {
       'header': {
         'typ': 'access'
       },
-      'audience': 'https://api.utahgunhub.com',
+      'audience': 'https://gunhubutah.com',
       'issuer': 'feathers',
       'algorithm': 'HS256',
       'expiresIn': '1d'

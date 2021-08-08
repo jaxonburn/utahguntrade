@@ -147,7 +147,7 @@
         },
         applyFilters: false,
         conditions: ['New', 'Like New', 'Used', 'Worn'],
-        categories: ['Knives', 'Rifle', 'AssaultRifle', 'Handgun', 'Shotgun', 'Hunting', 'Magazines', 'Scopes', 'Other', 'AssaultAmmo', 'HandgunAmmo.', 'RifleAmmo', 'ShotgunAmmo', 'SubmachineAmmo', 'Misc' ],
+        categories: ['Knives', 'Rifle', 'Handgun', 'Shotgun', 'Hunting', 'Magazines', 'Scopes', 'Ammo', 'Misc' ],
 
       }
     },

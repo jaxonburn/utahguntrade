@@ -37,8 +37,8 @@ module.exports = {
 
   error: {
     all: [ctx => {
-      if(ctx.error && ctx.error.type) {
-        ctx.app.service('app-errors').create({type: ctx.error.type, className: ctx.error.className, code: ctx.error.code});
+      if(ctx.error && ctx.error.type && (ctx.error.code !== 401)) {
+        ctx.app.service('app-errors').create({type: ctx.error.type, className: ctx.error.className, code: ctx.error.code, messaeg: ctx.error.message});
       }
     }],
     find: [],

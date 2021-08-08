@@ -24,7 +24,6 @@ async function getImage(key){
       Bucket: 'guntrade',
       Key: key
     }
-
   ).promise();
   return data;
 }
@@ -40,7 +39,6 @@ const getAWSImage = async context => {
     await getImage(context.result.document.key).then((img)=>{
       let image = 'data:image/jpeg;base64,' + encode(img.Body);
       context.result.document = String(image);
-      console.log(context.result);
     }).catch((e)=>{
       console.log(e);
     });

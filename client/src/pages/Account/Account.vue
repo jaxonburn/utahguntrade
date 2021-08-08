@@ -81,17 +81,17 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex';
+  import {mapState, mapActions} from 'vuex';
   import {date} from 'quasar'
   import MultiImageUpload from 'components/common/MultiImageUpload';
-  import AWS from 'aws-sdk';
-
-
-  AWS.config.update({
-    accessKeyId: process.env.ACCESS_KEY_ID,
-    secretAccessKey: process.env.SECRET_ACCESS_KEY,
-    region: 'us-west-1',
-  });
+  // import AWS from 'aws-sdk';
+  //
+  //
+  // AWS.config.update({
+  //   accessKeyId: process.env.ACCESS_KEY_ID,
+  //   secretAccessKey: process.env.SECRET_ACCESS_KEY,
+  //   region: 'us-west-1',
+  // });
 
 
   export default {
@@ -115,6 +115,9 @@
       }
     },
     methods: {
+      ...mapActions('img-uploader', {
+        addImg: 'create'
+      }),
       uploadImageSuccess(formData, index, fileList) {
         this.images = fileList;
       },
@@ -133,114 +136,52 @@
         this.$q.loading.show();
         this.editing = !this.editing;
         let doubleCloned = this.clonedUser;
-        let s3 = new AWS.S3();
-        let today = new Date();
-        let options = {
-          partSize: 10 * 1024 * 1024,
-          queueSize: 1
-        };
         if (this.images.length > 0) {
           this.images.forEach((image) => {
-            let stream = image.path;
-            var uniqueName = {
-              path: `profile/${today.getFullYear().toString()}${today.getMonth().toString().padStart(2, "0")}/`,
-              file: `guntrade_${image.name.replace(/[^a-zA-Z0-9.]/g, "")}`
-            };
-            var params = {
-              Bucket: 'guntrade',
-              Key: uniqueName.path + uniqueName.file,
-              Body: image.file,
-              ContentEncoding: 'base64',
-              ContentType: image.type,
-              ACL: 'public-read'
-            };
-            // eslint-disable-next-line no-console
-            s3.upload(params, options, function (err, data) {
-              if (err) {
-                console.log(err);
-              } else {
-                if (data['details'] === undefined) {
-                  data['details'] = {};
-                }
-                data['details']['name'] = image.name;
-                data['details']['size'] = image.size;
-                data['details']['type'] = image.type;
-                data['details']['lastModifiedDate'] = image.lastModifiedDate;
-                doubleCloned.avatar = data.Location;
-                doubleCloned.takeToListings = this.takeListings;
-                doubleCloned.save().then((res) => {
-                  this.$q.loading.hide();
-                  this.$q.notify({
-                    color: 'secondary',
-                    textColor: 'white',
-                    icon: 'check_circle',
-                    message: 'Account Saved',
-                    position: 'top-right',
-                    timeout: 3000,
-                  })
-                }).catch((err) => {
-                  this.$q.loading.hide();
-                  if (err.code === 409) {
-                    this.$q.notify({
-                      color: 'secondary',
-                      textColor: 'white',
-                      icon: 'cancel',
-                      message: 'That username is already taken.',
-                      position: 'bottom',
-                      timeout: 5000,
-                    })
-                  } else {
-                    this.$q.loading.hide();
-                    if (err.code === 409) {
-                      this.$q.notify({
-                        color: 'secondary',
-                        textColor: 'white',
-                        icon: 'cancel',
-                        message: 'Something went wrong, please refresh your connection and try again.',
-                        position: 'bottom',
-                        timeout: 5000,
-                      })
-                    }
-                  }
-                })
+            this.addImg({image, public: true, type: 'listing'}).then(res => {
+              let data = res.newImage;
+              if (data['details'] === undefined) {
+                data['details'] = {};
               }
-            }.bind(this));
-          })
-        } else {
-          doubleCloned.save().then((res) => {
-            this.$q.loading.hide();
-            this.$q.notify({
-              color: 'secondary',
-              textColor: 'white',
-              icon: 'check_circle',
-              message: 'Account Saved',
-              position: 'top-right',
-              timeout: 3000,
-            })
-          }).catch((err) => {
-            this.$q.loading.hide();
-            if (err.code === 409) {
-              this.$q.notify({
-                color: 'secondary',
-                textColor: 'white',
-                icon: 'cancel',
-                message: 'That username is already taken.',
-                position: 'bottom',
-                timeout: 5000,
-              })
-            } else {
-              this.$q.loading.hide();
-              if (err.code === 409) {
+              data['details']['name'] = image.name;
+              data['details']['size'] = image.size;
+              data['details']['type'] = image.type;
+              data['details']['lastModifiedDate'] = image.lastModifiedDate;
+              doubleCloned.avatar = data.Location;
+              doubleCloned.takeToListings = this.clonedUser.takeListings;
+              doubleCloned.save().then(res => {
+                this.$q.loading.hide();
                 this.$q.notify({
                   color: 'secondary',
                   textColor: 'white',
-                  icon: 'cancel',
-                  message: 'Something went wrong, please refresh your connection and try again.',
-                  position: 'bottom',
-                  timeout: 5000,
+                  icon: 'check_circle',
+                  message: 'Account Saved',
+                  position: 'top-right',
+                  timeout: 3000,
                 })
-              }
-            }
+              }).catch((err) => {
+                this.$q.loading.hide();
+                if (err.code === 409) {
+                  this.$q.notify({
+                    color: 'secondary',
+                    textColor: 'white',
+                    icon: 'cancel',
+                    message: 'That username is already taken.',
+                    position: 'bottom',
+                    timeout: 5000,
+                  })
+                } else {
+                  this.$q.notify({
+                    color: 'secondary',
+                    textColor: 'white',
+                    icon: 'cancel',
+                    message: 'Something went wrong, please refresh your connection and try again.',
+                    position: 'bottom',
+                    timeout: 5000,
+                  })
+                }
+              })
+            })
           })
         }
       }

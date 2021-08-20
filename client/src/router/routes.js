@@ -22,8 +22,9 @@ export default function({ store }) {
         { path: 'messages', name: 'messages', component: () => import('pages/Chats'), meta: { requiresAuth: true } },
         { path: 'articles', name: 'articleSearch', component: () => import('pages/BrowseArticles'), },
         { path: 'articles/:id', name: 'article', component: () => import('pages/Manage/ArticleView'),},
-        { path: 'premium', name: 'premium', component: () => import('pages/Subscriptions/Premium'),  meta: { requiresAuth: true } },
-        { path: 'report-bug', name: 'report-bug', component: () => import('pages/ReportBug'), meta: { requiresAuth: true } }
+        // { path: 'premium', name: 'premium', component: () => import('pages/Subscriptions/Premium'),  meta: { requiresAuth: true } },
+        { path: 'report-bug', name: 'report-bug', component: () => import('pages/ReportBug'), meta: { requiresAuth: true } },
+        { path: 'gun-stores', component: () => import('pages/Resources/GunStores') }
       ],
     },
     {
@@ -38,7 +39,8 @@ export default function({ store }) {
         {path: 'articles/:id', component: () => import('pages/Manage/ArticleView'), meta: {requiresAuth: true, role: 'Admin'}},
         {path: 'bugs', component: () => import('pages/Manage/Bugs'), meta: { requiresAuth: true, role: 'Admin' }},
         {path: 'notifications', component: () => import('pages/Manage/Notifications'), meta: { requiresAuth: true, role: 'Admin' }},
-        {path: 'gun-stores', name: 'gun-stores', component: () => import('pages/Manage/GunStores'), meta: {requiresAuth: true, role: 'Admin'}}
+        {path: 'gun-stores', name: 'gun-stores', component: () => import('pages/Manage/GunStores'), meta: {requiresAuth: true, role: 'Admin'}},
+        {path: 'user-reports', name: 'user-reports', component: () => import('pages/Manage/UserReports'), meta: {requiresAuth: true, role: 'Admin'}}
       ]
     },
 

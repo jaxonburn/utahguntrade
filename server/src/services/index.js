@@ -15,6 +15,7 @@ const comments = require('./comments/comments.service.js');
 const reports = require('./reports/reports.service.js');
 const gunStores = require('./gun-stores/gun-stores.service.js');
 const imgUploader = require('./img-uploader/img-uploader.service.js');
+const host = require('./host/host.service.js');
 // eslint-disable-next-line no-unused-vars
 module.exports = function (app) {
   app.configure(users);
@@ -34,4 +35,5 @@ module.exports = function (app) {
   app.configure(reports);
   app.configure(gunStores);
   app.configure(imgUploader);
+  app.configure(host);
 };

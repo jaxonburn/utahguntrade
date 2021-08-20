@@ -35,6 +35,7 @@ const fJoinHook = function (path, service, queryPath = '_id') {
     joins: {
       // eslint-disable-next-line no-unused-vars
       set: $select => async (item, context) => {
+        console.log(service);
         let ids = Array.isArray(lget(item, path)) ? lget(item, path, []) : String(lget(item, path, ''));
         let newItems;
         if (ids.length > 0) {

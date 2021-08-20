@@ -87,6 +87,12 @@ box-shadow: 0 5px 10px 2px rgba(0,0,0,0.5);">
           },
           {
             img: null,
+            label: 'Reported listings/comments etc...',
+            separator: true,
+            path: '/manage/user-reports'
+          },
+          {
+            img: null,
             label: 'Manage Gun Stores',
             separator: true,
             path: '/manage/gun-stores'

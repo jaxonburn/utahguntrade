@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh lpR fff">
+  <q-layout view="hHh lpR fff" @click="announcementDio = false">
     <q-header elevated>
       <q-toolbar class="bg-white" style="display: flex; flex-direction: column;width: 100%;">
         <div style="width: 100%;display: flex; flex-direction: row;justify-content: space-between;">
@@ -78,7 +78,11 @@
       </transition>
       <chat-box v-if="chat && user" @close="chat = !chat" :user="user"></chat-box>
     </q-page-container>
-        <main-footer></main-footer>
+    <main-footer></main-footer>
+
+    <q-dialog v-model="announcementDio" :maximized="ww < 900">
+      <AnnouncementCard :value="announcement" @close="announcementDio = false"/>
+    </q-dialog>
   </q-layout>
 </template>
 
@@ -89,10 +93,12 @@
   import {StripeCheckout} from '@vue-stripe/vue-stripe';
   import DropdownLinks from 'components/Nav/DropdownLinks';
   import MainFooter from 'components/Nav/MainFooter';
+  import AnnouncementCard from 'components/common/AnnouncementCard';
 
   export default {
     name: 'MainLayout',
     components: {
+      AnnouncementCard,
       MainFooter,
       DropdownLinks,
       ChatBox,
@@ -100,6 +106,13 @@
       StripeCheckout,
     },
     async mounted() {
+      this.findHost({}).then(res => {
+        let data = res.data[0];
+        if (data && data.announcementBody || data.announcementHeader) {
+          this.announcementDio = true;
+          this.announcement = data;
+        }
+      })
       if (this.user) {
         Promise.all(this.user.notifications.map(async noti => {
           let not = await this.$store.dispatch('notifications/patch', [noti, {
@@ -131,13 +144,16 @@
         loading: false,
         searchAll: '',
         chat: false,
+        ww: window.innerWidth,
         category: {
           open: false,
           label: ''
         },
         lastNotification: '',
         lastUserNotification: '',
-        hideMainDropdown: false
+        hideMainDropdown: false,
+        announcementDio: false,
+        announcement: {}
       }
     },
     watch: {
@@ -192,6 +208,9 @@
         loadNotifications: 'find',
         deleteNotification: 'remove',
         patchNotification: 'patch'
+      }),
+      ...mapActions('host', {
+        findHost: 'find'
       }),
       hideMain() {
         this.hideMainDropdown = true;

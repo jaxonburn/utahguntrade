@@ -142,16 +142,17 @@
               <q-separator vertical class="q-ml-sm"/>
               <div style="display: grid; grid-template-columns: 1fr 0.1fr 1fr;width: 50%;justify-items: center;align-items: center;">
                 <div class="text-weight-medium">
-                  <router-link to="/bill-of-sale"><div class="q-my-xs cursor-pointer hoverText">Bill Of Sale</div></router-link>
-                  <div class="q-my-xs cursor-pointer hoverText">Gun Stores in Utah</div>
+<!--                  <router-link to="/bill-of-sale"><div class="q-my-xs cursor-pointer hoverText">Bill Of Sale</div></router-link>-->
+                  <div class="q-my-xs cursor-pointer hoverText" @click="navTo('/bill-of-sale')">Bill Of Sale</div>
+                  <div class="q-my-xs cursor-pointer hoverText" @click="navTo('/gun-stores')">Gun Stores in Utah</div>
                   <div class="q-my-xs cursor-pointer hoverText">Firearm Classes</div>
-                  <router-link to="prevent-fraud"><div class="q-my-xs cursor-pointer hoverText">Prevent Fraud</div></router-link>
+                  <div class="q-my-xs cursor-pointer hoverText" @click="navTo('/prevent-fraud')">Prevent Fraud</div>
                 </div>
                 <q-separator vertical />
                 <div class="text-weight-medium">
                   <div class="q-my-xs cursor-pointer hoverText">Our Team</div>
-                  <router-link to="/terms"><div class="q-my-xs cursor-pointer hoverText">Terms and Conditions</div></router-link>
-                  <router-link to="privacy-policy"><div class="q-my-xs cursor-pointer hoverText">Privacy Policy</div></router-link>
+                  <div class="q-my-xs cursor-pointer hoverText" @click="navTo('/terms')">Terms And Conditions</div>
+                  <div class="q-my-xs cursor-pointer hoverText" @click="navTo('/privacy-policy')">Privacy Policy</div>
                 </div>
               </div>
             </div>

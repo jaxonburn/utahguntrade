@@ -24,7 +24,7 @@
         <div class="price">${{ listing.price }}</div>
         <div style="margin-top: 5px; color: #a4a1a1;">Posted {{ Math.floor((new Date().getTime() - new Date(listing.createdAt).getTime())  / (1000 * 3600 * 24)) === 0 ? 'Today' : Math.floor((new Date().getTime() - new Date(listing.createdAt).getTime())  / (1000 * 3600 * 24)) + ' Days ago' }}</div>
         <div class="buttons">
-          <div @click="startChat" class="action-btn" v-if="user && user._id !== listing.listedBy">Message user</div>
+          <div @click="startChat" class="action-btn" v-if="(user && user._id !== listing.listedBy) && listing._fastjoin.listedBy">Message user</div>
           <div class="action-btn" @click="addToWatchList" v-if="user && !user.watched.includes(listing._id)">
             <q-icon name="visibility" />
             <q-tooltip>Add to watch list</q-tooltip>
